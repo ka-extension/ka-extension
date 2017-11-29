@@ -20,5 +20,5 @@
     "web_accessible_resources": [
         "tabs",
         "inject/src.js"
-    ],
+    ]
 }
