@@ -1,19 +1,35 @@
 {
-  "update_url": "https://clients2.google.com/service/update2/crx",
-  "manifest_version":2,
-  "permissions":[],
-  "name": "The Khan Academy Extension",
-  "short_name": "The KA Extension",
-  "version": "2.0",
-  "description": "The Khan Academy Extension. Created by Luke Krikorian & Jett Burns.",
-  "browser_action": {
-    "name": "Khan Academy Extension",
-    "icons": ["/icon48.png","/icon128.png"],
-    "default_icon": "/icon128.png"
-  },
-  "content_scripts": [ {
-    "js": ["jquery.min.js","src.js"],
-    "matches": ["https://www.khanacademy.org/*"],
-    "all_frames": true
-  }]
+    "manifest_version": 2,
+    "name": "The Khan Academy Extension",
+    "short_name": "The KA Extension",
+    "version": "1.7.0",
+    "description": "The Khan Academy Extension. Created by Luke Krikorian & Jett Burns.",
+    "browser_action": {
+        "name": "Khan Academy Extension",
+        "icons": [
+            "/icon48.png", "/icon128.png"
+        ],
+        "default_icon": "/icon128.png"
+    },
+    "background": {
+        "scripts":["background.js"]
+    },
+    "content_scripts": [{
+        "js": ["jquery.min.js", "content.js"],
+        "matches": ["*://*.khanacademy.org/*"],
+        "run_at" : "document_end"
+    }], 
+    "permissions": [
+        "webRequest",
+        "<all_urls>",
+        "activeTab",
+        "storage", 
+        "management"
+    ],
+    "web_accessible_resources": [
+        "tabs",
+        "/modg48.png",
+        "inject/src.js"
+    ],
+    "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'"
 }
