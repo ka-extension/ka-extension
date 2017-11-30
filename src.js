@@ -100,7 +100,7 @@ var getProfileData = function(){
     var tableBody = table.childNodes[0];
     var kaid = userInfo.kaid;
     var dateJoined = userInfo.dateJoined;/*.substring(0,10);*/
-    
+
     var numVotes = 0;
     var numSpinoffs = 0;
     var numPrograms = userPrograms.scratchpads.length;
