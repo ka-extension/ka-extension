@@ -35,7 +35,7 @@ if (url[3] === 'computer-programming') {
 
 if (url[3] === 'profile') {
     var username = url[4];
-    getJSON(userProgramsApi + username +'&limit=1000',function(data) {
+    getJSON(userProgramsApi + username +'&limit=1500',function(data) {
         console.log(data);
         userPrograms = data;
     });
@@ -101,7 +101,7 @@ function addFlagsToProgram() {
                 reasons += element + "\n";
             });
             if (programData.scratchpad.flags.length === 0) {
-                reasons = "No flags here, yay!";
+                reasons = "No flags here!";
             }
             flagBtn.title = reasons;
         };
@@ -180,33 +180,34 @@ function getProfileData() {
     clearInterval(profileData);
 };
 
-var addDownvoteButton = function(){
-  //Inspired by @elmt2's script
-  var buttons = document.getElementsByClassName("link_1uvuyao-o_O-computing_1w8n1i8")[1]["parentNode"];//buttons_vponqv
-  if(!buttons || !programData) return;
-  window.programData = programData;
-  var text = "Vote Down • " + programData.scratchpad.sumVotesIncremented;
-  var span = document.createElement('span');
-  span.style = "display: inline-block; position: relative;"
-  span.innerHTML = '<a aria-disabled="false" role="button" href="javascript:void(0)" class="link_1uvuyao-o_O-computing_1w8n1i8"><span>' + text + '</span></a>'
-  span.onclick = function(){
-    var getSession = () => /fkey=(.*?);/ig.exec(document.cookie)[1];
-    var key = window.programData.scratchpad.key;
-    var req = new XMLHttpRequest();
-    req.open("POST", "https://www.khanacademy.org/api/internal/discussions/voteentity");
-    req.setRequestHeader('x-ka-fkey', getSession());
-    req.setRequestHeader('Content-type', "application/x-www-form-urlencoded");
-    req.send("entity_key=" + key + "&vote_type=-1")
-    req.addEventListener('load', function(){
-      var b1 = document.getElementsByClassName("link_1uvuyao-o_O-computing_1w8n1i8")[1];
-      var b2 = document.getElementsByClassName("link_1uvuyao-o_O-computing_1w8n1i8")[2];
-      b1.innerHTML = "Vote Up • " + (programData.scratchpad.sumVotesIncremented - 1);
-      b2.innerHTML = "Vote Down • " + (programData.scratchpad.sumVotesIncremented - 1);
+/*** Display a downvote button under programs. ***/
+var addDownvoteButton = function() {
+    //inspired by @elmt2's script
+    var buttons = document.getElementsByClassName("link_1uvuyao-o_O-computing_1w8n1i8")[1]["parentNode"]; //buttons_vponqv
+    if (!buttons || !programData) return;
+    window.programData = programData;
+    var text = "Vote Down • " + programData.scratchpad.sumVotesIncremented;
+    var span = document.createElement('span');
+    span.style = "display: inline-block; position: relative;"
+    span.innerHTML = '<a aria-disabled="false" role="button" href="javascript:void(0)" class="link_1uvuyao-o_O-computing_1w8n1i8"><span>' + text + '</span></a>'
+    span.onclick = function() {
+        var getSession = () => /fkey=(.*?);/ig.exec(document.cookie)[1];
+        var key = window.programData.scratchpad.key;
+        var req = new XMLHttpRequest();
+        req.open("POST", "https://www.khanacademy.org/api/internal/discussions/voteentity");
+        req.setRequestHeader('x-ka-fkey', getSession());
+        req.setRequestHeader('Content-type', "application/x-www-form-urlencoded");
+        req.send("entity_key=" + key + "&vote_type=-1")
+        req.addEventListener('load', function() {
+            var b1 = document.getElementsByClassName("link_1uvuyao-o_O-computing_1w8n1i8")[1];
+            var b2 = document.getElementsByClassName("link_1uvuyao-o_O-computing_1w8n1i8")[2];
+            b1.innerHTML = "Vote Up • " + (programData.scratchpad.sumVotesIncremented - 1);
+            b2.innerHTML = "Vote Down • " + (programData.scratchpad.sumVotesIncremented - 1);
 
-    });
-  };
-  buttons.appendChild(span);
-  clearInterval(addDownvote);
+        });
+    };
+    buttons.appendChild(span);
+    clearInterval(addDownvote);
 };
 
 if (window.location.host === 'www.khanacademy.org') {
