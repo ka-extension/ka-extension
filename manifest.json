@@ -6,8 +6,12 @@
     "description": "The Khan Academy Extension. Created by Luke Krikorian & Jett Burns.",
     "browser_action": {
         "name": "Khan Academy Extension",
-        "icons": ["/icon48.png", "/icon128.png"],
-        "default_icon": "/icon128.png"
+        "icons": {
+          "16": "images/icon16.png",
+          "48": "images/icon48.png",
+          "128": "images/icon128.png"
+        },
+        "default_icon": "images/icon128.png"
     },
     "content_scripts": [{
         "js": ["content.js"],
@@ -20,5 +24,11 @@
     "web_accessible_resources": [
         "tabs",
         "inject/src.js"
-    ]
+    ],
+    "background": {
+      "scripts": ["background.js"]
+    },
+    "externally_connectable": {
+      "matches": ["*://*.khanacademy.org/*"]
+    }
 }
