@@ -141,7 +141,7 @@ function showProgramsFlags() {
 /*** When viewing a program, it shows when it was created and last updated. ***/
 function showProgramDates() {
   var date = document.getElementsByClassName("link_1uvuyao-o_O-computing_1nblrap author-nickname profile-programs");
-  if (!programData.scratchpad || !date || !date.nextElementSibling) { return; }
+  if (!programData.scratchpad || !date[0] || !date[0].nextElementSibling) { return; }
 
   date = date[0];
   var createdDate = newDate(programData.scratchpad.created);
