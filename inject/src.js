@@ -13,7 +13,7 @@ var programData = {};
 var userPrograms = {};
 
 function getSession() {
-  return /fkey=(.*?);/ig.exec(document.cookie)[1];
+    return /fkey=(.*?);/ig.exec(document.cookie)[1];
 }
 
 function getJSON(url, success) {
@@ -76,39 +76,39 @@ function widenProgram() {
 
 /*** When viewing a program, it shows how many flags the program has. ***/
 function addFlagsToProgram() {
-  var title = document.getElementsByClassName('editTitle_swrcbw');
-  var flag = document.getElementsByClassName('discussion-meta-controls');
-  if(!programData.scratchpad) return;
-  if (programData.scratchpad.kaid !== KA._userProfileData.kaid && !KA._userProfileData.isModerator) {
-    var programFlags = programData.scratchpad.flags;
+    if(!programData.scratchpad) return;
+    var title = document.getElementsByClassName('editTitle_swrcbw');
+    var flag = document.getElementsByClassName('discussion-meta-controls');
+    if (programData.scratchpad.kaid !== KA._userProfileData.kaid && !KA._userProfileData.isModerator) {
+        var programFlags = programData.scratchpad.flags;
 
-    if(flag.length < 1 && title.length < 1) { return; }
+        if(flag.length < 1 && title.length < 1) { return; }
 
-    try {
-      var flagString = ' • ' + programData.scratchpad.flags.length;
-      flag[0].childNodes[2].innerHTML += flagString;
+        try {
+            var flagString = ' • ' + programData.scratchpad.flags.length;
+            flag[0].childNodes[2].innerHTML += flagString;
 
-      if (flag[0].childNodes[2].className === "link_1uvuyao-o_O-computing_77ub1h-o_O-disabled_2gos5") {
-      flag[0].childNodes[2].className = "link_1uvuyao-o_O-computing_77ub1h";
-      }
-    } catch(flag) {
-      console.log('Flag is not defined.');
-      return;
+            if (flag[0].childNodes[2].className === "link_1uvuyao-o_O-computing_77ub1h-o_O-disabled_2gos5") {
+                flag[0].childNodes[2].className = "link_1uvuyao-o_O-computing_77ub1h";
+            }
+        } catch(flag) {
+            console.log('Flag is not defined.');
+            return;
+        }
+
+        // Hover over flag button to show flag reasons.
+        var flagBtn = document.getElementsByClassName("link_1uvuyao-o_O-computing_77ub1h")[0];
+        var reasons = '';
+        programFlags.forEach(function(element) {
+            reasons += element + "\n";
+        });
+        if (programData.scratchpad.flags.length === 0) {
+            reasons = "No flags here!";
+        }
+        flagBtn.title = reasons;
+
+        clearInterval(addFlags);
     }
-
-    // Hover over flag button to show flag reasons.
-    var flagBtn = document.getElementsByClassName("link_1uvuyao-o_O-computing_77ub1h")[0];
-    var reasons = '';
-    programFlags.forEach(function(element) {
-      reasons += element + "\n";
-    });
-    if (programData.scratchpad.flags.length === 0) {
-      reasons = "No flags here!";
-    }
-    flagBtn.title = reasons;
-
-    clearInterval(addFlags);
-  }
 }
 
 /*** When viewing the hotlist or a projects list, flag counts will be added next to spinoffs. ***/
@@ -140,43 +140,43 @@ function showProgramsFlags() {
 
 /*** When viewing a program, it shows when it was created and last updated. ***/
 function showProgramDates() {
-  var date = document.getElementsByClassName("link_1uvuyao-o_O-computing_1nblrap author-nickname profile-programs");
-  if (!programData.scratchpad || !date[0] || !date[0].nextElementSibling) { return; }
+    var date = document.getElementsByClassName("link_1uvuyao-o_O-computing_1nblrap author-nickname profile-programs");
+    if (!programData.scratchpad || !date[0] || !date[0].nextElementSibling) { return; }
 
-  date = date[0];
-  var createdDate = newDate(programData.scratchpad.created);
-  var updatedDate = newDate(programData.scratchpad.date);
-  var myFlags = programData.scratchpad.flags.length;
+    date = date[0];
+    var createdDate = newDate(programData.scratchpad.created);
+    var updatedDate = newDate(programData.scratchpad.date);
+    var myFlags = programData.scratchpad.flags.length;
 
-  date.nextElementSibling.innerHTML = "<br>Created: " + createdDate + "<br>Last updated: " + updatedDate + (programData.scratchpad.kaid === KA._userProfileData.kaid ? ('<br>Flags: ' + myFlags) : '') + (programData.scratchpad.hideFromHotlist ? '<br><span style="color:#af2f18">This program is hidden from the hotlist.</span>' : '');
-  clearInterval(getDates);
+    date.nextElementSibling.innerHTML = "<br>Created: " + createdDate + "<br>Last updated: " + updatedDate + (programData.scratchpad.kaid === KA._userProfileData.kaid ? ('<br>Flags: ' + myFlags) : '') + (programData.scratchpad.hideFromHotlist ? '<br><span style="color:#af2f18">This program is hidden from the hotlist.</span>' : '');
+    clearInterval(getDates);
 }
 
 /*** Display more info about a user when viewing their profile. ***/
 function getProfileData() {
-  var profile = document.getElementsByClassName('user-statistics-table');
-  if(profile.length < 1 || !userPrograms.scratchpads) { return; }
-  var table = profile[0];
-  var tableBody = table.childNodes[0];
-  var kaid = userInfo.kaid;
-  var dateJoined = userInfo.dateJoined;
+    var profile = document.getElementsByClassName('user-statistics-table');
+    if(profile.length < 1 || !userPrograms.scratchpads) { return; }
+    var table = profile[0];
+    var tableBody = table.childNodes[0];
+    var kaid = userInfo.kaid;
+    var dateJoined = userInfo.dateJoined;
 
-  var numVotes = 0;
-  var numSpinoffs = 0;
-  var numPrograms = userPrograms.scratchpads.length;
-  for(var i = 0; i < numPrograms; i++) {
-    var scratchpad = userPrograms.scratchpads[i];
-    numVotes += scratchpad.sumVotesIncremented;
-    numSpinoffs += scratchpad.spinoffCount;
-  }
-  tableBody.innerHTML += '<tr><td class="user-statistics-label">Account created</td><td>' + newDate(dateJoined) + '</td></tr>';
-  tableBody.innerHTML += '<tr><td class="user-statistics-label">Programs</td><td>' + numPrograms + '</td></tr>';
-  tableBody.innerHTML += '<tr><td class="user-statistics-label">Votes recieved</td><td>' + numVotes + '</td></tr>';
-  tableBody.innerHTML += '<tr><td class="user-statistics-label">Spinoffs recieved</td><td>' + numSpinoffs + '</td></tr>';
-  tableBody.innerHTML += '<tr><td class="user-statistics-label">Average votes received</td><td>' + ((Math.round((numVotes/numPrograms) * 100) / 100) || 0) + '</td></tr>';
-  tableBody.innerHTML += '<tr><td class="user-statistics-label">Average spinoffs received</td><td>' + ((Math.round((numSpinoffs/numPrograms) * 100) / 100) || 0)  + '</td></tr>';
-  tableBody.innerHTML += '<tr><td class="user-statistics-label">User kaid</td><td>' + kaid + '</td></tr>';
-  clearInterval(profileData);
+    var numVotes = 0;
+    var numSpinoffs = 0;
+    var numPrograms = userPrograms.scratchpads.length;
+    for(var i = 0; i < numPrograms; i++) {
+        var scratchpad = userPrograms.scratchpads[i];
+        numVotes += scratchpad.sumVotesIncremented;
+        numSpinoffs += scratchpad.spinoffCount;
+    }
+    tableBody.innerHTML += '<tr><td class="user-statistics-label">Account created</td><td>' + newDate(dateJoined) + '</td></tr>';
+    tableBody.innerHTML += '<tr><td class="user-statistics-label">Programs</td><td>' + numPrograms + '</td></tr>';
+    tableBody.innerHTML += '<tr><td class="user-statistics-label">Votes recieved</td><td>' + numVotes + '</td></tr>';
+    tableBody.innerHTML += '<tr><td class="user-statistics-label">Spinoffs recieved</td><td>' + numSpinoffs + '</td></tr>';
+    tableBody.innerHTML += '<tr><td class="user-statistics-label">Average votes received</td><td>' + ((Math.round((numVotes/numPrograms) * 100) / 100) || 0) + '</td></tr>';
+    tableBody.innerHTML += '<tr><td class="user-statistics-label">Average spinoffs received</td><td>' + ((Math.round((numSpinoffs/numPrograms) * 100) / 100) || 0)  + '</td></tr>';
+    tableBody.innerHTML += '<tr><td class="user-statistics-label">User kaid</td><td>' + kaid + '</td></tr>';
+    clearInterval(profileData);
 }
 
 /*** Display a downvote button under programs. ***/
@@ -209,22 +209,22 @@ function getProfileData() {
 };*/
 
 if (window.location.host === 'www.khanacademy.org') {
-  var notifications = setInterval(updateNotifs, 250);
-  if (url[3] === 'computer-programming' && url[4] !== 'new') {
-    var addFlags = setInterval(addFlagsToProgram, 250),
+    var notifications = setInterval(updateNotifs, 250);
+    if (url[3] === 'computer-programming' && url[4] !== 'new') {
+        var addFlags = setInterval(addFlagsToProgram, 250),
         getDates = setInterval(showProgramDates, 250),
         widenprogram = setInterval(widenProgram, 250);
-    // var addDownvote = setInterval(addDownvoteButton, 250);
-  } else if (url[3] === 'profile') {
-    var profileData = setInterval(getProfileData, 250);
-  } else if (url[5] === 'browse') {
-    var programFlags = setInterval(showProgramsFlags, 500);
-  }
+        // var addDownvote = setInterval(addDownvoteButton, 250);
+    } else if (url[3] === 'profile') {
+        var profileData = setInterval(getProfileData, 250);
+    } else if (url[5] === 'browse') {
+        var programFlags = setInterval(showProgramsFlags, 500);
+    }
 }
 
 setInterval(function() {
-  var notifs = KA._userProfileData.countBrandNewNotifications;
-  chrome.runtime.sendMessage("hficmccdhhlbimfnienbfpkcclhojcmh", {
-    "notifs": notifs
-  });
+    var notifs = KA._userProfileData.countBrandNewNotifications;
+    chrome.runtime.sendMessage("hficmccdhhlbimfnienbfpkcclhojcmh", {
+        "notifs": notifs
+    });
 }, 1000);
