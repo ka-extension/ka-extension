@@ -55,7 +55,7 @@ function newDate(date) {
 function updateNotifs() {
     var dropdown = document.getElementsByClassName('switchText_1lh86m9')[0].childNodes[5];
     var greenCircle = document.getElementsByClassName('notificationsBadge_16g2pyz')[0];
-    
+
     if (greenCircle && greenCircle.textContent === '9+') {
         greenCircle.textContent = dropdown.textContent;
     }
@@ -64,8 +64,9 @@ function updateNotifs() {
 
 /***  Programs no longer have a max width. ***/
 function widenProgram() {
-    let s = document.getElementsByClassName('wrap_xyqcvi')[0];
-    s.style.setProperty("max-width", "none", "important");
+    var s = document.getElementsByClassName('wrap_xyqcvi');
+    if(!s[0]) return;
+    s[0]["style"]["setProperty"]("max-width", "none", "important");
 
     clearInterval(widenprogram);
 };
@@ -74,7 +75,7 @@ function widenProgram() {
 function addFlagsToProgram() {
   var title = document.getElementsByClassName('editTitle_swrcbw');
   var flag = document.getElementsByClassName('discussion-meta-controls');
-  if(!programData) return;
+  if(!programData.scratchpad) return;
   if (programData.scratchpad.kaid !== KA._userProfileData.kaid && !KA._userProfileData.isModerator) {
 
     var programFlags = programData.scratchpad.flags;
@@ -141,14 +142,14 @@ function showProgramsFlags() {
 /*** When viewing a program, it shows when it was created and last updated. ***/
 function showProgramDates() {
   var date = document.getElementsByClassName("link_1uvuyao-o_O-computing_1nblrap author-nickname profile-programs");
-  if (!programData || !date) return;
+  if (!programData.scratchpad || !date || !date.nextElementSibling) return;
 
   date = date[0];
   var createdDate = newDate(programData.scratchpad.created);
   var updatedDate = newDate(programData.scratchpad.date);
   var myFlags = programData.scratchpad.flags.length;
 
-  date.nextElementSibling.innerHTML = "<br>Created: " + createdDate + "<br>Last updated: " + updatedDate + (programData.scratchpad.kaid === KA._userProfileData.kaid ? ('<br>Flags: ' + myFlags) : '');
+  date.nextElementSibling.innerHTML = "<br>Created: " + createdDate + "<br>Last updated: " + updatedDate + (programData.scratchpad.kaid === KA._userProfileData.kaid ? ('<br>Flags: ' + myFlags) : '') + (programData.scratchpad.hideFromHotlist ? '<br><span style="color:#af2f18">This program is hidden from the hotlist.</span>' : '');
   clearInterval(getDates);
 };
 
@@ -156,7 +157,7 @@ function showProgramDates() {
 function getProfileData() {
   var profile = document.getElementsByClassName('user-statistics-table');
 
-  if( profile.length < 1){ return; }
+  if( profile.length < 1 || !userPrograms.scratchpads) return;
   var table = document.getElementsByClassName('user-statistics-table')[0];
   var tableBody = table.childNodes[0];
   var kaid = userInfo.kaid;
@@ -181,7 +182,7 @@ function getProfileData() {
 };
 
 /*** Display a downvote button under programs. ***/
-var addDownvoteButton = function() {
+/*var addDownvoteButton = function() {
   //inspired by @elmt2's script
   var buttons = document.getElementsByClassName("link_1uvuyao-o_O-computing_1w8n1i8");
   if (!buttons[1] || !programData) return;
@@ -208,7 +209,7 @@ var addDownvoteButton = function() {
   };
   buttons.appendChild(span);
   clearInterval(addDownvote);
-};
+};*/
 
 if (window.location.host === 'www.khanacademy.org') {
   var notifications = setInterval(updateNotifs, 250);
@@ -216,10 +217,17 @@ if (window.location.host === 'www.khanacademy.org') {
     var addFlags = setInterval(addFlagsToProgram, 250);
     var getDates = setInterval(showProgramDates, 250);
     var widenprogram = setInterval(widenProgram, 250);
-    var addDownvote = setInterval(addDownvoteButton, 250);
+    /*var addDownvote = setInterval(addDownvoteButton, 250);*/
   } else if (url[3] === 'profile') {
     var profileData = setInterval(getProfileData, 250);
   } else if (url[5] === 'browse') {
     var programFlags = setInterval(showProgramsFlags, 500);
   }
 }
+
+setInterval(() => {
+  var notifs = KA._userProfileData.countBrandNewNotifications;
+  chrome.runtime.sendMessage("hficmccdhhlbimfnienbfpkcclhojcmh", {
+    "notifs": notifs
+  });
+}, 1000);
