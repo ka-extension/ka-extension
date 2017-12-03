@@ -57,8 +57,12 @@ function newDate(date) {
 /*** When notifications are more than 9, it will show the real value and not 9+ anymore. ***/
 function updateNotifs() {
     var dropParent = document.getElementsByClassName('switchText_1lh86m9')[0];
+<<<<<<< HEAD
     var notifList = document.getElementsByClassName('scrollDropdown_1jabbia')[0];
     if(!dropParent || !notifList) { return; }
+=======
+    if(!dropParent) { return; }
+>>>>>>> dadf8c60b31aa411f4062c59ff270bc02ef94a65
     var dropdown = dropParent.childNodes[5];
     var greenCircle = document.getElementsByClassName('notificationsBadge_16g2pyz')[0];
     if (greenCircle && greenCircle.textContent === '9+') {
@@ -137,6 +141,7 @@ function showProgramsFlags() {
     if(programLinks.length < 2) {
         console.log("Still loading programs.");
         return;
+<<<<<<< HEAD
     }
     var handleResponse = function(a) {
         ids.push(+programLinks[counter].href.split("/")[5]);
@@ -147,6 +152,18 @@ function showProgramsFlags() {
             }
         }
     }
+=======
+    }
+    var handleResponse = function(a) {
+        ids.push(+programLinks[counter].href.split("/")[5]);
+        objs.push(a);
+        if(counter === programLinks.length - 1) {
+            for(result = objs.sort(function(a, b) { return ids.indexOf(a.id) < ids.indexOf(b.id) ? -1 : 1 }), a = 0; a < result.length; a++) {
+                programLinks[a].nextSibling.nextSibling.innerHTML += " \u00b7 <span title=\"" + result[a].flags.join('\n') + "\">" + result[a].flags.length + " Flag" + (1 === result[a].flags.length ? "" : "s");
+            }
+        }
+    }
+>>>>>>> dadf8c60b31aa411f4062c59ff270bc02ef94a65
     for (; i < programLinks.length; i++) {
         var id = programLinks[i].href.split("/")[5], counter = 0, ids = [], objs = [], result;
         getJSON("https://www.khanacademy.org/api/internal/scratchpads/" + id, function(a, c) {
