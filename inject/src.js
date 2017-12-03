@@ -82,10 +82,7 @@ function addGuidelines() {
     var v = document.getElementsByClassName('video-discussion')[0],
         g = document.getElementsByClassName('main-discussion-guidelines discussion-guidelines')[0],
         f = document.getElementsByClassName('footer_crtwg')[0];
-<<<<<<< HEAD
     if(!v) return;
-=======
->>>>>>> dadf8c60b31aa411f4062c59ff270bc02ef94a65
     v.style.setProperty("float", "left");
     v.style.setProperty("margin", "0px");
     f.style.setProperty("max-width", "none", "important");
