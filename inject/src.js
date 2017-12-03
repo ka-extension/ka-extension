@@ -57,12 +57,8 @@ function newDate(date) {
 /*** When notifications are more than 9, it will show the real value and not 9+ anymore. ***/
 function updateNotifs() {
     var dropParent = document.getElementsByClassName('switchText_1lh86m9')[0];
-<<<<<<< HEAD
     var notifList = document.getElementsByClassName('scrollDropdown_1jabbia')[0];
     if(!dropParent || !notifList) { return; }
-=======
-    if(!dropParent) { return; }
->>>>>>> dadf8c60b31aa411f4062c59ff270bc02ef94a65
     var dropdown = dropParent.childNodes[5];
     var greenCircle = document.getElementsByClassName('notificationsBadge_16g2pyz')[0];
     if (greenCircle && greenCircle.textContent === '9+') {
