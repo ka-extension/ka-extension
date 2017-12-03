@@ -79,7 +79,7 @@ function addFlagsToProgram() {
     if(!programData.scratchpad) return;
     var title = document.getElementsByClassName('editTitle_swrcbw');
     var flag = document.getElementsByClassName('discussion-meta-controls');
-    if (programData.scratchpad.kaid !== KA._userProfileData.kaid && !KA._userProfileData.isModerator) {
+    if (programData.scratchpad.kaid !== KAdefine.require("./javascript/shared-package/ka.js").getKaid() && !KA._userProfileData.isModerator) {
         var programFlags = programData.scratchpad.flags;
 
         if(flag.length < 1 && title.length < 1) { return; }
@@ -148,7 +148,7 @@ function showProgramDates() {
     var updatedDate = newDate(programData.scratchpad.date);
     var myFlags = programData.scratchpad.flags.length;
 
-    date.nextElementSibling.innerHTML = "<br>Created: " + createdDate + "<br>Last updated: " + updatedDate + (programData.scratchpad.kaid === KA._userProfileData.kaid ? ('<br>Flags: ' + myFlags) : '') + (programData.scratchpad.hideFromHotlist ? '<br><span style="color:#af2f18">This program is hidden from the hotlist.</span>' : '');
+    date.nextElementSibling.innerHTML = "<br>Created: " + createdDate + "<br>Last updated: " + updatedDate + (programData.scratchpad.kaid === KAdefine.require("./javascript/shared-package/ka.js").getKaid() ? ('<br>Flags: ' + myFlags) : '') + (programData.scratchpad.hideFromHotlist ? '<br><span style="color:#af2f18">This program is hidden from the hotlist.</span>' : '');
     clearInterval(getDates);
 }
 
@@ -223,6 +223,7 @@ if (window.location.host === 'www.khanacademy.org') {
 }
 
 setInterval(function() {
+    if(!KA._userProfileData) { return; }
     var notifs = KA._userProfileData.countBrandNewNotifications;
     chrome.runtime.sendMessage("hficmccdhhlbimfnienbfpkcclhojcmh", {
         "notifs": notifs
