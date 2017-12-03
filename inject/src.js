@@ -74,6 +74,21 @@ function widenProgram() {
     clearInterval(widenprogram);
 }
 
+/*** Add back the community guidelines next to dicussion under programs. ***/
+function addGuidelines() {
+    var v = document.getElementsByClassName('video-discussion')[0],
+        g = document.getElementsByClassName('main-discussion-guidelines discussion-guidelines')[0],
+        f = document.getElementsByClassName('footer_crtwg')[0];
+    v.style.setProperty("float", "left");
+    v.style.setProperty("margin", "0px");
+    f.style.setProperty("max-width", "none", "important");
+    g.style.setProperty("float", "right");
+    g.style.setProperty("width", "400px");
+    g.style.setProperty("display", "block");
+
+    clearInterval(addguidelines);
+}
+
 /*** When viewing a program, it shows how many flags the program has. ***/
 function addFlagsToProgram() {
     if(!programData.scratchpad) return;
@@ -148,7 +163,7 @@ function showProgramDates() {
     var updatedDate = newDate(programData.scratchpad.date);
     var myFlags = programData.scratchpad.flags.length;
 
-    date.nextElementSibling.innerHTML = "<br>Created: " + createdDate + "<br>Last updated: " + updatedDate + (programData.scratchpad.kaid === KAdefine.require("./javascript/shared-package/ka.js").getKaid() ? ('<br>Flags: ' + myFlags) : '') + (programData.scratchpad.hideFromHotlist ? '<br><span style="color:#af2f18">This program is hidden from the hotlist.</span>' : '');
+    date.nextElementSibling.innerHTML = "<br>Created: " + createdDate + "<br>Last updated: " + updatedDate + (programData.scratchpad.kaid === KAdefine.require("./javascript/shared-package/ka.js").getKaid() ? ('<br>Flags: ' + myFlags) : '') + (programData.scratchpad.hideFromHotlist ? '<br><span style="color:#af2f18">This program is hidden from the hotlist.</span>' : '<br><span style="color:#18af18">This program is not hidden from the hotlist.</span>');
     clearInterval(getDates);
 }
 
@@ -179,41 +194,13 @@ function getProfileData() {
     clearInterval(profileData);
 }
 
-/*** Display a downvote button under programs. ***/
-/*var addDownvoteButton = function() {
-  //inspired by @elmt2's script
-  var buttons = document.getElementsByClassName("link_1uvuyao-o_O-computing_1w8n1i8");
-  if (!buttons[1] || !programData) return;
-  buttons = buttons[1]["parentNode"]
-  window.programData = programData;
-  var text = "Vote Down • " + programData.scratchpad.sumVotesIncremented;
-  var span = document.createElement('span');
-  span.style = "display: inline-block; position: relative;"
-  span.innerHTML = '<a aria-disabled="false" role="button" href="javascript:void(0)" class="link_1uvuyao-o_O-computing_1w8n1i8"><span>' + text + '</span></a>'
-  span.onclick = function() {
-      var key = window.programData.scratchpad.key;
-      var req = new XMLHttpRequest();
-      req.open("POST", "https://www.khanacademy.org/api/internal/discussions/voteentity");
-      req.setRequestHeader('x-ka-fkey', getSession());
-      req.setRequestHeader('Content-type', "application/x-www-form-urlencoded");
-      req.send("entity_key=" + key + "&vote_type=-1")
-      req.addEventListener('load', function() {
-          var b1 = document.getElementsByClassName("link_1uvuyao-o_O-computing_1w8n1i8")[1];
-          var b2 = document.getElementsByClassName("link_1uvuyao-o_O-computing_1w8n1i8")[2];
-          b1.innerHTML = "Vote Up • " + (programData.scratchpad.sumVotesIncremented - 1);
-          b2.innerHTML = "Vote Down • " + (programData.scratchpad.sumVotesIncremented - 1);
-      });
-  };
-  buttons.appendChild(span);
-  clearInterval(addDownvote);
-};*/
-
 if (window.location.host === 'www.khanacademy.org') {
     var notifications = setInterval(updateNotifs, 250);
     if (url[3] === 'computer-programming' && url[4] !== 'new') {
         var addFlags = setInterval(addFlagsToProgram, 250),
         getDates = setInterval(showProgramDates, 250),
-        widenprogram = setInterval(widenProgram, 250);
+        widenprogram = setInterval(widenProgram, 250),
+        addguidelines = setInterval(addGuidelines, 250);
         // var addDownvote = setInterval(addDownvoteButton, 250);
     } else if (url[3] === 'profile') {
         var profileData = setInterval(getProfileData, 250);
