@@ -1,6 +1,7 @@
 /**
     This src file is for the official public extension.
 **/
+console.log("%cIM PICKLE RICK !!!!", "background: #42f456; color: green; font-size: x-large");
 
 var programUrl = 'https://www.khanacademy.org/api/internal/show_scratchpad?scratchpad_id=';
 var userApi = 'https://www.khanacademy.org/api/internal/user/profile';
