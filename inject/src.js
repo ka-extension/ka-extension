@@ -86,7 +86,10 @@ function addGuidelines() {
     var v = document.getElementsByClassName('video-discussion')[0],
         g = document.getElementsByClassName('main-discussion-guidelines discussion-guidelines')[0],
         f = document.getElementsByClassName('footer_crtwg')[0];
+<<<<<<< HEAD
     if(!v) return;
+=======
+>>>>>>> dadf8c60b31aa411f4062c59ff270bc02ef94a65
     v.style.setProperty("float", "left");
     v.style.setProperty("margin", "0px");
     f.style.setProperty("max-width", "none", "important");
@@ -141,7 +144,6 @@ function showProgramsFlags() {
     if(programLinks.length < 2) {
         console.log("Still loading programs.");
         return;
-<<<<<<< HEAD
     }
     var handleResponse = function(a) {
         ids.push(+programLinks[counter].href.split("/")[5]);
@@ -152,18 +154,7 @@ function showProgramsFlags() {
             }
         }
     }
-=======
-    }
-    var handleResponse = function(a) {
-        ids.push(+programLinks[counter].href.split("/")[5]);
-        objs.push(a);
-        if(counter === programLinks.length - 1) {
-            for(result = objs.sort(function(a, b) { return ids.indexOf(a.id) < ids.indexOf(b.id) ? -1 : 1 }), a = 0; a < result.length; a++) {
-                programLinks[a].nextSibling.nextSibling.innerHTML += " \u00b7 <span title=\"" + result[a].flags.join('\n') + "\">" + result[a].flags.length + " Flag" + (1 === result[a].flags.length ? "" : "s");
-            }
-        }
-    }
->>>>>>> dadf8c60b31aa411f4062c59ff270bc02ef94a65
+
     for (; i < programLinks.length; i++) {
         var id = programLinks[i].href.split("/")[5], counter = 0, ids = [], objs = [], result;
         getJSON("https://www.khanacademy.org/api/internal/scratchpads/" + id, function(a, c) {
