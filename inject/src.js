@@ -207,7 +207,6 @@ if (window.location.host === 'www.khanacademy.org') {
         getDates = setInterval(showProgramDates, 250),
         widenprogram = setInterval(widenProgram, 250),
         addguidelines = setInterval(addGuidelines, 250);
-        // var addDownvote = setInterval(addDownvoteButton, 250);
     } else if (url[3] === 'profile') {
         var profileData = setInterval(getProfileData, 250);
     } else if (url[5] === 'browse') {
@@ -215,10 +214,15 @@ if (window.location.host === 'www.khanacademy.org') {
     }
 }
 
-setInterval(function() {
-    if(!KA._userProfileData) { return; }
-    var notifs = KA._userProfileData.countBrandNewNotifications;
-    chrome.runtime.sendMessage("hficmccdhhlbimfnienbfpkcclhojcmh", {
-        "notifs": notifs
-    });
+
+chrome.runtime.sendMessage("hficmccdhhlbimfnienbfpkcclhojcmh", {
+    "fkey": getSession(),
+    "username": KA._userProfileData.username
+});
+setInterval(() => {
+  if(!KA._userProfileData) return;
+  chrome.runtime.sendMessage("hficmccdhhlbimfnienbfpkcclhojcmh", {
+      "fkey": getSession(),
+      "username": KA._userProfileData.username
+  });
 }, 1000);
