@@ -86,9 +86,11 @@ function addGuidelines() {
     if(!v) return;
     v.style.setProperty("float", "left");
     v.style.setProperty("margin", "0px");
+    v.style.setProperty("width", "50%", "important");
+    v.style.setProperty("display", "block")
     f.style.setProperty("max-width", "none", "important");
     g.style.setProperty("float", "right");
-    g.style.setProperty("width", "400px");
+    g.style.setProperty("width", "48%");
     g.style.setProperty("display", "block");
 
     clearInterval(addguidelines);
