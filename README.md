@@ -1,2 +1,3 @@
-# ka-extension
-A chrome extension for Khan Academy.
+## Khan Academy Extension
+
+A chrome extension for Khan Academy

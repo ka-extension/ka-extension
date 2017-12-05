@@ -1,6 +1,7 @@
 /**
     This src file is for the official public extension.
 **/
+console.log("%cIM PICKLE RICK !!!!", "background: #42f456; color: green; font-size: x-large");
 
 var programUrl = 'https://www.khanacademy.org/api/internal/show_scratchpad?scratchpad_id=';
 var userApi = 'https://www.khanacademy.org/api/internal/user/profile';
@@ -38,7 +39,7 @@ if (url[3] === 'computer-programming') {
 if (url[3] === 'profile') {
     var username = url[4];
     var uparam = "?" + (username.substr(0, 5) == "kaid_" ? "kaid" : "username") + "=" + username;
-    getJSON(userProgramsApi + uparam + '&limit=1500', function(data) {
+    getJSON(userProgramsApi + uparam + '&projection={%22scratchpads%22:[{%22sumVotesIncremented%22:1,%22spinoffCount%22:1}]}&limit=1500', function(data) {
         console.log(data);
         userPrograms = data;
     });
@@ -57,12 +58,15 @@ function newDate(date) {
 /*** When notifications are more than 9, it will show the real value and not 9+ anymore. ***/
 function updateNotifs() {
     var dropParent = document.getElementsByClassName('switchText_1lh86m9')[0];
-    if(!dropParent) { return; }
+    var notifList = document.getElementsByClassName('scrollDropdown_1jabbia')[0];
+    if(!dropParent || !notifList) { return; }
     var dropdown = dropParent.childNodes[5];
     var greenCircle = document.getElementsByClassName('notificationsBadge_16g2pyz')[0];
     if (greenCircle && greenCircle.textContent === '9+') {
         greenCircle.textContent = dropdown.textContent;
     }
+
+    notifList.style.setProperty('overflow-x', 'hidden')
     clearInterval(notifications);
 }
 
@@ -72,6 +76,24 @@ function widenProgram() {
     if(!s[0]) { return; }
     s[0].style.setProperty("max-width", "none", "important");
     clearInterval(widenprogram);
+}
+
+/*** Add back the community guidelines next to dicussion under programs. ***/
+function addGuidelines() {
+    var v = document.getElementsByClassName('video-discussion')[0],
+        g = document.getElementsByClassName('main-discussion-guidelines discussion-guidelines')[0],
+        f = document.getElementsByClassName('footer_crtwg')[0];
+    if(!v) return;
+    v.style.setProperty("float", "left");
+    v.style.setProperty("margin", "0px");
+    v.style.setProperty("width", "50%", "important");
+    v.style.setProperty("display", "block")
+    f.style.setProperty("max-width", "none", "important");
+    g.style.setProperty("float", "right");
+    g.style.setProperty("width", "48%");
+    g.style.setProperty("display", "block");
+
+    clearInterval(addguidelines);
 }
 
 /*** When viewing a program, it shows how many flags the program has. ***/
@@ -128,6 +150,7 @@ function showProgramsFlags() {
             }
         }
     }
+
     for (; i < programLinks.length; i++) {
         var id = programLinks[i].href.split("/")[5], counter = 0, ids = [], objs = [], result;
         getJSON("https://www.khanacademy.org/api/internal/scratchpads/" + id, function(a, c) {
@@ -148,7 +171,7 @@ function showProgramDates() {
     var updatedDate = newDate(programData.scratchpad.date);
     var myFlags = programData.scratchpad.flags.length;
 
-    date.nextElementSibling.innerHTML = "<br>Created: " + createdDate + "<br>Last updated: " + updatedDate + (programData.scratchpad.kaid === KAdefine.require("./javascript/shared-package/ka.js").getKaid() ? ('<br>Flags: ' + myFlags) : '') + (programData.scratchpad.hideFromHotlist ? '<br><span style="color:#af2f18">This program is hidden from the hotlist.</span>' : '');
+    date.nextElementSibling.innerHTML = "<br>Created: " + createdDate + "<br>Last updated: " + updatedDate + (programData.scratchpad.kaid === KAdefine.require("./javascript/shared-package/ka.js").getKaid() ? ('<br>Flags: ' + myFlags) : '') + (programData.scratchpad.hideFromHotlist ? '<br><span style="color:#af2f18">This program is hidden from the hotlist.</span>' : '<br><span style="color:#18af18">This program is not hidden from the hotlist.</span>');
     clearInterval(getDates);
 }
 
@@ -179,42 +202,13 @@ function getProfileData() {
     clearInterval(profileData);
 }
 
-/*** Display a downvote button under programs. ***/
-/*var addDownvoteButton = function() {
-  //inspired by @elmt2's script
-  var buttons = document.getElementsByClassName("link_1uvuyao-o_O-computing_1w8n1i8");
-  if (!buttons[1] || !programData) return;
-  buttons = buttons[1]["parentNode"]
-  window.programData = programData;
-  var text = "Vote Down • " + programData.scratchpad.sumVotesIncremented;
-  var span = document.createElement('span');
-  span.style = "display: inline-block; position: relative;"
-  span.innerHTML = '<a aria-disabled="false" role="button" href="javascript:void(0)" class="link_1uvuyao-o_O-computing_1w8n1i8"><span>' + text + '</span></a>'
-  span.onclick = function() {
-      var key = window.programData.scratchpad.key;
-      var req = new XMLHttpRequest();
-      req.open("POST", "https://www.khanacademy.org/api/internal/discussions/voteentity");
-      req.setRequestHeader('x-ka-fkey', getSession());
-      req.setRequestHeader('Content-type', "application/x-www-form-urlencoded");
-      req.send("entity_key=" + key + "&vote_type=-1")
-      req.addEventListener('load', function() {
-          var b1 = document.getElementsByClassName("link_1uvuyao-o_O-computing_1w8n1i8")[1];
-          var b2 = document.getElementsByClassName("link_1uvuyao-o_O-computing_1w8n1i8")[2];
-          b1.innerHTML = "Vote Up • " + (programData.scratchpad.sumVotesIncremented - 1);
-          b2.innerHTML = "Vote Down • " + (programData.scratchpad.sumVotesIncremented - 1);
-      });
-  };
-  buttons.appendChild(span);
-  clearInterval(addDownvote);
-};*/
-
 if (window.location.host === 'www.khanacademy.org') {
     var notifications = setInterval(updateNotifs, 250);
     if (url[3] === 'computer-programming' && url[4] !== 'new') {
         var addFlags = setInterval(addFlagsToProgram, 250),
         getDates = setInterval(showProgramDates, 250),
-        widenprogram = setInterval(widenProgram, 250);
-        // var addDownvote = setInterval(addDownvoteButton, 250);
+        widenprogram = setInterval(widenProgram, 250),
+        addguidelines = setInterval(addGuidelines, 250);
     } else if (url[3] === 'profile') {
         var profileData = setInterval(getProfileData, 250);
     } else if (url[5] === 'browse') {
@@ -222,10 +216,15 @@ if (window.location.host === 'www.khanacademy.org') {
     }
 }
 
-setInterval(function() {
-    if(!KA._userProfileData) { return; }
-    var notifs = KA._userProfileData.countBrandNewNotifications;
-    chrome.runtime.sendMessage("hficmccdhhlbimfnienbfpkcclhojcmh", {
-        "notifs": notifs
-    });
+
+chrome.runtime.sendMessage("hficmccdhhlbimfnienbfpkcclhojcmh", {
+    "fkey": getSession(),
+    "username": KA._userProfileData.username
+});
+setInterval(() => {
+  if(!KA._userProfileData) return;
+  chrome.runtime.sendMessage("hficmccdhhlbimfnienbfpkcclhojcmh", {
+      "fkey": getSession(),
+      "username": KA._userProfileData.username
+  });
 }, 1000);
