@@ -39,7 +39,7 @@ if (url[3] === 'computer-programming') {
 if (url[3] === 'profile') {
     var username = url[4];
     var uparam = "?" + (username.substr(0, 5) == "kaid_" ? "kaid" : "username") + "=" + username;
-    getJSON(userProgramsApi + uparam + '&limit=1500', function(data) {
+    getJSON(userProgramsApi + uparam + '&projection={%22scratchpads%22:[{%22sumVotesIncremented%22:1,%22spinoffCount%22:1}]}&limit=1500', function(data) {
         console.log(data);
         userPrograms = data;
     });
