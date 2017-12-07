@@ -216,7 +216,7 @@ if (window.location.host === 'www.khanacademy.org') {
 }
 
 
-chrome.runtime.sendMessage("hficmccdhhlbimfnienbfpkcclhojcmh", {
+chrome.runtime.sendMessage("gniggljddhajnfbkjndcgnomkddfcial", {
     "fkey": getSession(),
     "username": KA._userProfileData.username
 });
