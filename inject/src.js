@@ -1,7 +1,6 @@
 /**
     This src file is for the official public extension.
 **/
-console.log("%cIM PICKLE RICK !!!!", "background: #42f456; color: green; font-size: x-large");
 
 var programUrl = 'https://www.khanacademy.org/api/internal/show_scratchpad?scratchpad_id=';
 var userApi = 'https://www.khanacademy.org/api/internal/user/profile';
@@ -66,7 +65,7 @@ function updateNotifs() {
         greenCircle.textContent = dropdown.textContent;
     }
 
-    notifList.style.setProperty('overflow-x', 'hidden')
+    notifList.style.setProperty('overflow-x', 'hidden');
     clearInterval(notifications);
 }
 
@@ -90,7 +89,7 @@ function addGuidelines() {
     v.style.setProperty("display", "block")
     f.style.setProperty("max-width", "none", "important");
     g.style.setProperty("float", "right");
-    g.style.setProperty("width", "48%");
+    g.style.setProperty("width", "25%");
     g.style.setProperty("display", "block");
 
     clearInterval(addguidelines);
@@ -223,7 +222,7 @@ chrome.runtime.sendMessage("hficmccdhhlbimfnienbfpkcclhojcmh", {
 });
 setInterval(() => {
   if(!KA._userProfileData) return;
-  chrome.runtime.sendMessage("hficmccdhhlbimfnienbfpkcclhojcmh", {
+  chrome.runtime.sendMessage("gniggljddhajnfbkjndcgnomkddfcial", {
       "fkey": getSession(),
       "username": KA._userProfileData.username
   });
