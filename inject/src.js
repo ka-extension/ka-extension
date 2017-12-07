@@ -1,7 +1,7 @@
 /**
     This src file is for the official public extension.
 **/
-console.log("%cIM PICKLE RICK !!!!", "background: #42f456; color: green; font-size: x-large");
+//console.log("%cIM PICKLE RICK !!!!", "background: #42f456; color: green; font-size: x-large");
 
 var programUrl = 'https://www.khanacademy.org/api/internal/show_scratchpad?scratchpad_id=';
 var userApi = 'https://www.khanacademy.org/api/internal/user/profile';
@@ -36,7 +36,7 @@ if (url[3] === 'computer-programming') {
     });
 }
 
-if (url[3] === 'profile') {
+if (url[3] === 'profile' && !url[5]) {
     var username = url[4];
     var uparam = "?" + (username.substr(0, 5) == "kaid_" ? "kaid" : "username") + "=" + username;
     getJSON(userProgramsApi + uparam + '&projection={%22scratchpads%22:[{%22sumVotesIncremented%22:1,%22spinoffCount%22:1}]}&limit=1500', function(data) {
@@ -92,6 +92,7 @@ function addGuidelines() {
     g.style.setProperty("float", "right");
     g.style.setProperty("width", "48%");
     g.style.setProperty("display", "block");
+    g.style.setProperty("margin-top", "0px");
 
     clearInterval(addguidelines);
 }

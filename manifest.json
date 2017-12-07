@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "The Khan Academy Extension",
     "short_name": "The KA Extension",
-    "version": "2.2.2",
+    "version": "2.3.0",
     "description": "A Chrome Extension for Khan Academy",
     "browser_action": {
         "name": "Khan Academy Extension",
@@ -11,7 +11,8 @@
           "48": "images/icon48.png",
           "128": "images/icon128.png"
         },
-        "default_icon": "images/icon128.png"
+        "default_icon": "images/icon128.png",
+        "default_popup": "settings.html"
     },
     "content_scripts": [{
         "js": ["content.js"],
@@ -19,11 +20,13 @@
         "run_at" : "document_end"
     }],
     "permissions": [
-        "activeTab"
+        "activeTab",
+        "storage"
     ],
     "web_accessible_resources": [
         "tabs",
-        "inject/src.js"
+        "inject/src.js",
+        "popup.js"
     ],
     "background": {
       "scripts": ["background.js"]
