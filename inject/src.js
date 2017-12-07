@@ -1,7 +1,8 @@
 /**
     This src file is for the official public extension.
 **/
-
+(function() {
+    
 var programUrl = 'https://www.khanacademy.org/api/internal/show_scratchpad?scratchpad_id=';
 var userApi = 'https://www.khanacademy.org/api/internal/user/profile';
 var userProgramsApi = 'https://www.khanacademy.org/api/internal/user/scratchpads';
@@ -11,6 +12,9 @@ var url = window.location.href.split('/');
 var userInfo = {};
 var programData = {};
 var userPrograms = {};
+
+var commentLinkGenerator = null;
+var extensionCommentClassName = "ka-extension-modified-comment";
 
 function getSession() {
     return /fkey=(.*?);/ig.exec(document.cookie)[1];
@@ -26,6 +30,39 @@ function getJSON(url, success) {
     });
     t.send();
 }
+
+function CommentLinker(uok /* "Username or KAID" */) {
+    this.uok = uok;
+    this.commentLinks = {};
+    this.page = 0;
+    this.commentNum = 0;
+    this.limit = 10;
+}
+CommentLinker.prototype = {
+    get: function(kaencrypted) {
+        return this.commentLinks[kaencrypted];
+    },
+    genURL: function(page, sort) {
+        return "https://www.khanacademy.org/api/internal/user/replies?casing=camel&" + ((this.uok.substr(0, 5) == "kaid_") ? "kaid" : "username") + "=" + this.uok + "&sort=" + sort + "&subject=all&limit=" + this.limit + "&page=" + page + "&lang=en&_=" + Date.now();
+    },
+    next: function(success) {
+        var that = this;
+        var p = this.page++;
+        getJSON(that.genURL(p, 1), function(data) {
+            for(let i = 0; i < data.length; i++) {
+                let comment = data[i];
+                that.commentLinks[comment.key] = comment.focusUrl + "?qa_expand_key=" + comment.expandKey;
+            }
+            getJSON(that.genURL(p, 2), function(data) {
+                for(let i = 0; i < data.length; i++) {
+                    let comment = data[i];
+                    that.commentLinks[comment.key] = comment.focusUrl + "?qa_expand_key=" + comment.expandKey;
+                }
+                if(typeof success == "function") { success(that.commentLinks); }
+            });
+        });
+    }
+};
 
 if (url[3] === 'computer-programming') {
     var programId = url[5].substring(0, (url[5].includes('?') ? url[5].indexOf('?') : 16));
@@ -201,15 +238,54 @@ function getProfileData() {
     clearInterval(profileData);
 }
 
+function commentsButtonEventListener() {
+    var button = document.querySelector(".simple-button.discussion-list-more");
+    if(!button) { return; }
+    button.addEventListener("click", function() {
+        if(commentLinkGenerator != null) { commentLinkGenerator.next(n => console.log(10)); }
+    });
+    clearInterval(addCommentsButtonEventListener);
+}
+
+function commentLinks() {
+    if(!commentLinkGenerator) { return; }
+    var unalteredComments = document.querySelectorAll(".discussion-item.reply:not(." + extensionCommentClassName + ")");
+    for(let i = 0; i < unalteredComments.length; i++) {
+        let comment = unalteredComments[i];
+        let url = commentLinkGenerator.get(comment.id);
+        if(url) {
+            let metaControls = comment.getElementsByClassName("discussion-meta-controls")[0];
+            if(!metaControls) { continue; }
+            let separator = document.createElement("span");
+            separator.className = "discussion-meta-separator";
+            separator.textContent = "•";
+            metaControls.appendChild(separator);
+            let link = document.createElement("a");
+            link.href = url;
+            link.textContent = "Link";
+            let outerSpan = document.createElement("span");
+            outerSpan.appendChild(link);
+            metaControls.appendChild(outerSpan);
+            comment.className += " " + extensionCommentClassName;
+        }
+    }
+}
+
 if (window.location.host === 'www.khanacademy.org') {
     var notifications = setInterval(updateNotifs, 250);
     if (url[3] === 'computer-programming' && url[4] !== 'new') {
         var addFlags = setInterval(addFlagsToProgram, 250),
-        getDates = setInterval(showProgramDates, 250),
-        widenprogram = setInterval(widenProgram, 250),
-        addguidelines = setInterval(addGuidelines, 250);
+            getDates = setInterval(showProgramDates, 250),
+            widenprogram = setInterval(widenProgram, 250),
+            addguidelines = setInterval(addGuidelines, 250);
     } else if (url[3] === 'profile') {
         var profileData = setInterval(getProfileData, 250);
+        if(url[5] == "discussion" && url[6] == "replies") {
+            commentLinkGenerator = new CommentLinker(url[4] /* Username or kaid */);
+            commentLinkGenerator.next();
+            var addCommentsButtonEventListener = setInterval(commentsButtonEventListener, 50),
+                addCommentLinks = setInterval(commentLinks, 100);
+        }
     } else if (url[5] === 'browse') {
         var programFlags = setInterval(showProgramsFlags, 500);
     }
@@ -220,10 +296,12 @@ chrome.runtime.sendMessage("gniggljddhajnfbkjndcgnomkddfcial", {
     "fkey": getSession(),
     "username": KA._userProfileData.username
 });
-setInterval(() => {
+setInterval(function() {
   if(!KA._userProfileData) return;
   chrome.runtime.sendMessage("gniggljddhajnfbkjndcgnomkddfcial", {
       "fkey": getSession(),
       "username": KA._userProfileData.username
   });
 }, 1000);
+    
+})();
