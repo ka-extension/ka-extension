@@ -2,6 +2,7 @@
     This src file is for the official public extension.
 **/
 (function() {
+    
 var programUrl = 'https://www.khanacademy.org/api/internal/show_scratchpad?scratchpad_id=';
 var userApi = 'https://www.khanacademy.org/api/internal/user/profile';
 var userProgramsApi = 'https://www.khanacademy.org/api/internal/user/scratchpads';
@@ -101,7 +102,7 @@ function updateNotifs() {
         greenCircle.textContent = dropdown.textContent;
     }
 
-    notifList.style.setProperty('overflow-x', 'hidden')
+    notifList.style.setProperty('overflow-x', 'hidden');
     clearInterval(notifications);
 }
 
@@ -125,7 +126,7 @@ function addGuidelines() {
     v.style.setProperty("display", "block")
     f.style.setProperty("max-width", "none", "important");
     g.style.setProperty("float", "right");
-    g.style.setProperty("width", "48%");
+    g.style.setProperty("width", "25%");
     g.style.setProperty("display", "block");
 
     clearInterval(addguidelines);
@@ -291,13 +292,13 @@ if (window.location.host === 'www.khanacademy.org') {
 }
 
 
-chrome.runtime.sendMessage("hficmccdhhlbimfnienbfpkcclhojcmh", {
+chrome.runtime.sendMessage("gniggljddhajnfbkjndcgnomkddfcial", {
     "fkey": getSession(),
     "username": KA._userProfileData.username
 });
 setInterval(function() {
   if(!KA._userProfileData) return;
-  chrome.runtime.sendMessage("hficmccdhhlbimfnienbfpkcclhojcmh", {
+  chrome.runtime.sendMessage("gniggljddhajnfbkjndcgnomkddfcial", {
       "fkey": getSession(),
       "username": KA._userProfileData.username
   });
