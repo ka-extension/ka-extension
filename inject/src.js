@@ -242,7 +242,7 @@ function commentsButtonEventListener() {
     var button = document.querySelector(".simple-button.discussion-list-more");
     if(!button) { return; }
     button.addEventListener("click", function() {
-        if(commentLinkGenerator != null) { commentLinkGenerator.next(n => console.log(10)); }
+        if(commentLinkGenerator != null) { commentLinkGenerator.next(); }
     });
     clearInterval(addCommentsButtonEventListener);
 }
