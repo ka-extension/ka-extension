@@ -228,7 +228,7 @@ function getProfileData() {
         numVotes += scratchpad.sumVotesIncremented;
         numSpinoffs += scratchpad.spinoffCount;
     }
-    tableBody.innerHTML += '<tr><td class="user-statistics-label">Account created</td><td>' + newDate(dateJoined) + '</td></tr>';
+    tableBody.innerHTML += '<tr><td class="user-statistics-label">Account created</td><td>' + (userInfo.dateJoined ? newDate(dateJoined)  : "Unknown") + '</td></tr>';
     tableBody.innerHTML += '<tr><td class="user-statistics-label">Programs</td><td>' + numPrograms + '</td></tr>';
     tableBody.innerHTML += '<tr><td class="user-statistics-label">Votes recieved</td><td>' + numVotes + '</td></tr>';
     tableBody.innerHTML += '<tr><td class="user-statistics-label">Spinoffs recieved</td><td>' + numSpinoffs + '</td></tr>';
@@ -243,7 +243,7 @@ function commentsButtonEventListener() {
     var button = document.querySelector(".simple-button.discussion-list-more");
     if(!button) { return; }
     button.addEventListener("click", function() {
-        if(commentLinkGenerator != null) { commentLinkGenerator.next(n => console.log(10)); }
+        if(commentLinkGenerator != null) { commentLinkGenerator.next(); }
     });
     clearInterval(addCommentsButtonEventListener);
 }
