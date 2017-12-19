@@ -238,6 +238,7 @@ function getProfileData() {
     clearInterval(profileData);
 }
 
+/*** Add links for all comments when viewing user discussion. ***/
 function commentsButtonEventListener() {
     var button = document.querySelector(".simple-button.discussion-list-more");
     if(!button) { return; }
@@ -258,7 +259,7 @@ function commentLinks() {
             if(!metaControls) { continue; }
             let separator = document.createElement("span");
             separator.className = "discussion-meta-separator";
-            separator.textContent = "•";
+            separator.textContent = "• ";
             metaControls.appendChild(separator);
             let link = document.createElement("a");
             link.href = url;
@@ -291,7 +292,7 @@ if (window.location.host === 'www.khanacademy.org') {
     }
 }
 
-
+// Notification stuff.
 chrome.runtime.sendMessage("gniggljddhajnfbkjndcgnomkddfcial", {
     "fkey": getSession(),
     "username": KA._userProfileData.username
