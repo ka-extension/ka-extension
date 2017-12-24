@@ -395,10 +395,8 @@ function addCommentEditLink(element) {
         let discussionControl = parentComment.getElementsByClassName("discussion-controls")[0];
         let x = new XMLHttpRequest();
         // Based off of @MatthiasSaihttam's bookmarklet (https://www.khanacademy.org/computer-programming/edit-comments/6039670653)
-        KADiscussionPackage = KAdefine.require("./javascript/discussion-package/discussion.js");
-        console.log(KADiscussionPackage)
-        let focusId = commentLinkGenerator ? commentLinkGenerator.getTopicId(kaencrypted) : KADiscussionPackage.data.focusId,
-            focusType = commentLinkGenerator ? commentLinkGenerator.getTopicType(kaencrypted) : KADiscussionPackage.data.focusKind;
+        let focusId = commentLinkGenerator ? commentLinkGenerator.getTopicId(kaencrypted) : KAdefine.require("./javascript/discussion-package/discussion.js").data.focusId,
+            focusType = commentLinkGenerator ? commentLinkGenerator.getTopicType(kaencrypted) : KAdefine.require("./javascript/discussion-package/discussion.js").data.focusKind;
         x.open("PUT", "https://www.khanacademy.org/api/internal/discussions/" + focusType + "/" + focusId + "/comments/" + kaencrypted + "?casing=camel&lang=en&_=" + Date.now());
         x.setRequestHeader("x-ka-fkey", getSession());
         x.setRequestHeader("Content-type", "application/json");
