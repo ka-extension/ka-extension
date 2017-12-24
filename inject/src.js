@@ -64,7 +64,7 @@ CommentLinker.prototype = {
     }
 };
 
-if (url[3] === 'computer-programming') {
+if (url[3] === 'computer-programming' || url[3] === 'hour-of-code') {
     var programId = url[5].substring(0, (url[5].includes('?') ? url[5].indexOf('?') : 16));
     getJSON(programUrl + programId, function(data) {
         console.log(data);
@@ -274,7 +274,7 @@ function commentLinks() {
 
 if (window.location.host === 'www.khanacademy.org') {
     var notifications = setInterval(updateNotifs, 250);
-    if (url[3] === 'computer-programming' && url[4] !== 'new') {
+    if (url[3] === 'computer-programming' || url[3] === 'hour-of-code' && url[4] !== 'new') {
         var addFlags = setInterval(addFlagsToProgram, 250),
             getDates = setInterval(showProgramDates, 250),
             widenprogram = setInterval(widenProgram, 250),
