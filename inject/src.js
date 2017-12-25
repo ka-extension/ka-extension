@@ -15,10 +15,6 @@ var userPrograms = {};
     
 var kaid = KAdefine.require("./javascript/shared-package/ka.js").getKaid(),
     isLoggedIn = KAdefine.require("./javascript/shared-package/ka.js").isLoggedIn();
-var KADiscussionPackage = null;
-try {
-    KADiscussionPackage = KAdefine.require("./javascript/discussion-package/discussion.js");
-} catch(e) {}
 
 var commentLinkGenerator = null;
 
@@ -302,6 +298,7 @@ function HTMLtoKAMarkdown(html) {
         .replace(/<code>(.*?)<\/code>/ig, function(match, one) { return "`" + one + "`"; })
         .replace(/<b>(.*?)<\/b>/ig, function(match, one) { return "*" + one + "*"; })
         .replace(/<em>(.*?)<\/em>/ig, function(match, one) { return "_" + one + "_"; })
+        .replace(/<a.*?>(.*?)<\/a>/ig, function(match, one) { return one; })
         .replace(/<br(?:\s*\/\s*)?>/ig, function() { return "\n"; })
 }
 function KAMarkdowntoHTML(markdown) {
@@ -426,7 +423,16 @@ function addCommentEditLink(element) {
     element.className += " " + extensionCommentEditClassName;
 }    
 function addCommentEditUI() {
-    if(!isLoggedIn && !KADiscussionPackage && !commentLinkGenerator) { return; }
+    if(!isLoggedIn) { return; }
+    
+    var KADiscussionPackage = null;
+    try {
+        KADiscussionPackage = KAdefine.require("./javascript/discussion-package/discussion.js");
+    } catch(e) {}
+    
+    if(!KADiscussionPackage && !KADiscussionPackage.data) { return; }
+    if(!KADiscussionPackage.data.focusId && !KADiscussionPackage.data.focusKind && !commentLinkGenerator) { return; }
+    
     let uneditedComments = document.querySelectorAll(".reply:not(." + extensionCommentEditClassName + ")");
     for(let i = 0; i < uneditedComments.length; i++) {
         addCommentEditLink(uneditedComments[i]);
