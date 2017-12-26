@@ -430,8 +430,8 @@ function addCommentEditUI() {
         KADiscussionPackage = KAdefine.require("./javascript/discussion-package/discussion.js");
     } catch(e) {}
     
-    if(!KADiscussionPackage && !KADiscussionPackage.data) { return; }
-    if(!KADiscussionPackage.data.focusId && !KADiscussionPackage.data.focusKind && !commentLinkGenerator) { return; }
+    if(!KADiscussionPackage || !KADiscussionPackage.data) { return; }
+    if((!KADiscussionPackage.data.focusId || !KADiscussionPackage.data.focusKind) && !commentLinkGenerator) { return; }
     
     let uneditedComments = document.querySelectorAll(".reply:not(." + extensionCommentEditClassName + ")");
     for(let i = 0; i < uneditedComments.length; i++) {
