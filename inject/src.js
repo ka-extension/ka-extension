@@ -12,9 +12,17 @@ var url = window.location.href.split('/');
 var userInfo = {};
 var programData = {};
 var userPrograms = {};
+    
+var kaid = KAdefine.require("./javascript/shared-package/ka.js").getKaid(),
+    isLoggedIn = KAdefine.require("./javascript/shared-package/ka.js").isLoggedIn();
 
 var commentLinkGenerator = null;
+
 var extensionCommentClassName = "ka-extension-modified-comment";
+var extensionCommentEditClassName = "ka-extension-modified-comment-edit-link";
+var commentEditClassPrefix = "ka-extension-edit-";
+var commentEditUIClass = "ka-extension-edit-comment-ui-div";
+var commentCancelEditPrefix = "ka-extension-edit-comment-cancel-";
 
 function getSession() {
     return /fkey=(.*?);/ig.exec(document.cookie)[1];
@@ -34,6 +42,8 @@ function getJSON(url, success) {
 function CommentLinker(uok /* "Username or KAID" */) {
     this.uok = uok;
     this.commentLinks = {};
+    this.topicIds = {};
+    this.topicTypes = {};
     this.page = 0;
     this.commentNum = 0;
     this.limit = 10;
@@ -41,6 +51,12 @@ function CommentLinker(uok /* "Username or KAID" */) {
 CommentLinker.prototype = {
     get: function(kaencrypted) {
         return this.commentLinks[kaencrypted];
+    },
+    getTopicId: function(kaencrypted) {
+        return this.topicIds[kaencrypted];
+    },
+    getTopicType: function(kaencrypted) {
+        return this.topicTypes[kaencrypted];
     },
     genURL: function(page, sort) {
         return "https://www.khanacademy.org/api/internal/user/replies?casing=camel&" + ((this.uok.substr(0, 5) == "kaid_") ? "kaid" : "username") + "=" + this.uok + "&sort=" + sort + "&subject=all&limit=" + this.limit + "&page=" + page + "&lang=en&_=" + Date.now();
@@ -51,11 +67,15 @@ CommentLinker.prototype = {
         getJSON(that.genURL(p, 1), function(data) {
             for(let i = 0; i < data.length; i++) {
                 let comment = data[i];
+                that.topicIds[comment.key] = comment.focus.id;
+                that.topicTypes[comment.key] = comment.focus.kind;
                 that.commentLinks[comment.key] = comment.focusUrl + "?qa_expand_key=" + comment.expandKey;
             }
             getJSON(that.genURL(p, 2), function(data) {
                 for(let i = 0; i < data.length; i++) {
                     let comment = data[i];
+                    that.topicIds[comment.key] = comment.focus.id;
+                    that.topicTypes[comment.key] = comment.focus.kind;
                     that.commentLinks[comment.key] = comment.focusUrl + "?qa_expand_key=" + comment.expandKey;
                 }
                 if(typeof success == "function") { success(that.commentLinks); }
@@ -137,7 +157,7 @@ function addFlagsToProgram() {
     if(!programData.scratchpad) return;
     var title = document.getElementsByClassName('editTitle_swrcbw');
     var flag = document.getElementsByClassName('discussion-meta-controls');
-    if (programData.scratchpad.kaid !== KAdefine.require("./javascript/shared-package/ka.js").getKaid() && !KA._userProfileData.isModerator) {
+    if (programData.scratchpad.kaid !== kaid && !KA._userProfileData.isModerator) {
         var programFlags = programData.scratchpad.flags;
 
         if(flag.length < 1 && title.length < 1) { return; }
@@ -207,7 +227,7 @@ function showProgramDates() {
     var updatedDate = newDate(programData.scratchpad.date);
     var myFlags = programData.scratchpad.flags.length;
 
-    date.nextElementSibling.innerHTML = "<br>Created: " + createdDate + "<br>Last updated: " + updatedDate + (programData.scratchpad.kaid === KAdefine.require("./javascript/shared-package/ka.js").getKaid() ? ('<br>Flags: ' + myFlags) : '') + (programData.scratchpad.hideFromHotlist ? '<br><span style="color:#af2f18">This program is hidden from the hotlist.</span>' : '<br><span style="color:#18af18">This program is not hidden from the hotlist.</span>');
+    date.nextElementSibling.innerHTML = "<br>Created: " + createdDate + "<br>Last updated: " + updatedDate + (programData.scratchpad.kaid === kaid ? ('<br>Flags: ' + myFlags) : '') + (programData.scratchpad.hideFromHotlist ? '<br><span style="color:#af2f18">This program is hidden from the hotlist.</span>' : '<br><span style="color:#18af18">This program is not hidden from the hotlist.</span>');
     clearInterval(getDates);
 }
 
@@ -271,10 +291,158 @@ function commentLinks() {
         }
     }
 }
+    
+function HTMLtoKAMarkdown(html) {
+    return html
+        .replace(/<pre>\s*<code>([.\s\S]*?)<\/code>\s*<\/pre>/ig, function(match, one) { return "```\n" + one + "\n```"; })
+        .replace(/<code>(.*?)<\/code>/ig, function(match, one) { return "`" + one + "`"; })
+        .replace(/<b>(.*?)<\/b>/ig, function(match, one) { return "*" + one + "*"; })
+        .replace(/<em>(.*?)<\/em>/ig, function(match, one) { return "_" + one + "_"; })
+        .replace(/<a.*?>(.*?)<\/a>/ig, function(match, one) { return one; })
+        .replace(/<br(?:\s*\/\s*)?>/ig, function() { return "\n"; })
+}
+function KAMarkdowntoHTML(markdown) {
+    return markdown
+        .replace(/\`\`\`\s*([.\s\S]*?)\s*\`\`\`/ig, function(match, one) { return "<pre><code>" + one + "</code></pre>"; })
+        .replace(/\`(.+?)\`/ig, function(match, one) { return "<code>" + one + "</code>"; })
+        .replace(/\*(.+?)\*/ig, function(match, one) { return "<b>" + one + "</b>"; })
+        .replace(/_(.+?)_/ig, function(match, one) { return "<em>" + one + "</em>"; })
+        .replace(/\n/ig, function() { return "<br>"; })
+}
 
+/** Add user interface for editing comments **/
+/** 
+    A special thank you goes out to @MatthiasSaihttam for the comment editing functionality.  
+    This feature wouldn't have been possible without him 
+**/
+function addCommentEditLink(element) {
+    
+    // Uncomment if this feature interferes with Guardian tools
+    // if(KA._userProfileData && KA._userProfileData.isModerator) { return; }
+    
+    let metaControls = element.getElementsByClassName("discussion-meta-controls")[0],
+        modTools = element.getElementsByClassName("mod-tools")[0];
+        
+    if(!element || !element.className.includes("reply") || !metaControls || !modTools) { return; }
+    
+    let commentEditLink = document.createElement("a");
+    
+    let separator = document.createElement("span");
+    separator.className = "discussion-meta-separator";
+    separator.textContent = "• ";
+    metaControls.appendChild(separator);
+    commentEditLink.className = commentEditClassPrefix + element.id;
+    commentEditLink.href = "javascript:void(0)";
+    commentEditLink.textContent = "Edit";
+    let outerSpan = document.createElement("span");
+    outerSpan.appendChild(commentEditLink);
+    metaControls.appendChild(outerSpan);
+    
+    let editCommentDiv = document.createElement("div");
+    editCommentDiv.className = commentEditUIClass;
+    let textarea = document.createElement("textarea");
+    textarea.className = "discussion-text open";
+    textarea.style.display = "none"
+    element.appendChild(textarea);
+    
+    let discussionControl = document.createElement("div");
+    discussionControl.className = "discussion-controls";
+    let floatRightSpan = document.createElement("span");
+    floatRightSpan.className = "discussion-control float-right";
+    let orDivide = document.createElement("span");
+    orDivide.textContent = "or";
+    let cancel = document.createElement("a");
+    cancel.href = "javascript:void(0)";
+    cancel.textContent = "Cancel";
+    cancel.style.color = "#678d00";
+    cancel.className = commentCancelEditPrefix + element.id;
+    let editBtn = document.createElement("button");
+    editBtn.className = "simple-button primary edit-comment-" + element.id + "-button";
+    editBtn.style.fontSize = "12px";
+    editBtn.setAttribute("type", "button");
+    editBtn.textContent = "Edit this comment";
+    let floatrights = [floatRightSpan.cloneNode(), floatRightSpan.cloneNode(), floatRightSpan.cloneNode()];
+    let correspondingElements = [cancel, orDivide, editBtn];
+    for(let i = 0; i < floatrights.length; i++) {
+        floatrights[i].appendChild(correspondingElements[i]);
+        discussionControl.appendChild(floatrights[i]);
+    }
+    discussionControl.style.display = "none";
+    element.appendChild(discussionControl);
+    
+    cancel.addEventListener("click", function(e) {
+        let link = e.target;
+        let kaencrypted = link.className.substr(commentCancelEditPrefix.length);
+        let parentComment = document.getElementById(kaencrypted);
+        let discMeta = parentComment.getElementsByClassName("discussion-meta")[0];
+        let contentDiv = parentComment.getElementsByClassName("discussion-content")[0];
+        let textarea = parentComment.getElementsByTagName("textarea")[0];
+        let discussionControl = parentComment.getElementsByClassName("discussion-controls")[0];
+        textarea.style.display = discussionControl.style.display = "none";
+        contentDiv.style.display = discMeta.style.display = "block";
+    });
+    
+    editBtn.addEventListener("click", function(e) {
+        let link = e.target;
+        let kaencrypted = /edit-comment-(kaencrypted_.*?)-button/ig.exec(link.className)[1];
+        let parentComment = document.getElementById(kaencrypted);
+        let discMeta = parentComment.getElementsByClassName("discussion-meta")[0];
+        let contentDiv = parentComment.getElementsByClassName("discussion-content")[0];
+        let textarea = parentComment.getElementsByTagName("textarea")[0];
+        let discussionControl = parentComment.getElementsByClassName("discussion-controls")[0];
+        let x = new XMLHttpRequest();
+        // Based off of @MatthiasSaihttam's bookmarklet (https://www.khanacademy.org/computer-programming/edit-comments/6039670653)
+        let focusId = commentLinkGenerator ? commentLinkGenerator.getTopicId(kaencrypted) : KAdefine.require("./javascript/discussion-package/discussion.js").data.focusId,
+            focusType = commentLinkGenerator ? commentLinkGenerator.getTopicType(kaencrypted) : KAdefine.require("./javascript/discussion-package/discussion.js").data.focusKind;
+        x.open("PUT", "https://www.khanacademy.org/api/internal/discussions/" + focusType + "/" + focusId + "/comments/" + kaencrypted + "?casing=camel&lang=en&_=" + Date.now());
+        x.setRequestHeader("x-ka-fkey", getSession());
+        x.setRequestHeader("Content-type", "application/json");
+        x.addEventListener("load", function() {
+            contentDiv.innerHTML = KAMarkdowntoHTML(textarea.value);
+            textarea.style.display = discussionControl.style.display = "none";
+            contentDiv.style.display = discMeta.style.display = "block";
+        });
+        x.addEventListener("error", function() { alert("Unable to edit comment.  Please try again."); });
+        x.send(JSON.stringify({ text: textarea.value }));
+    })
+    
+    commentEditLink.addEventListener("click", function(e) {
+        let link = e.target;
+        let kaencrypted = link.className.substr(commentEditClassPrefix.length);
+        let parentComment = document.getElementById(kaencrypted);
+        let discMeta = parentComment.getElementsByClassName("discussion-meta")[0];
+        let contentDiv = parentComment.getElementsByClassName("discussion-content")[0];
+        let content = HTMLtoKAMarkdown(contentDiv.innerHTML).trim();
+        let textarea =  parentComment.getElementsByTagName("textarea")[0];
+        let discussionControl = parentComment.getElementsByClassName("discussion-controls")[0];
+        textarea.value = content;
+        contentDiv.style.display = discMeta.style.display = "none";
+        textarea.style.display = discussionControl.style.display = "block";
+    });
+    
+    element.className += " " + extensionCommentEditClassName;
+}    
+function addCommentEditUI() {
+    if(!isLoggedIn) { return; }
+    
+    var KADiscussionPackage = null;
+    try {
+        KADiscussionPackage = KAdefine.require("./javascript/discussion-package/discussion.js");
+    } catch(e) {}
+    
+    if(!KADiscussionPackage || !KADiscussionPackage.data) { return; }
+    if((!KADiscussionPackage.data.focusId || !KADiscussionPackage.data.focusKind) && !commentLinkGenerator) { return; }
+    
+    let uneditedComments = document.querySelectorAll(".reply:not(." + extensionCommentEditClassName + ")");
+    for(let i = 0; i < uneditedComments.length; i++) {
+        addCommentEditLink(uneditedComments[i]);
+    }
+}
+    
 if (window.location.host === 'www.khanacademy.org') {
     var notifications = setInterval(updateNotifs, 250);
     if (url[3] === 'computer-programming' || url[3] === 'hour-of-code' && url[4] !== 'new') {
+    var addEditUIInterval = setInterval(addCommentEditUI, 250);
         var addFlags = setInterval(addFlagsToProgram, 250),
             getDates = setInterval(showProgramDates, 250),
             widenprogram = setInterval(widenProgram, 250),
