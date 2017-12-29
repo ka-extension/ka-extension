@@ -441,8 +441,8 @@ function addCommentEditUI() {
     
 if (window.location.host === 'www.khanacademy.org') {
     var notifications = setInterval(updateNotifs, 250);
-    if (url[3] === 'computer-programming' || url[3] === 'hour-of-code' && url[4] !== 'new') {
     var addEditUIInterval = setInterval(addCommentEditUI, 250);
+    if (url[3] === 'computer-programming' || url[3] === 'hour-of-code' && url[4] !== 'new') {
         var addFlags = setInterval(addFlagsToProgram, 250),
             getDates = setInterval(showProgramDates, 250),
             widenprogram = setInterval(widenProgram, 250),
