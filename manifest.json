@@ -12,7 +12,7 @@
           "128": "images/icon128.png"
         },
         "default_icon": "images/icon128.png",
-        "default_popup": "settings.html"
+        "default_popup": "popup.html"
     },
     "content_scripts": [{
         "js": ["content.js"],
