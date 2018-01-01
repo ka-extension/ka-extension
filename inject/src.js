@@ -298,8 +298,6 @@ function darkToggleButton() {
     if(!toolbar) { return; }
     let rightArea = toolbar.getElementsByClassName("right_piqaq3")[0];
     if(!rightArea) { return; }
-    let innerSpan = rightArea.getElementsByTagName("span")[0];
-    if(!innerSpan) { return; }
     let outerButtonSpan = document.createElement("span");
     outerButtonSpan.className = "pull-right";
     let innerButtonLink = document.createElement("a");
@@ -313,7 +311,7 @@ function darkToggleButton() {
         darkTheme();
     });
     outerButtonSpan.appendChild(innerButtonLink);
-    innerSpan.insertAdjacentElement("beforeend", outerButtonSpan);
+    rightArea.appendChild(outerButtonSpan);
     clearInterval(addDarkToggleButton);
 }
 
