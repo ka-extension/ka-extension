@@ -1,7 +1,7 @@
 /*** To avoid messy inline styles, use this file to style stuff. ***/
 
 /* Report button under programs */
-#report-button {
+#kae-report-button {
     text-decoration: none !important;
     background: white;
     border: 1px solid #ac3939;
@@ -16,7 +16,7 @@
     cursor: pointer;
 }
 /* Reporting popup after clicking button. */
-#report-popup {
+#kae-report-popup {
     background-color: #FFFFFF !important;
     background-clip: padding-box !important;
     display: none;
@@ -35,7 +35,7 @@
     padding: 15px !important;
 }
 /* Exit button */
-#exit-button {
+#kae-exit-button {
     color: #000000 !important;
     cursor: pointer !important;
     float: right !important;
@@ -47,7 +47,7 @@
     text-decoration: none !important;
 }
 /* Grey backdrop behind popup */
-#backdrop {
+#kae-backdrop {
     display: none;
     background-color: #21242C !important;
     bottom: 0px !important;
@@ -58,32 +58,32 @@
     top: 0px !important;
     z-index: 1070 !important;
 }
-#report-wrap {
+#kae-report-wrap {
     border-bottom: 1px solid #DDDDDD !important;
     padding: 0 0 9px 0 !important;
 }
-#report-h2 {
+#kae-report-h2 {
     color: #555555 !important;
     margin-bottom: 0px !important;
     padding-top: 9px !important;
 }
-#report-reason {
+#kae-report-reason {
     border: 1px solid #ccc;
     box-shadow: inset 0 1px 3px #ddd;
     width:100%;
     height:50px;
 }
-#report-body {
+#kae-report-body {
     border-spacing: 0 6px !important;
     display: table !important;
     margin-top: 18px !important;
     width: 100% !important;
 }
-#report-options {
+#kae-report-options {
     display: flex !important;
     margin: 0px 0px 8px 0px !important;
 }
-.simple-button-317 {
+.kae-simple-button-317 {
     border-radius: 3px;
     border: 1px solid #e6e6e6;
     font-family: 'Proxima Nova', 'Helvetica', 'Corbel', sans-serif;
@@ -104,11 +104,11 @@
     position: relative !important;
     text-align: left !important;
 }
-.button-content {
+.kae-button-content {
     font-family: 'Proxima Nova', 'Helvetica', 'Corbel', sans-serif;
     height: 100% !important;
 }
-.button-lists {
+.kae-button-lists {
     line-height: 20px;
     list-style-type: disc !important;
     margin-left: 20px !important;
