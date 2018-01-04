@@ -1,5 +1,5 @@
 var id = chrome.runtime.id;
-var fkey;
+var fkey = "";
 var username;
 console.log("Extension ID is " + id);
 chrome.browserAction.setBadgeBackgroundColor({

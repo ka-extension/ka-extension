@@ -482,6 +482,41 @@ function addCommentEditUI() {
     }
 }
 
+function locationElm(){
+    var locationDiv = document.getElementById('s2id_autogen1');
+    if(!locationDiv || !userInfo) return;
+    var locDisp = userInfo.userLocation.displayText;
+    locationDiv.innerHTML = '<input id="kae-location-textarea" type="text" value="' + locDisp + '">'
+
+    var saveBtn = document.getElementsByClassName('kui-button')[2];
+    document.getElementById('edit-profile-privacy-indicator').innerHTML = "";
+    document.getElementById('username-picker-container')["childNodes"][2]["style"]["setProperty"]("overflow","hidden");
+    saveBtn.addEventListener('click', function(){
+      var locationText = document.getElementById('kae-location-textarea').value;
+      document.getElementsByClassName("location-text")[0].innerHTML = locationText;
+      setTimeout(function(){
+        var locationText = document.getElementById('kae-location-textarea').value;
+        var tempData = {
+          userKey: KA._userProfileData.userKey,
+          userLocation: {
+            displayText: locationText
+          }
+        };
+        var req = new XMLHttpRequest();
+        req.open("POST", "https://www.khanacademy.org/api/internal/user/profile");
+        req.setRequestHeader('x-ka-fkey', getSession());
+        req.setRequestHeader('content-type', "application/json");
+        req.addEventListener("load", function(){
+          location.reload();
+        });
+        req.send(JSON.stringify(tempData));
+      },1000);
+
+    });
+    clearInterval(locElm);
+}
+
+
 if (window.location.host === 'www.khanacademy.org') {
     var notifications = setInterval(updateNotifs, 250);
     var addEditUIInterval = setInterval(addCommentEditUI, 250);
@@ -494,6 +529,7 @@ if (window.location.host === 'www.khanacademy.org') {
                 addguidelines = setInterval(addGuidelines, 250);
         }
     } else if (url[3] === 'profile') {
+        var locElm = setInterval(locationElm, 250);
         var profileData = setInterval(getProfileData, 250);
         if(url[5] == "discussion" && url[6] == "replies") {
             commentLinkGenerator = new CommentLinker(url[4] /* Username or kaid */);
@@ -507,16 +543,11 @@ if (window.location.host === 'www.khanacademy.org') {
 }
 
 // Notification stuff.
-chrome.runtime.sendMessage("gniggljddhajnfbkjndcgnomkddfcial", {
-    "fkey": getSession(),
-    "username": KA._userProfileData.username
-});
 setInterval(function() {
-  if(!KA._userProfileData) return;
-  chrome.runtime.sendMessage("gniggljddhajnfbkjndcgnomkddfcial", {
+  if(!KA._userProfileData || !browser) return;
+  browser.runtime.sendMessage("gniggljddhajnfbkjndcgnomkddfcial", {
       "fkey": getSession(),
       "username": KA._userProfileData.username
   });
 }, 1000);
-
 })();

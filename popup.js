@@ -1,1 +1,1 @@
-console.log("Popup working")
+console.log("Popup working");
