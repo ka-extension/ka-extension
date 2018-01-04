@@ -1,0 +1,115 @@
+/*** To avoid messy inline styles, use this file to style stuff. ***/
+
+/* Report button under programs */
+#kae-report-button {
+    text-decoration: none !important;
+    background: white;
+    border: 1px solid #ac3939;
+    color: #ac3939;
+    border-radius: 4px !important;
+    display: inline-block !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    padding: 8px 8px !important;
+    margin: 0px 3px !important;
+    text-align:center !important;
+    cursor: pointer;
+}
+/* Reporting popup after clicking button. */
+#kae-report-popup {
+    background-color: #FFFFFF !important;
+    background-clip: padding-box !important;
+    display: none;
+    border: 1px solid rgba(0, 0, 0, 0.3) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3) !important;
+    color: #444444 !important;
+    outline: none !important;
+    position: fixed !important;
+    left: 23% !important;
+    right: 23% !important;
+    min-width: 700px !important;
+    /*width: 700px !important;*/
+    top: 10% !important;
+    z-index: 1080 !important;
+    padding: 15px !important;
+}
+/* Exit button */
+#kae-exit-button {
+    color: #000000 !important;
+    cursor: pointer !important;
+    float: right !important;
+    font-size: 20px !important;
+    font-weight: bold !important;
+    line-height: 20px !important;
+    opacity: 0.2 !important;
+    text-shadow: 0 1px 0 #FFFFFF !important;
+    text-decoration: none !important;
+}
+/* Grey backdrop behind popup */
+#kae-backdrop {
+    display: none;
+    background-color: #21242C !important;
+    bottom: 0px !important;
+    left: 0px !important;
+    opacity: 0.72 !important;
+    position: fixed !important;
+    right: 0px !important;
+    top: 0px !important;
+    z-index: 1070 !important;
+}
+#kae-report-wrap {
+    border-bottom: 1px solid #DDDDDD !important;
+    padding: 0 0 9px 0 !important;
+}
+#kae-report-h2 {
+    color: #555555 !important;
+    margin-bottom: 0px !important;
+    padding-top: 9px !important;
+}
+#kae-report-reason {
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px #ddd;
+    width:100%;
+    height:50px;
+}
+#kae-report-body {
+    border-spacing: 0 6px !important;
+    display: table !important;
+    margin-top: 18px !important;
+    width: 100% !important;
+}
+#kae-report-options {
+    display: flex !important;
+    margin: 0px 0px 8px 0px !important;
+}
+.kae-simple-button-317 {
+    border-radius: 3px;
+    border: 1px solid #e6e6e6;
+    font-family: 'Proxima Nova', 'Helvetica', 'Corbel', sans-serif;
+    color: #444;
+    text-shadow: none;
+    background-color: #e7e7e7;
+    background-image: linear-gradient(to bottom,#eee,#dcdcdc);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffeeeeee',endColorstr='#ffdcdcdc',GradientType=0);
+    border-color: #dcdcdc #dcdcdc #b6b6b6;
+    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+    color: #444!important;
+    padding: 5px 10px;
+    width: 33.3%;
+    font-size: 13px !important;
+    padding: 15px !important;
+    position: relative !important;
+    text-align: left !important;
+}
+.kae-button-content {
+    font-family: 'Proxima Nova', 'Helvetica', 'Corbel', sans-serif;
+    height: 100% !important;
+}
+.kae-button-lists {
+    line-height: 20px;
+    list-style-type: disc !important;
+    margin-left: 20px !important;
+}
