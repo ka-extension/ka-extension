@@ -577,7 +577,7 @@ if (window.location.host === 'www.khanacademy.org') {
 
 // Notification stuff.
 setInterval(function() {
-  if(!KA._userProfileData || !browser) return;
+  if(!KA._userProfileData || typeof browser == "undefined") return;
   browser.runtime.sendMessage("gniggljddhajnfbkjndcgnomkddfcial", {
       "fkey": getSession(),
       "username": KA._userProfileData.username
