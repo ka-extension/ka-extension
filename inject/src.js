@@ -20,10 +20,10 @@ var aceThemes = {
 
 /* Ace Monokai theme.  Taken from https://github.com/ajaxorg/ace/blob/master/lib/ace/theme/monokai.css */
 aceThemes.addTheme("monokai", ".ace-monokai .ace_gutter {background: #2F3129;color: #8F908A}.ace-monokai .ace_print-margin {width: 1px;background: #555651}.ace-monokai {background-color: #272822;color: #F8F8F2}.ace-monokai .ace_cursor {color: #F8F8F0}.ace-monokai .ace_marker-layer .ace_selection {background: #49483E}.ace-monokai.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px #272822;}.ace-monokai .ace_marker-layer .ace_step {background: rgb(102, 82, 0)}.ace-monokai .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid #49483E}.ace-monokai .ace_marker-layer .ace_active-line {background: #202020}.ace-monokai .ace_gutter-active-line {background-color: #272727}.ace-monokai .ace_marker-layer .ace_selected-word {border: 1px solid #49483E}.ace-monokai .ace_invisible {color: #52524d}.ace-monokai .ace_entity.ace_name.ace_tag,.ace-monokai .ace_keyword,.ace-monokai .ace_meta.ace_tag,.ace-monokai .ace_storage {color: #F92672}.ace-monokai .ace_punctuation,.ace-monokai .ace_punctuation.ace_tag {color: #fff}.ace-monokai .ace_constant.ace_character,.ace-monokai .ace_constant.ace_language,.ace-monokai .ace_constant.ace_numeric,.ace-monokai .ace_constant.ace_other {color: #AE81FF}.ace-monokai .ace_invalid {color: #F8F8F0;background-color: #F92672}.ace-monokai .ace_invalid.ace_deprecated {color: #F8F8F0;background-color: #AE81FF}.ace-monokai .ace_support.ace_constant,.ace-monokai .ace_support.ace_function {color: #66D9EF}.ace-monokai .ace_fold {background-color: #A6E22E;border-color: #F8F8F2}.ace-monokai .ace_storage.ace_type,.ace-monokai .ace_support.ace_class,.ace-monokai .ace_support.ace_type {font-style: italic;color: #66D9EF}.ace-monokai .ace_entity.ace_name.ace_function,.ace-monokai .ace_entity.ace_other,.ace-monokai .ace_entity.ace_other.ace_attribute-name,.ace-monokai .ace_variable {color: #A6E22E}.ace-monokai .ace_variable.ace_parameter {font-style: italic;color: #FD971F}.ace-monokai .ace_string {color: #E6DB74}.ace-monokai .ace_comment {color: #75715E}.ace-monokai .ace_indent-guide {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWPQ0FD0ZXBzd/wPAAjVAoxeSgNeAAAAAElFTkSuQmCC) right repeat-y}");
- 
+
 /* Ace Textmate theme.  Taken from https://github.com/ajaxorg/ace/blob/master/lib/ace/theme/textmate.css */
 aceThemes.addTheme("tm", ".ace-tm .ace_gutter {background: #f0f0f0;color: #333;}.ace-tm .ace_print-margin {width: 1px;background: #e8e8e8;}.ace-tm .ace_fold {background-color: #6B72E6;}.ace-tm {background-color: #FFFFFF;color: black;}.ace-tm .ace_cursor {color: black;}.ace-tm .ace_invisible {color: rgb(191, 191, 191);}.ace-tm .ace_storage,.ace-tm .ace_keyword {color: blue;}.ace-tm .ace_constant {color: rgb(197, 6, 11);}.ace-tm .ace_constant.ace_buildin {color: rgb(88, 72, 246);}.ace-tm .ace_constant.ace_language {color: rgb(88, 92, 246);}.ace-tm .ace_constant.ace_library {color: rgb(6, 150, 14);}.ace-tm .ace_invalid {background-color: rgba(255, 0, 0, 0.1);color: red;}.ace-tm .ace_support.ace_function {color: rgb(60, 76, 114);}.ace-tm .ace_support.ace_constant {color: rgb(6, 150, 14);}.ace-tm .ace_support.ace_type,.ace-tm .ace_support.ace_class {color: rgb(109, 121, 222);}.ace-tm .ace_keyword.ace_operator {color: rgb(104, 118, 135);}.ace-tm .ace_string {color: rgb(3, 106, 7);}.ace-tm .ace_comment {color: rgb(76, 136, 107);}.ace-tm .ace_comment.ace_doc {color: rgb(0, 102, 255);}.ace-tm .ace_comment.ace_doc.ace_tag {color: rgb(128, 159, 191);}.ace-tm .ace_constant.ace_numeric {color: rgb(0, 0, 205);}.ace-tm .ace_variable {color: rgb(49, 132, 149);}.ace-tm .ace_xml-pe {color: rgb(104, 104, 91);}.ace-tm .ace_entity.ace_name.ace_function {color: #0000A2;}.ace-tm .ace_heading {color: rgb(12, 7, 255);}.ace-tm .ace_list {color:rgb(185, 6, 144);}.ace-tm .ace_meta.ace_tag {color:rgb(0, 22, 142);}.ace-tm .ace_string.ace_regex {color: rgb(255, 0, 0)}.ace-tm .ace_marker-layer .ace_selection {background: rgb(181, 213, 255);}.ace-tm.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px white;}.ace-tm .ace_marker-layer .ace_step {background: rgb(252, 255, 0);}.ace-tm .ace_marker-layer .ace_stack {background: rgb(164, 229, 101);}.ace-tm .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgb(192, 192, 192);}.ace-tm .ace_marker-layer .ace_active-line {background: rgba(0, 0, 0, 0.07);}.ace-tm .ace_gutter-active-line {background-color : #dcdcdc;}.ace-tm .ace_marker-layer .ace_selected-word {background: rgb(250, 250, 255);border: 1px solid rgb(200, 200, 250);}.ace-tm .ace_indent-guide {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==) right repeat-y;}");
-    
+
 var url = window.location.href.split('/');
 
 var userInfo = {};
@@ -47,7 +47,7 @@ var commentCancelEditPrefix = "ka-extension-edit-comment-cancel-";
 
 var extensionStoragePrefix = "ka-extension-localstorage-item-";
 var extensionToggleDarkEditorItemKey = extensionStoragePrefix + "toggle-editor-dark-theme";
-    
+
 function getSession() {
     return /fkey=(.*?);/ig.exec(document.cookie)[1];
 }
@@ -116,8 +116,8 @@ if (url[3] === 'computer-programming' || url[3] === 'hour-of-code') {
     });
 }
 
-if (url[3] === 'profile' && !url[5]) {
-    var username = url[4];
+if (url[3] === 'profile' && !url[5] || url.length < 5) {
+    var username = url[4] || KA._userProfileData.username;
     var uparam = "?" + (username.substr(0, 5) == "kaid_" ? "kaid" : "username") + "=" + username;
     getJSON(userProgramsApi + uparam + '&projection={%22scratchpads%22:[{%22sumVotesIncremented%22:1,%22spinoffCount%22:1}]}&limit=1500', function(data) {
         console.log(data);
@@ -137,17 +137,17 @@ function newDate(date) {
 
 /*** When notifications are more than 9, it will show the real value and not 9+ anymore. ***/
 function updateNotifs() {
-    var dropParent = document.getElementsByClassName('switchText_1lh86m9')[0];
-    var notifList = document.getElementsByClassName('scrollDropdown_1jabbia')[0];
-    if(!dropParent || !notifList) { return; }
-    var dropdown = dropParent.childNodes[5];
     var greenCircle = document.getElementsByClassName('notificationsBadge_16g2pyz')[0];
-    if (greenCircle && greenCircle.textContent === '9+') {
-        greenCircle.textContent = dropdown.textContent;
-    }
-
-    notifList.style.setProperty('overflow-x', 'hidden');
+    if(!greenCircle) { return; }
+    greenCircle.textContent = KA._userProfileData.countBrandNewNotifications;
     clearInterval(notifications);
+}
+
+function stopNotifOverflow(){
+  var notifList = document.getElementsByClassName('scrollDropdown_1jabbia')[0];
+  if(!notifList) return;
+  notifList.style.setProperty('overflow-x', 'hidden');
+  clearInterval(addStopNotifOverflow)
 }
 
 /***  Programs no longer have a max width. ***/
@@ -292,7 +292,7 @@ function darkTheme() {
     s.innerHTML = aceThemes.getThemeCSS(+localStorage.getItem(extensionToggleDarkEditorItemKey) ? "monokai" : "tm");
     document.body.appendChild(s);
 }
-    
+
 function darkToggleButton() {
     let toolbar = document.getElementsByClassName("toolbar_y6hf3w")[0];
     if(!toolbar) { return; }
@@ -516,13 +516,13 @@ function addCommentEditUI() {
 
 function locationElm(){
     var locationDiv = document.getElementById('s2id_autogen1');
-    if(!locationDiv || !userInfo) return;
+    if(!locationDiv || !userInfo.userLocation) return;
+    document.getElementById('bio-picker').style.setProperty('resize', 'none');
+    document.getElementById('bio-picker').style.setProperty('height', '90px');
     var locDisp = userInfo.userLocation.displayText;
     locationDiv.innerHTML = '<input id="kae-location-textarea" type="text" value="' + locDisp + '">'
 
     var saveBtn = document.getElementsByClassName('kui-button')[2];
-    document.getElementById('edit-profile-privacy-indicator').innerHTML = "";
-    document.getElementById('username-picker-container')["childNodes"][2]["style"]["setProperty"]("overflow","hidden");
     saveBtn.addEventListener('click', function(){
       var locationText = document.getElementById('kae-location-textarea').value;
       document.getElementsByClassName("location-text")[0].innerHTML = locationText;
@@ -548,10 +548,30 @@ function locationElm(){
     clearInterval(locElm);
 }
 
+function evalFeatures(){
+  clearInterval(addEvalFeatures);
+  var container = document.getElementsByClassName('eval-container')[0];
+  if(!container) return;
+  var commentTextarea = document.getElementsByClassName('eval-left')[0].childNodes[5].lastElementChild.lastElementChild.firstElementChild;
+  var replyButton = document.createElement('button');
+  replyButton.innerText = "Auto Reply";
+  replyButton.id = "kae-auto-reply";
+  replyButton.className = "buttonStyle_1quqytj";
+  replyButton.style.cssText = "margin-left: 2px; "
+  replyButton.addEventListener('click', function(){
+
+  });
+  document.getElementsByClassName("edit-content-form__formatting-tips")[0].parentNode.insertBefore(replyButton, document.getElementsByClassName("edit-content-form__formatting-tips")[0]);
+  document.getElementById('kae-auto-reply').parentNode.insertBefore(document.createElement('br'),document.getElementsByClassName('edit-content-form__formatting-tips')[0]);
+
+  clearInterval(addEvalFeatures);
+}
 
 if (window.location.host === 'www.khanacademy.org') {
-    var notifications = setInterval(updateNotifs, 250);
+    var locElm = setInterval(locationElm, 250);
+    var notifications = setInterval(updateNotifs, 50);
     var addEditUIInterval = setInterval(addCommentEditUI, 250);
+    var addStopNotifOverflow = setInterval(stopNotifOverflow, 250);
     if (url[3] === 'computer-programming' || url[3] === 'hour-of-code') {
         darkTheme();
         var addDarkToggleButton = setInterval(darkToggleButton, 250);
@@ -559,10 +579,10 @@ if (window.location.host === 'www.khanacademy.org') {
             var addFlags = setInterval(addFlagsToProgram, 250),
                 getDates = setInterval(showProgramDates, 250),
                 widenprogram = setInterval(widenProgram, 250),
-                addguidelines = setInterval(addGuidelines, 250);
+                addguidelines = setInterval(addGuidelines, 250),
+                addEvalFeatures = setInterval(evalFeatures, 250);
         }
     } else if (url[3] === 'profile') {
-        var locElm = setInterval(locationElm, 250);
         var profileData = setInterval(getProfileData, 250);
         if(url[5] == "discussion" && url[6] == "replies") {
             commentLinkGenerator = new CommentLinker(url[4] /* Username or kaid */);
@@ -577,10 +597,11 @@ if (window.location.host === 'www.khanacademy.org') {
 
 // Notification stuff.
 setInterval(function() {
-  if(!KA._userProfileData || !browser) return;
-  browser.runtime.sendMessage("gniggljddhajnfbkjndcgnomkddfcial", {
-      "fkey": getSession(),
-      "username": KA._userProfileData.username
-  });
+  if(KA._userProfileData && typeof chrome !== "undefined"){
+    chrome.runtime.sendMessage("gniggljddhajnfbkjndcgnomkddfcial", {
+        "fkey": getSession(),
+        "username": KA._userProfileData.username
+    });
+  }
 }, 1000);
 })();
