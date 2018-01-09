@@ -73,43 +73,33 @@
     width:100%;
     height:50px;
 }
-#kae-report-body {
-    border-spacing: 0 6px !important;
-    display: table !important;
-    margin-top: 18px !important;
-    width: 100% !important;
+#kae-submit-button {
+    color: white;
+    background-color: rgb(186, 190, 194);
+    box-shadow: transparent 0px 0px 4px 4px;
+    font-size: 15px !important;
+    padding: 0px 16px;
+    margin: 10px 0px 0px;
+    float: right;
+    display: inline-flex;
+    border-style: solid;
+    box-sizing: border-box;
+    white-space: nowrap;
+    line-height: normal;
+    font-weight: bold;
+    -webkit-tap-highlight-color: transparent;
+    height: 40px;
+    border-width: 1px;
+    border-radius: 4px;
+    -webkit-align-items: center;
+    -webkit-flex-shrink: 0;
+    -ms-flex-align: center;
+
+    vertical-align: middle;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
 }
-#kae-report-options {
-    display: flex !important;
-    margin: 0px 0px 8px 0px !important;
-}
-.kae-simple-button-317 {
-    border-radius: 3px;
-    border: 1px solid #e6e6e6;
-    font-family: 'Proxima Nova', 'Helvetica', 'Corbel', sans-serif;
-    color: #444;
-    text-shadow: none;
-    background-color: #e7e7e7;
-    background-image: linear-gradient(to bottom,#eee,#dcdcdc);
-    background-repeat: repeat-x;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffeeeeee',endColorstr='#ffdcdcdc',GradientType=0);
-    border-color: #dcdcdc #dcdcdc #b6b6b6;
-    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
-    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-    color: #444!important;
-    padding: 5px 10px;
-    width: 33.3%;
-    font-size: 13px !important;
-    padding: 15px !important;
-    position: relative !important;
-    text-align: left !important;
-}
-.kae-button-content {
-    font-family: 'Proxima Nova', 'Helvetica', 'Corbel', sans-serif;
-    height: 100% !important;
-}
-.kae-button-lists {
-    line-height: 20px;
-    list-style-type: disc !important;
-    margin-left: 20px !important;
+#kae-thank-you {
+    display: none;
 }
