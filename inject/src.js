@@ -566,6 +566,203 @@ function evalFeatures(){
 
   clearInterval(addEvalFeatures);
 }
+    
+    
+/** WIP **/
+function reportButton() {
+    var userKaid = KAdefine.require("./javascript/shared-package/ka.js").getKaid();
+    if (programData.scratchpad.kaid !== userKaid && !KA._userProfileData.isModerator) {
+        var buttons = document.getElementsByClassName('discussion-meta-controls')[0];
+        if (!buttons) { return; }
+
+        var reportButton = document.createElement('a');
+        reportButton.id = "kae-report-button";
+        reportButton.href = "javascript:void(0)";
+        reportButton.role = "button";
+        reportButton.innerHTML = `
+              <span>Report</span>
+        `;
+        buttons.appendChild(reportButton);
+
+        var backdrop = document.createElement('div');
+        backdrop.id = "kae-backdrop";
+        document.body.appendChild(backdrop);
+
+        var reportPopup = document.createElement('div');
+        reportPopup.id = "kae-report-popup";
+        reportPopup.href = "javascript: void 0"
+        reportPopup.innerHTML = `
+            <a id='kae-exit-button' aria-label="Close">
+              <svg role="img" aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 10 10">
+                <path fill="currentColor" d="
+                M6.26353762,4.99851587 L9.73097464,1.53107884 C10.0836373,1.17841618
+                10.0842213,0.612127047 9.73530496,0.263210718 C9.38395604,-0.0881381913
+                8.81874474,-0.0837668714 8.46743686,0.267541014 L4.99999981,3.73497806
+                L1.5325628,0.267541051 C1.1812549,-0.0837668481 0.616043606,
+                -0.0881381955 0.264694717,0.263210694 C-0.0842215912,0.612127004
+                -0.0836375768,1.17841613 0.269025093,1.5310788 L3.73646206,4.9985158
+                L0.269025109,8.46595276 C-0.083637537,8.81861541 -0.0842215923,
+                9.38490462 0.264694642,9.73382106 C0.616043456,10.0851701 1.18125469,
+                10.0807988 1.53256259,9.72949093 L4.99999988,6.26205363 L8.46743739,
+                9.72949117 C8.8187453,10.0807991 9.38395655,10.0851704 9.73530537,
+                9.73382138 C10.0842216,9.38490498 10.0836375,8.81861579 9.73097488,
+                8.46595313 L6.26353762,4.99851587 Z">
+                </path>
+              </svg>
+            </a>
+
+            <div id="kae-report-wrap">
+              <h2 id="kae-report-h2">Report for Guardian attention</h2>
+            </div>
+            <p>Instead of flagging, reporting will get official notice faster.</p>
+            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+            <!-- The form -->
+            <form id="kae-reason" target="hidden_iframe" class="pure-form pure-form-stacked" action="https://script.google.com/macros/s/AKfycbzaurJVFjX18YbjlEy82OkvM98zbGO7AQriB8NtMW5fai3gFVCZ/exec"> <!-- ? action here-->
+                <input id="honeypot" type="text" name="honeypot" style="display:none"/>
+                <fieldset style="display: none">
+                    <label>KAID</label>
+                    <textarea id="kae-reporting-kaid" name="User">https://www.khanacademy.org/profile/${userKaid}</textarea>
+                </fieldset>
+                <fieldset style="display: none">
+                    <label>Program</label>
+                    <textarea id="kae-reporting-program" name="Program">${programData.scratchpad.url}</textarea>
+                </fieldset>
+                <fieldset class="pure-group">
+                    <label>How does this violate our guidelines?</label>
+                    <textarea id="kae-report-reason" name="Reason" maxlength="500" autocomplete="off"></textarea>
+                </fieldset>
+                <button id="kae-submit-button" type="submit" disabled>
+                    <div>Submit Report</div>
+                </button>
+            </form>
+
+            <div id="kae-thank-you">
+              <h4>Thanks for reporting, a Guardian will review this program.</h4>
+            </div>
+        `;
+        document.body.appendChild(reportPopup);
+
+        var popup = document.getElementById('kae-report-popup');
+        var report = document.getElementById('kae-report-button');
+        var exit = document.getElementById('kae-exit-button');
+        var submitEl = document.getElementById('kae-submit-button');
+
+        report.addEventListener('click', function() {
+            popup.style.display = 'block';
+            backdrop.style.display = 'block';
+        });
+        exit.addEventListener('click', function() {
+            popup.style.display = 'none';
+            backdrop.style.display = 'none';
+        });
+        var checkSubmitInterval = setInterval(function() {
+            var words = document.getElementById('kae-report-reason').value.split(' ').length;
+            if (words > 5 && words < 150) {
+                submitEl.style.backgroundColor = "rgb(113, 179, 7)";
+                submitEl.style.cursor = "pointer";
+                submitEl.disabled = false;
+            } else {
+                submitEl.style.backgroundColor = "rgb(186, 190, 194)";
+                submitEl.style.cursor = "default";
+                submitEl.disabled = true;
+            }
+        }, 250);
+
+        function validateHuman(honeypot) {
+            if (honeypot) {
+                console.log("Robot Detected!");
+                return true;
+            } else {
+                console.log("Welcome Human!");
+            }
+        }
+
+        // Get all data in form and return object
+        function getFormData() {
+            console.log('getFormData() fired');
+            var form = document.getElementById("kae-reason");
+            var elements = form.elements;
+            var fields = Object.keys(elements).map(function(k) {
+                if (elements[k].name !== undefined) {
+                    return elements[k].name;
+                } else if (elements[k].length > 0) {
+                    return elements[k].item(0).name;
+                }
+            }).filter(function(item, pos, self) {
+                return self.indexOf(item) == pos && item;
+            });
+            var data = {};
+            fields.forEach(function(k){
+                data[k] = elements[k].value;
+                var str = "";
+                if (elements[k].length) {
+                    for (var i = 0; i < elements[k].length; i++) {
+                        if (elements[k].item(i).checked) {
+                            str = str + elements[k].item(i).value + ", ";
+                            data[k] = str.slice(0, -2);
+                        }
+                    }
+                }
+            });
+
+            data.formDataNameOrder = JSON.stringify(fields);
+            data.formGoogleSheetName = form.dataset.sheet || "Reports"; // default sheet name
+            data.formGoogleSendEmail = form.dataset.email || ""; // no email by default
+
+            console.log(data);
+            return data;
+        }
+
+        function handleFormSubmit(event) {
+            // Stop checking the text length.
+            clearInterval(checkSubmitInterval);
+            // data is returned from function.
+            var data = getFormData();
+            // This should check if user is bot or human.
+            if (validateHuman(data.honeypot)) {
+                return false;
+            }
+            // XML request.
+            var url = event.target.action;
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                if (xhr.status == 200) {
+                    
+                    // This isn't working right
+                    
+                    console.log(xhr.status, xhr.statusText);
+                    console.log(xhr.responseText);
+                    document.getElementById("kae-reason").style.display = "none";
+                    document.getElementById("kae-thank-you").style.display = "block";
+                    return;
+                }
+            };
+            // url encode form data for sending as post data
+            var encoded = Object.keys(data).map(function(k) {
+                return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]);
+            }).join('&');
+            xhr.send(encoded);
+            event.preventDefault();
+        }
+
+        function loaded() {
+            console.log('Report form submission handler loaded successfully');
+            var kaeSubmitButton = document.getElementById('kae-submit-button');
+
+            kaeSubmitButton.addEventListener("click", function(event) {
+                handleFormSubmit(event);
+                submitEl.style.backgroundColor = "rgb(186, 190, 194)";
+                submitEl.style.cursor = "default";
+                submitEl.disabled = true;
+            }, false);
+        };
+        document.addEventListener('DOMContentLoaded', loaded, false);
+
+    }
+    clearInterval(addReportButton);
+}
 
 if (window.location.host === 'www.khanacademy.org') {
     var locElm = setInterval(locationElm, 250);
@@ -580,7 +777,8 @@ if (window.location.host === 'www.khanacademy.org') {
                 getDates = setInterval(showProgramDates, 250),
                 widenprogram = setInterval(widenProgram, 250),
                 addguidelines = setInterval(addGuidelines, 250),
-                addEvalFeatures = setInterval(evalFeatures, 250);
+                addEvalFeatures = setInterval(evalFeatures, 250),
+                addReportButton = setInterval(reportButton, 250);
         }
     } else if (url[3] === 'profile') {
         var profileData = setInterval(getProfileData, 250);
