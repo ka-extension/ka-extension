@@ -149,10 +149,10 @@ function updateNotifs() {
 }
 
 function stopNotifOverflow(){
-  var notifList = document.getElementsByClassName('scrollDropdown_1jabbia')[0];
-  if(!notifList) return;
-  notifList.style.setProperty('overflow-x', 'hidden');
-  clearInterval(addStopNotifOverflow)
+    var notifList = document.getElementsByClassName('scrollDropdown_1jabbia')[0];
+    if(!notifList) return;
+    notifList.style.setProperty('overflow-x', 'hidden');
+    clearInterval(addStopNotifOverflow)
 }
 
 /***  Programs no longer have a max width. ***/
@@ -298,6 +298,7 @@ function darkTheme() {
     document.body.appendChild(s);
 }
 
+/*** Add a "Toggle Darkmode" button for programs ***/
 function darkToggleButton() {
     let toolbar = document.getElementsByClassName("toolbar_y6hf3w")[0];
     if(!toolbar) { return; }
@@ -330,6 +331,7 @@ function commentsButtonEventListener() {
     clearInterval(addCommentsButtonEventListener);
 }
 
+/*** Automatically add links to comments when viewing user discussion. ***/
 function commentLinks() {
     if(!commentLinkGenerator) { return; }
     var unalteredComments = document.querySelectorAll(".discussion-item.reply:not(." + extensionCommentClassName + ")");
@@ -502,24 +504,27 @@ function addCommentEditLink(element) {
 
     element.className += " " + extensionCommentEditClassName;
 }
+    
+/*** When your own comments are displayed, add an edit option to them. ***/
 function addCommentEditUI() {
-    if(!isLoggedIn) { return; }
+    if (!isLoggedIn) { return; }
 
     var KADiscussionPackage = null;
     try {
         KADiscussionPackage = KAdefine.require("./javascript/discussion-package/discussion.js");
     } catch(e) {}
 
-    if(!KADiscussionPackage || !KADiscussionPackage.data) { return; }
-    if((!KADiscussionPackage.data.focusId || !KADiscussionPackage.data.focusKind) && !commentLinkGenerator) { return; }
+    if (!KADiscussionPackage || !KADiscussionPackage.data) { return; }
+    if ((!KADiscussionPackage.data.focusId || !KADiscussionPackage.data.focusKind) && !commentLinkGenerator) { return; }
 
     let uneditedComments = document.querySelectorAll(".reply:not(." + extensionCommentEditClassName + ")");
-    for(let i = 0; i < uneditedComments.length; i++) {
+    for (let i = 0; i < uneditedComments.length; i++) {
         addCommentEditLink(uneditedComments[i]);
     }
 }
 
-function locationElm(){
+/*** Allows you to easily add a custom location in bio settings. ***/
+function locationElm() {
     var locationDiv = document.getElementById('s2id_autogen1');
     if(!locationDiv || !userInfo.userLocation) return;
     document.getElementById('bio-picker').style.setProperty('resize', 'none');
@@ -528,50 +533,51 @@ function locationElm(){
     locationDiv.innerHTML = '<input id="kae-location-textarea" type="text" value="' + locDisp + '">'
 
     var saveBtn = document.getElementsByClassName('kui-button')[2];
-    saveBtn.addEventListener('click', function(){
-      var locationText = document.getElementById('kae-location-textarea').value;
-      document.getElementsByClassName("location-text")[0].innerHTML = locationText;
-      setTimeout(function(){
+    saveBtn.addEventListener('click', function() {
         var locationText = document.getElementById('kae-location-textarea').value;
-        var tempData = {
-          userKey: KA._userProfileData.userKey,
-          userLocation: {
-            displayText: locationText
-          }
-        };
-        var req = new XMLHttpRequest();
-        req.open("POST", "https://www.khanacademy.org/api/internal/user/profile");
-        req.setRequestHeader('x-ka-fkey', getSession());
-        req.setRequestHeader('content-type', "application/json");
-        req.addEventListener("load", function(){
-          location.reload();
-        });
-        req.send(JSON.stringify(tempData));
-      },1000);
-
+        document.getElementsByClassName("location-text")[0].innerHTML = locationText;
+        setTimeout(function() {
+            var locationText = document.getElementById('kae-location-textarea').value;
+            var tempData = {
+                  userKey: KA._userProfileData.userKey,
+                  userLocation: {
+                        displayText: locationText
+                  }
+            };
+            var req = new XMLHttpRequest();
+            req.open("POST", "https://www.khanacademy.org/api/internal/user/profile");
+            req.setRequestHeader('x-ka-fkey', getSession());
+            req.setRequestHeader('content-type', "application/json");
+            req.addEventListener("load", function() {
+                location.reload();
+            });
+            req.send(JSON.stringify(tempData));
+        }, 1000);
     });
     clearInterval(locElm);
 }
 
-function evalFeatures(){
-  clearInterval(addEvalFeatures);
-  var container = document.getElementsByClassName('eval-container')[0];
-  if(!container) return;
-  var commentTextarea = document.getElementsByClassName('eval-left')[0].childNodes[5].lastElementChild.lastElementChild.firstElementChild;
-  var replyButton = document.createElement('button');
-  replyButton.innerText = "Auto Reply";
-  replyButton.id = "kae-auto-reply";
-  replyButton.className = "buttonStyle_1quqytj";
-  replyButton.style.cssText = "margin-left: 2px; "
-  replyButton.addEventListener('click', function(){
+/*** WIP? ***/
+function evalFeatures() {
+    clearInterval(addEvalFeatures);
+    var container = document.getElementsByClassName('eval-container')[0];
+    if(!container) return;
+    var commentTextarea = document.getElementsByClassName('eval-left')[0].childNodes[5].lastElementChild.lastElementChild.firstElementChild;
+    var replyButton = document.createElement('button');
+    replyButton.innerText = "Auto Reply";
+    replyButton.id = "kae-auto-reply";
+    replyButton.className = "buttonStyle_1quqytj";
+    replyButton.style.cssText = "margin-left: 2px; "
+    replyButton.addEventListener('click', function() {
 
-  });
-  document.getElementsByClassName("edit-content-form__formatting-tips")[0].parentNode.insertBefore(replyButton, document.getElementsByClassName("edit-content-form__formatting-tips")[0]);
-  document.getElementById('kae-auto-reply').parentNode.insertBefore(document.createElement('br'),document.getElementsByClassName('edit-content-form__formatting-tips')[0]);
+    });
+    document.getElementsByClassName("edit-content-form__formatting-tips")[0].parentNode.insertBefore(replyButton, document.getElementsByClassName("edit-content-form__formatting-tips")[0]);
+    document.getElementById('kae-auto-reply').parentNode.insertBefore(document.createElement('br'),document.getElementsByClassName('edit-content-form__formatting-tips')[0]);
 
-  clearInterval(addEvalFeatures);
+    clearInterval(addEvalFeatures);
 }
 
+/*** Add a "Report" button under all programs, that sends a report directly to Guardians. ***/
 function reportButton() {
     if(!programData.scratchpad) return;
     var userKaid = KAdefine.require("./javascript/shared-package/ka.js").getKaid();
@@ -583,9 +589,7 @@ function reportButton() {
         reportButton.id = "kae-report-button";
         reportButton.href = "javascript:void(0)";
         reportButton.role = "button";
-        reportButton.innerHTML = `
-              <span>Report</span>
-        `;
+        reportButton.innerHTML = "<span>Report</span>";
         buttons.appendChild(reportButton);
 
         var backdrop = document.createElement('div');
@@ -766,93 +770,99 @@ function reportButton() {
     clearInterval(addReportButton);
 }
 
+/*** Add custom thumbnails to programs, found in program settings. ***/
 function addThumbnail(){
-  var sel = document.getElementsByClassName("default_k9i44h");
-  var test = document.getElementById("kae-img");
-  if(sel.length < 1 || !programData.scratchpad || test) return;
-  //clearInterval(thumbnailInt);
-  console.log("runngin")
-  function toDataURL(url, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function() {
-      var reader = new FileReader();
-      reader.onloadend = function() {
-        callback(reader.result);
-      }
-      reader.readAsDataURL(xhr.response);
-    };
-    xhr.open('GET', url);
-    xhr.responseType = 'blob';
-    xhr.send();
-  }
+    var sel = document.getElementsByClassName("default_k9i44h");
+    var test = document.getElementById("kae-img");
+    if(sel.length < 1 || !programData.scratchpad || test) return;
+    //clearInterval(thumbnailInt);
+    console.log("runngin")
+    function toDataURL(url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function() {
+              var reader = new FileReader();
+              reader.onloadend = function() {
+                    callback(reader.result);
+              }
+              reader.readAsDataURL(xhr.response);
+        };
+        xhr.open('GET', url);
+        xhr.responseType = 'blob';
+        xhr.send();
+    }
 
-  var modal = document.getElementsByClassName("modal_1lylzj-o_O-padded_ke4dn3")[0];
-  var input = document.createElement('input');
-  input.id = "kae-img";
-  input.type = "text";
-  input.style = "border-radius: 3px; border: 1px solid #ccc; padding: 8px; margin: 0 auto; display: block; width: 200px;"
-  input.placeholder = "URL"
-  modal.insertBefore(input, modal.childNodes[4]);
-  var title = document.createElement("div");
-  title.style = "margin-bottom: 4px"
-  title.className = "kui-labeledfield__title";
-  title.innerHTML = "Program Thumbnail";
-  modal.insertBefore(title, input);
-  var warning = document.createElement("p");
-  warning.textContent = "Make sure your image is not too large, and served from an https site."
-  modal.insertBefore(warning, modal.childNodes[6]);
-  var submitButton = document.getElementsByClassName("base_1h2bej0-o_O-notDisabled_ro0g1e-o_O-base_6ln5u2-o_O-notTransparent_xz424u-o_O-notDisabled_85jsd4")[0];
-  submitButton.addEventListener("click", function(){
-    console.log("the button was pressed")
-    var imgUrl = document.getElementById("kae-img").value;
-    if(imgURL.length < 5) return;
-    toDataURL(imgUrl, function(dataUrl) {
-      var tempData = {
-        userKey: KA._userProfileData.userKey,
-        title: programData.scratchpad.title,
-        revision: {
-          image_url: dataUrl,
-          code: programData.scratchpad.revision.code
-        }
-      };
-      setTimeout(function(){
-        var req = new XMLHttpRequest();
-        req.open("PUT", "https://www.khanacademy.org/api/internal/scratchpads/" + programData.scratchpad.globalId.substring(1,17));
-        req.setRequestHeader('x-ka-fkey', getSession());
-        req.setRequestHeader('content-type', "application/json");
-        req.send(JSON.stringify(tempData));
-      },1000);
+    var modal = document.getElementsByClassName("modal_1lylzj-o_O-padded_ke4dn3")[0];
+    var input = document.createElement('input');
+    input.id = "kae-img";
+    input.type = "text";
+    input.style = "border-radius: 3px; border: 1px solid #ccc; padding: 8px; margin: 0 auto; display: block; width: 200px;"
+    input.placeholder = "URL"
+    modal.insertBefore(input, modal.childNodes[4]);
+    
+    var title = document.createElement("div");
+    title.style = "margin-bottom: 4px"
+    title.className = "kui-labeledfield__title";
+    title.innerHTML = "Program Thumbnail";
+    modal.insertBefore(title, input);
+    
+    var warning = document.createElement("p");
+    warning.textContent = "Make sure your image is not too large, and served from an https site."
+    modal.insertBefore(warning, modal.childNodes[6]);
+    
+    var submitButton = document.getElementsByClassName("base_1h2bej0-o_O-notDisabled_ro0g1e-o_O-base_6ln5u2-o_O-notTransparent_xz424u-o_O-notDisabled_85jsd4")[0];
+    submitButton.addEventListener("click", function() {
+        console.log("the button was pressed")
+        var imgUrl = document.getElementById("kae-img").value;
+        if (imgURL.length < 5) return;
+        toDataURL(imgUrl, function(dataUrl) {
+            var tempData = {
+                userKey: KA._userProfileData.userKey,
+                title: programData.scratchpad.title,
+                revision: {
+                    image_url: dataUrl,
+                    code: programData.scratchpad.revision.code
+                }
+            };
+            setTimeout(function() {
+                var req = new XMLHttpRequest();
+                req.open("PUT", "https://www.khanacademy.org/api/internal/scratchpads/" + programData.scratchpad.globalId.substring(1,17));
+                req.setRequestHeader('x-ka-fkey', getSession());
+                req.setRequestHeader('content-type', "application/json");
+                req.send(JSON.stringify(tempData));
+            }, 1000);
+        });
     });
-  });
 }
 
-function notifStuff(){
-  var dropdown = document.getElementsByClassName("scrollDropdown_1jabbia")[0];
-  if(!dropdown) return;
-  var buttons = document.getElementsByClassName("kae-notif-delete");
-  var notifList = document.getElementsByClassName("scrollDropdown_1jabbia")[0].childNodes[0].childNodes;
-  if(buttons.length >= notifList.length) return;
-  var keyGex = /keys=(\w+)/;
-  for(var i = 0; i < notifList.length; i++){
-    if(notifList[i].childNodes[0].childNodes.length < 2 && notifList[i].className !== "empty_1vm0jfu-o_O-loadingMore_opjgof"){
-      var deleteButton = document.createElement("span");//button
-      deleteButton.className = "kae-notif-delete";
-      deleteButton.innerHTML = "x"
-      deleteButton.addEventListener("click", function(){
-        var locations = this.parentNode.childNodes[0].href;
-        var notifKey = keyGex.exec(locations)[1];
-        console.log("Notif key is: " + notifKey);
-        var req = new XMLHttpRequest();
-        req.open("DELETE", "/api/internal/user/notifications/" + notifKey);
-        req.setRequestHeader("x-ka-fkey", getSession());
-        req.addEventListener("load", function(){
-          console.log("Notif deleted")
-        });
-        req.send();
-      });
-      notifList[i].childNodes[0].appendChild(deleteButton);
+
+function deleteNotifs() {
+    var dropdown = document.getElementsByClassName("scrollDropdown_1jabbia")[0];
+    if (!dropdown) return;
+    var buttons = document.getElementsByClassName("kae-notif-delete");
+    var notifList = document.getElementsByClassName("scrollDropdown_1jabbia")[0].childNodes[0].childNodes;
+    if (buttons.length >= notifList.length) return;
+    var keyGex = /keys=(\w+)/;
+    for (var i = 0; i < notifList.length; i++) {
+        if (notifList[i].childNodes[0].childNodes.length < 2 && notifList[i].className !== "empty_1vm0jfu-o_O-loadingMore_opjgof") {
+            var deleteButton = document.createElement("span"); // button
+            deleteButton.className = "kae-notif-delete";
+            deleteButton.innerHTML = "x"
+            deleteButton.addEventListener("click", function(){
+                var locations = this.parentNode.childNodes[0].href;
+                var notifKey = keyGex.exec(locations)[1];
+                console.log("Notif key is: " + notifKey);
+                var req = new XMLHttpRequest();
+                req.open("DELETE", "/api/internal/user/notifications/" + notifKey);
+                req.setRequestHeader("x-ka-fkey", getSession());
+                req.addEventListener("load", function() {
+                    console.log("Notif deleted")
+                });
+                req.send();
+            });
+            notifList[i].childNodes[0].appendChild(deleteButton);
+        }
     }
-  }
+    clearInterval(deleteNotifs);
 }
 
 if (window.location.host === 'www.khanacademy.org') {
@@ -860,7 +870,7 @@ if (window.location.host === 'www.khanacademy.org') {
     var notifications = setInterval(updateNotifs, 50);
     var addEditUIInterval = setInterval(addCommentEditUI, 250);
     var addStopNotifOverflow = setInterval(stopNotifOverflow, 250);
-    var notifStuffInt = setInterval(notifStuff, 50);
+    var deleteNotifs = setInterval(deleteNotif, 50);
     if (url[3] === 'computer-programming' || url[3] === 'hour-of-code') {
         darkTheme();
         var addDarkToggleButton = setInterval(darkToggleButton, 250);
@@ -888,11 +898,11 @@ if (window.location.host === 'www.khanacademy.org') {
 
 // Notification stuff.
 setInterval(function() {
-  if(KA._userProfileData && typeof chrome !== "undefined"){
-    chrome.runtime.sendMessage("gniggljddhajnfbkjndcgnomkddfcial", {
-        "fkey": getSession(),
-        "username": KA._userProfileData.username
-    });
-  }
+    if (KA._userProfileData && typeof chrome !== "undefined") {
+        chrome.runtime.sendMessage("gniggljddhajnfbkjndcgnomkddfcial", {
+            "fkey": getSession(),
+            "username": KA._userProfileData.username
+        });
+    }
 }, 1000);
 })();
