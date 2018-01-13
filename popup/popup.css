@@ -6,16 +6,26 @@ body {
 }
 
 #main {
-    margin: 4%;
+    margin: 4% 4% 7% 4%;
     color: #000000;
 }
 
 #header {
     background: #1fab54;
-    padding: 4%;
+    padding: 3% 4%;
     color: #FFFFFF;
+    box-shadow: 1px 1px 2px #a5a5a5;
+    display: flex;
+    align-items: center;
+}
+
+#header img { 
+    float: left;
+    display: inline-block;
+    margin-right: 10px;
 }
 
 #header h2 {
     margin: 0;
+    font-weight: 100;
 }

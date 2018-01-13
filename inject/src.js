@@ -30,11 +30,10 @@ var userInfo = {};
 var programData = {};
 var userPrograms = {};
 
-var kaid = KAdefine.require("./javascript/shared-package/ka.js").getKaid(),
+const kaid = KAdefine.require("./javascript/shared-package/ka.js").getKaid(),
     isLoggedIn = KAdefine.require("./javascript/shared-package/ka.js").isLoggedIn();
 
-var kaid = KAdefine.require("./javascript/shared-package/ka.js").getKaid(),
-    isLoggedIn = KAdefine.require("./javascript/shared-package/ka.js").isLoggedIn();
+const chromeid = /*"gniggljddhajnfbkjndcgnomkddfcial"*/ "mkgmjebgaipjiijmagihicffklbnnljf";
 
 var commentLinkGenerator = null;
 
@@ -107,7 +106,7 @@ CommentLinker.prototype = {
         });
     }
 };
-
+    
 if (url[3] === 'computer-programming' || url[3] === 'hour-of-code') {
     var programId = url[5].substring(0, (url[5].includes('?') ? url[5].indexOf('?') : 16));
     getJSON(programUrl + programId, function(data) {
@@ -286,6 +285,27 @@ function getProfileData() {
     tableBody.innerHTML += '<tr><td class="user-statistics-label">Average spinoffs received</td><td>' + ((Math.round((numSpinoffs/numPrograms) * 100) / 100) || 0)  + '</td></tr>';
     tableBody.innerHTML += '<tr><td class="user-statistics-label">User kaid</td><td>' + kaid + '</td></tr>';
     clearInterval(profileData);
+}
+
+function reportProgram(kaid, id, reason, callback) {
+    var port = chrome.runtime.connect(chromeid, { "name": "reportprogram" });
+    port.onMessage.addListener(callback);
+    port.postMessage({
+        "kaid": kaid,
+        "reason": reason,
+        "programId": id
+    });
+}
+
+// test function - to be removed
+window.report = function() {
+    reportProgram(kaid, +prompt("Program id (to report): "), prompt("Reason: "), function(response) {
+        if(chrome.runtime.lastError) {
+            console.error("Error", chrome.runtime.lastError);
+        } else {
+            console[response.success ? "log" : "warn"](response.message);
+        }
+    });
 }
 
 /*** Add editor dark theme ***/
@@ -835,7 +855,7 @@ function addThumbnail(){
 }
 
 
-function deleteNotifs() {
+function deleteNotif() {
     var dropdown = document.getElementsByClassName("scrollDropdown_1jabbia")[0];
     if (!dropdown) return;
     var buttons = document.getElementsByClassName("kae-notif-delete");
@@ -898,11 +918,13 @@ if (window.location.host === 'www.khanacademy.org') {
 
 // Notification stuff.
 setInterval(function() {
-    if (KA._userProfileData && typeof chrome !== "undefined") {
-        chrome.runtime.sendMessage("gniggljddhajnfbkjndcgnomkddfcial", {
-            "fkey": getSession(),
-            "username": KA._userProfileData.username
-        });
-    }
+  if(KA._userProfileData && typeof chrome !== "undefined"){
+    chrome.runtime.sendMessage(chromeid, {
+        "type": "notif",
+        "fkey": getSession(),
+        "kaid": kaid
+    });
+  }
 }, 1000);
+
 })();
