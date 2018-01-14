@@ -870,6 +870,7 @@ function deleteNotif() {
         var notifURL = notifElm.childnodes[0].href.match(/[?&]keys(=([^&#]*)|&|#|$)/)[2];
         if(deleted.indexOf(notifURL) > -1){
             notifElm.parentNode.removeChild(notifElm);
+            continue;
         }
         if(notifElm.childNodes.length >= 2) continue;
         var linkElm = notifElm.childNodes[0];
