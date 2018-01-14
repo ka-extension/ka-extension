@@ -4,9 +4,9 @@
 
 (function() {
 
-var programUrl = 'https://www.khanacademy.org/api/internal/show_scratchpad?scratchpad_id=';
-var userApi = 'https://www.khanacademy.org/api/internal/user/profile';
-var userProgramsApi = 'https://www.khanacademy.org/api/internal/user/scratchpads';
+var programUrl = "https://www.khanacademy.org/api/internal/show_scratchpad?scratchpad_id=";
+var userApi = "https://www.khanacademy.org/api/internal/user/profile";
+var userProgramsApi = "https://www.khanacademy.org/api/internal/user/scratchpads";
 
 var aceThemes = {
     themes: {},
@@ -24,7 +24,7 @@ aceThemes.addTheme("monokai", ".ace-monokai .ace_gutter {background: #2F3129;col
 /* Ace Textmate theme.  Taken from https://github.com/ajaxorg/ace/blob/master/lib/ace/theme/textmate.css */
 aceThemes.addTheme("tm", ".ace-tm .ace_gutter {background: #f0f0f0;color: #333;}.ace-tm .ace_print-margin {width: 1px;background: #e8e8e8;}.ace-tm .ace_fold {background-color: #6B72E6;}.ace-tm {background-color: #FFFFFF;color: black;}.ace-tm .ace_cursor {color: black;}.ace-tm .ace_invisible {color: rgb(191, 191, 191);}.ace-tm .ace_storage,.ace-tm .ace_keyword {color: blue;}.ace-tm .ace_constant {color: rgb(197, 6, 11);}.ace-tm .ace_constant.ace_buildin {color: rgb(88, 72, 246);}.ace-tm .ace_constant.ace_language {color: rgb(88, 92, 246);}.ace-tm .ace_constant.ace_library {color: rgb(6, 150, 14);}.ace-tm .ace_invalid {background-color: rgba(255, 0, 0, 0.1);color: red;}.ace-tm .ace_support.ace_function {color: rgb(60, 76, 114);}.ace-tm .ace_support.ace_constant {color: rgb(6, 150, 14);}.ace-tm .ace_support.ace_type,.ace-tm .ace_support.ace_class {color: rgb(109, 121, 222);}.ace-tm .ace_keyword.ace_operator {color: rgb(104, 118, 135);}.ace-tm .ace_string {color: rgb(3, 106, 7);}.ace-tm .ace_comment {color: rgb(76, 136, 107);}.ace-tm .ace_comment.ace_doc {color: rgb(0, 102, 255);}.ace-tm .ace_comment.ace_doc.ace_tag {color: rgb(128, 159, 191);}.ace-tm .ace_constant.ace_numeric {color: rgb(0, 0, 205);}.ace-tm .ace_variable {color: rgb(49, 132, 149);}.ace-tm .ace_xml-pe {color: rgb(104, 104, 91);}.ace-tm .ace_entity.ace_name.ace_function {color: #0000A2;}.ace-tm .ace_heading {color: rgb(12, 7, 255);}.ace-tm .ace_list {color:rgb(185, 6, 144);}.ace-tm .ace_meta.ace_tag {color:rgb(0, 22, 142);}.ace-tm .ace_string.ace_regex {color: rgb(255, 0, 0)}.ace-tm .ace_marker-layer .ace_selection {background: rgb(181, 213, 255);}.ace-tm.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px white;}.ace-tm .ace_marker-layer .ace_step {background: rgb(252, 255, 0);}.ace-tm .ace_marker-layer .ace_stack {background: rgb(164, 229, 101);}.ace-tm .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgb(192, 192, 192);}.ace-tm .ace_marker-layer .ace_active-line {background: rgba(0, 0, 0, 0.07);}.ace-tm .ace_gutter-active-line {background-color : #dcdcdc;}.ace-tm .ace_marker-layer .ace_selected-word {background: rgb(250, 250, 255);border: 1px solid rgb(200, 200, 250);}.ace-tm .ace_indent-guide {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==) right repeat-y;}");
 
-var url = window.location.href.split('/');
+var url = window.location.href.split("/");
 
 var userInfo = {};
 var programData = {};
@@ -33,7 +33,7 @@ var userPrograms = {};
 const kaid = KAdefine.require("./javascript/shared-package/ka.js").getKaid(),
     isLoggedIn = KAdefine.require("./javascript/shared-package/ka.js").isLoggedIn();
 
-const chromeid = /*"gniggljddhajnfbkjndcgnomkddfcial"*/ "mkgmjebgaipjiijmagihicffklbnnljf";
+const chromeid = "gpobmaacoakebjfacgabhanmlbalgafk" /* "mkgmjebgaipjiijmagihicffklbnnljf" */;
 
 var commentLinkGenerator = null;
 
@@ -55,7 +55,7 @@ function getJSON(url, success) {
     var t = new XMLHttpRequest();
     t.open("GET", url, !0);
     t.responseType = "json";
-    t.setRequestHeader('x-ka-fkey', getSession());
+    t.setRequestHeader("X-KA-FKey", getSession());
     t.addEventListener("load", function() {
         if(t.readyState === t.DONE) { success(t.response); }
     });
@@ -107,18 +107,18 @@ CommentLinker.prototype = {
     }
 };
 
-if (url[3] === 'computer-programming' || url[3] === 'hour-of-code') {
-    var programId = url[5].substring(0, (url[5].includes('?') ? url[5].indexOf('?') : 16));
+if (url[3] === "computer-programming" || url[3] === "hour-of-code") {
+    var programId = url[5].substring(0, (url[5].includes("?") ? url[5].indexOf("?") : 16));
     getJSON(programUrl + programId, function(data) {
         console.log(data);
         programData = data;
     });
 }
 
-if (url[3] === 'profile' && !url[5] || url.length < 5) {
+if (url[3] === "profile" && !url[5] || url.length < 5) {
     var username = url[4] || KA._userProfileData.username;
     var uparam = "?" + (username.substr(0, 5) == "kaid_" ? "kaid" : "username") + "=" + username;
-    getJSON(userProgramsApi + uparam + '&projection={%22scratchpads%22:[{%22sumVotesIncremented%22:1,%22spinoffCount%22:1}]}&limit=1500', function(data) {
+    getJSON(userProgramsApi + uparam + "&projection={%22scratchpads%22:[{%22sumVotesIncremented%22:1,%22spinoffCount%22:1}]}&limit=1500", function(data) {
         console.log(data);
         userPrograms = data;
     });
@@ -136,7 +136,7 @@ function newDate(date) {
 
 /*** When notifications are more than 9, it will show the real value and not 9+ anymore. ***/
 function updateNotifs() {
-    var greenCircle = document.getElementsByClassName('notificationsBadge_16g2pyz')[0];
+    var greenCircle = document.getElementsByClassName("notificationsBadge_16g2pyz")[0];
     if(!greenCircle) { return; }
     if(KA._userProfileData.countBrandNewNotifications === 0){
       greenCircle.textContent = 1;
@@ -148,15 +148,15 @@ function updateNotifs() {
 }
 
 function stopNotifOverflow(){
-    var notifList = document.getElementsByClassName('scrollDropdown_1jabbia')[0];
+    var notifList = document.getElementsByClassName("scrollDropdown_1jabbia")[0];
     if(!notifList) return;
-    notifList.style.setProperty('overflow-x', 'hidden');
+    notifList.style.setProperty("overflow-x", "hidden");
     clearInterval(addStopNotifOverflow)
 }
 
 /***  Programs no longer have a max width. ***/
 function widenProgram() {
-    var s = document.getElementsByClassName('wrap_xyqcvi');
+    var s = document.getElementsByClassName("wrap_xyqcvi");
     if(!s[0]) { return; }
     s[0].style.setProperty("max-width", "none", "important");
     clearInterval(widenprogram);
@@ -164,9 +164,9 @@ function widenProgram() {
 
 /*** Add back the community guidelines next to dicussion under programs. ***/
 function addGuidelines() {
-    var v = document.getElementsByClassName('video-discussion')[0],
-        g = document.getElementsByClassName('main-discussion-guidelines discussion-guidelines')[0],
-        f = document.getElementsByClassName('footer_crtwg')[0];
+    var v = document.getElementsByClassName("video-discussion")[0],
+        g = document.getElementsByClassName("main-discussion-guidelines discussion-guidelines")[0],
+        f = document.getElementsByClassName("footer_crtwg")[0];
     if(!v) return;
     v.style.setProperty("float", "left");
     v.style.setProperty("margin", "0px");
@@ -184,28 +184,28 @@ function addGuidelines() {
 /*** When viewing a program, it shows how many flags the program has. ***/
 function addFlagsToProgram() {
     if(!programData.scratchpad) return;
-    var title = document.getElementsByClassName('editTitle_swrcbw');
-    var flag = document.getElementsByClassName('discussion-meta-controls');
+    var title = document.getElementsByClassName("editTitle_swrcbw");
+    var flag = document.getElementsByClassName("discussion-meta-controls");
     if (programData.scratchpad.kaid !== kaid && !KA._userProfileData.isModerator) {
         var programFlags = programData.scratchpad.flags;
 
         if(flag.length < 1 && title.length < 1) { return; }
 
         try {
-            var flagString = ' • ' + programData.scratchpad.flags.length;
+            var flagString = " • " + programData.scratchpad.flags.length;
             flag[0].childNodes[2].innerHTML += flagString;
 
             if (flag[0].childNodes[2].className === "link_1uvuyao-o_O-computing_77ub1h-o_O-disabled_2gos5") {
                 flag[0].childNodes[2].className = "link_1uvuyao-o_O-computing_77ub1h";
             }
         } catch(flag) {
-            console.log('Flag is not defined.');
+            console.log("Flag is not defined.");
             return;
         }
 
         // Hover over flag button to show flag reasons.
         var flagBtn = document.getElementsByClassName("link_1uvuyao-o_O-computing_77ub1h")[0];
-        var reasons = '';
+        var reasons = "";
         programFlags.forEach(function(element) {
             reasons += element + "\n";
         });
@@ -231,7 +231,7 @@ function showProgramsFlags() {
         objs.push(a);
         if(counter === programLinks.length - 1) {
             for(result = objs.sort(function(a, b) { return ids.indexOf(a.id) < ids.indexOf(b.id) ? -1 : 1 }), a = 0; a < result.length; a++) {
-                programLinks[a].nextSibling.nextSibling.innerHTML += " \u00b7 <span title=\"" + result[a].flags.join('\n') + "\">" + result[a].flags.length + " Flag" + (1 === result[a].flags.length ? "" : "s");
+                programLinks[a].nextSibling.nextSibling.innerHTML += " \u00b7 <span title=\"" + result[a].flags.join("\n") + "\">" + result[a].flags.length + " Flag" + (1 === result[a].flags.length ? "" : "s");
             }
         }
     }
@@ -256,13 +256,13 @@ function showProgramDates() {
     var updatedDate = newDate(programData.scratchpad.date);
     var myFlags = programData.scratchpad.flags.length;
 
-    date.nextElementSibling.innerHTML = "<br>Created: " + createdDate + "<br>Last updated: " + updatedDate + (programData.scratchpad.kaid === kaid ? ('<br>Flags: ' + myFlags) : '') + (programData.scratchpad.hideFromHotlist ? '<br><span style="color:#af2f18">This program is hidden from the hotlist.</span>' : '<br><span style="color:#18af18">This program is not hidden from the hotlist.</span>');
+    date.nextElementSibling.innerHTML = "<br>Created: " + createdDate + "<br>Last updated: " + updatedDate + (programData.scratchpad.kaid === kaid ? ("<br>Flags: " + myFlags) : "") + (programData.scratchpad.hideFromHotlist ? "<br><span style=\"color:#af2f18\">This program is hidden from the hotlist.</span>" : "<br><span style=\"color:#18af18\">This program is not hidden from the hotlist.</span>");
     clearInterval(getDates);
 }
 
 /*** Display more info about a user when viewing their profile. ***/
 function getProfileData() {
-    var profile = document.getElementsByClassName('user-statistics-table');
+    var profile = document.getElementsByClassName("user-statistics-table");
     if(profile.length < 1 || !userPrograms.scratchpads) { return; }
     var table = profile[0];
     var tableBody = table.childNodes[0];
@@ -277,34 +277,23 @@ function getProfileData() {
         numVotes += scratchpad.sumVotesIncremented;
         numSpinoffs += scratchpad.spinoffCount;
     }
-    tableBody.innerHTML += '<tr><td class="user-statistics-label">Account created</td><td>' + (userInfo.dateJoined ? newDate(dateJoined)  : "Unknown") + '</td></tr>';
-    tableBody.innerHTML += '<tr><td class="user-statistics-label">Programs</td><td>' + numPrograms + '</td></tr>';
-    tableBody.innerHTML += '<tr><td class="user-statistics-label">Votes received</td><td>' + numVotes + '</td></tr>';
-    tableBody.innerHTML += '<tr><td class="user-statistics-label">Spinoffs received</td><td>' + numSpinoffs + '</td></tr>';
-    tableBody.innerHTML += '<tr><td class="user-statistics-label">Average votes received</td><td>' + ((Math.round((numVotes/numPrograms) * 100) / 100) || 0) + '</td></tr>';
-    tableBody.innerHTML += '<tr><td class="user-statistics-label">Average spinoffs received</td><td>' + ((Math.round((numSpinoffs/numPrograms) * 100) / 100) || 0)  + '</td></tr>';
-    tableBody.innerHTML += '<tr><td class="user-statistics-label">User kaid</td><td>' + kaid + '</td></tr>';
+    tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">Account created</td><td>" + (userInfo.dateJoined ? newDate(dateJoined)  : "Unknown") + "</td></tr>";
+    tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">Programs</td><td>" + numPrograms + "</td></tr>";
+    tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">Votes received</td><td>" + numVotes + "</td></tr>";
+    tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">Spinoffs received</td><td>" + numSpinoffs + "</td></tr>";
+    tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">Average votes received</td><td>" + ((Math.round((numVotes/numPrograms) * 100) / 100) || 0) + "</td></tr>";
+    tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">Average spinoffs received</td><td>" + ((Math.round((numSpinoffs/numPrograms) * 100) / 100) || 0)  + "</td></tr>";
+    tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">User kaid</td><td>" + kaid + "</td></tr>";
     clearInterval(profileData);
 }
 
 function reportProgram(kaid, id, reason, callback) {
-    var port = chrome.runtime.connect(chromeid, { "name": "reportprogram" });
+    var port = chrome.runtime.connect(chromeid, { name: "reportprogram" });
     port.onMessage.addListener(callback);
     port.postMessage({
-        "kaid": kaid,
-        "reason": reason,
-        "programId": id
-    });
-}
-
-// test function - to be removed
-window.report = function() {
-    reportProgram(kaid, +prompt("Program id (to report): "), prompt("Reason: "), function(response) {
-        if(chrome.runtime.lastError) {
-            console.error("Error", chrome.runtime.lastError);
-        } else {
-            console[response.success ? "log" : "warn"](response.message);
-        }
+        kaid: kaid,
+        reason: reason,
+        programId: id
     });
 }
 
@@ -545,19 +534,19 @@ function addCommentEditUI() {
 
 /*** Allows you to easily add a custom location in bio settings. ***/
 function locationElm() {
-    var locationDiv = document.getElementById('s2id_autogen1');
-    if(!locationDiv || !userInfo.userLocation) return;
-    document.getElementById('bio-picker').style.setProperty('resize', 'none');
-    document.getElementById('bio-picker').style.setProperty('height', '90px');
+    var locationDiv = document.getElementById("s2id_autogen1");
+    if(!locationDiv || !userInfo.userLocation) { return; }
+    document.getElementById("bio-picker").style.setProperty("resize", "none");
+    document.getElementById("bio-picker").style.setProperty("height", "90px");
     var locDisp = userInfo.userLocation.displayText;
-    locationDiv.innerHTML = '<input id="kae-location-textarea" type="text" value="' + locDisp + '">'
+    locationDiv.innerHTML = "<input id=\"kae-location-textarea\" type=\"text\" value=\"'"+ locDisp + "\">"
 
-    var saveBtn = document.getElementsByClassName('kui-button')[2];
-    saveBtn.addEventListener('click', function() {
-        var locationText = document.getElementById('kae-location-textarea').value;
+    var saveBtn = document.getElementsByClassName("kui-button")[2];
+    saveBtn.addEventListener("click", function() {
+        var locationText = document.getElementById("kae-location-textarea").value;
         document.getElementsByClassName("location-text")[0].innerHTML = locationText;
         setTimeout(function() {
-            var locationText = document.getElementById('kae-location-textarea').value;
+            var locationText = document.getElementById("kae-location-textarea").value;
             var tempData = {
                   userKey: KA._userProfileData.userKey,
                   userLocation: {
@@ -566,8 +555,8 @@ function locationElm() {
             };
             var req = new XMLHttpRequest();
             req.open("POST", "https://www.khanacademy.org/api/internal/user/profile");
-            req.setRequestHeader('x-ka-fkey', getSession());
-            req.setRequestHeader('content-type', "application/json");
+            req.setRequestHeader("X-KA-FKey", getSession());
+            req.setRequestHeader("Content-type", "application/json");
             req.addEventListener("load", function() {
                 location.reload();
             });
@@ -580,15 +569,15 @@ function locationElm() {
 /*** WIP? ***/
 function evalFeatures() {
     clearInterval(addEvalFeatures);
-    var container = document.getElementsByClassName('eval-container')[0];
+    var container = document.getElementsByClassName("eval-container")[0];
     if(!container) return;
-    var commentTextarea = document.getElementsByClassName('eval-left')[0].childNodes[5].lastElementChild.lastElementChild.firstElementChild;
-    var replyButton = document.createElement('button');
+    var commentTextarea = document.getElementsByClassName("eval-left")[0].childNodes[5].lastElementChild.lastElementChild.firstElementChild;
+    var replyButton = document.createElement("button");
     replyButton.innerText = "Auto Reply";
     replyButton.id = "kae-auto-reply";
     replyButton.className = "buttonStyle_1quqytj";
     replyButton.style.cssText = "margin-left: 2px; "
-    replyButton.addEventListener('click', function() {
+    replyButton.addEventListener("click", function() {
 
     });
     document.getElementsByClassName("edit-content-form__formatting-tips")[0].parentNode.insertBefore(replyButton, document.getElementsByClassName("edit-content-form__formatting-tips")[0]);
@@ -713,7 +702,7 @@ function reportButton() {
         
         submitButton.disabled = true;
         reasonTextarea.addEventListener("input", function() {
-            let wordCount = reasonTextarea.value.split(' ').length,
+            let wordCount = reasonTextarea.value.split(" ").length,
                 b = wordCount > 2 && wordCount < 150;
             submitButton.style.backgroundColor = b ? "rgb(113, 179, 7)" : "rgb(186, 190, 194)";
             submitButton.style.cursor = b ? "pointer" : "default";
@@ -764,13 +753,13 @@ function addThumbnail(){
               }
               reader.readAsDataURL(xhr.response);
         };
-        xhr.open('GET', url);
-        xhr.responseType = 'blob';
+        xhr.open("GET", url);
+        xhr.responseType = "blob";
         xhr.send();
     }
 
     var modal = document.getElementsByClassName("modal_1lylzj-o_O-padded_ke4dn3")[0];
-    var input = document.createElement('input');
+    var input = document.createElement("input");
     input.id = "kae-img";
     input.type = "text";
     input.style = "border-radius: 3px; border: 1px solid #ccc; padding: 8px; margin: 0 auto; display: block; width: 200px;"
@@ -862,17 +851,17 @@ function deleteNotif() {
     }
 }
 
-if (window.location.host === 'www.khanacademy.org') {
+if (window.location.host === "www.khanacademy.org") {
     var locElm = setInterval(locationElm, 250);
     var notifications = setInterval(updateNotifs, 50);
     var addEditUIInterval = setInterval(addCommentEditUI, 250);
     var addStopNotifOverflow = setInterval(stopNotifOverflow, 250);
     var deleteNotifs = setInterval(deleteNotif, 50);
-    if (url[3] === 'computer-programming' || url[3] === 'hour-of-code') {
+    if (url[3] === "computer-programming" || url[3] === "hour-of-code") {
         darkTheme();
         var addDarkToggleButton = setInterval(darkToggleButton, 250);
         var thumbnailInt = setInterval(addThumbnail, 250);
-        if(url[4] !== 'new') {
+        if(url[4] !== "new") {
             var addFlags = setInterval(addFlagsToProgram, 250),
                 getDates = setInterval(showProgramDates, 250),
                 widenprogram = setInterval(widenProgram, 250),
@@ -880,7 +869,7 @@ if (window.location.host === 'www.khanacademy.org') {
                 addEvalFeatures = setInterval(evalFeatures, 250),
                 addReportButton = setInterval(reportButton, 250);
         }
-    } else if (url[3] === 'profile') {
+    } else if (url[3] === "profile") {
         var profileData = setInterval(getProfileData, 250);
         if(url[5] == "discussion" && url[6] == "replies") {
             commentLinkGenerator = new CommentLinker(url[4] /* Username or kaid */);
@@ -888,7 +877,7 @@ if (window.location.host === 'www.khanacademy.org') {
             var addCommentsButtonEventListener = setInterval(commentsButtonEventListener, 50),
                 addCommentLinks = setInterval(commentLinks, 100);
         }
-    } else if (url[5] === 'browse') {
+    } else if (url[5] === "browse") {
         var programFlags = setInterval(showProgramsFlags, 500);
     }
 }
@@ -897,9 +886,9 @@ if (window.location.host === 'www.khanacademy.org') {
 setInterval(function() {
   if(KA._userProfileData && typeof chrome !== "undefined"){
     chrome.runtime.sendMessage(chromeid, {
-        "type": "notif",
-        "fkey": getSession(),
-        "kaid": kaid
+        type: "notif",
+        fkey: getSession(),
+        kaid: kaid
     });
   }
 }, 1000);
