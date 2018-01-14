@@ -5,6 +5,10 @@ body {
     margin: 0;
 }
 
+li {
+    margin-bottom: 5px;
+}
+
 #main {
     margin: 4% 4% 7% 4%;
     color: #000000;
@@ -19,7 +23,7 @@ body {
     align-items: center;
 }
 
-#header img { 
+#header img {
     float: left;
     display: inline-block;
     margin-right: 10px;
