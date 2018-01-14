@@ -813,7 +813,10 @@ function addThumbnail(){
 }
 
 
+<<<<<<< HEAD
 /*** Adds the ability to delete notifications ***/
+=======
+>>>>>>> fix
 var deleted = [];
 function deleteNotif() {
     var dropdown = document.getElementsByClassName("scrollDropdown_1jabbia")[0];
@@ -823,6 +826,7 @@ function deleteNotif() {
     if (buttons.length >= notifList.length) return;
 
     for (var i = 0; i < notifList.length; i++) {
+<<<<<<< HEAD
         console.log(notifList[i]);
         var notifElm = notifList[i].childNodes[0];
         if(notifList[i].className.length > 0) continue;
@@ -831,6 +835,17 @@ function deleteNotif() {
             notifElm.parentNode.removeChild(notifElm);
         }
         if(notifElm.childNodes.length >= 2) continue;
+=======
+        if(notifList[i].className.length > 0) continue;
+        var notifElm = notifList[i].childNodes[0];
+        if(notifElm === undefined || notifElm.childNodes.length >= 2) continue;
+        var notifURL = notifElm.childNodes[0].href;
+        if(deleted.indexOf(notifURL.match(/[?&]keys(=([^&#]*)|&|#|$)/)[2]) > -1){
+            notifElm.parentNode.removeChild(notifElm);
+            continue;
+        }
+
+>>>>>>> fix
         var linkElm = notifElm.childNodes[0];
         if(linkElm.className === "loadingSpinner_18tyv6y") continue;
 
