@@ -106,7 +106,7 @@ CommentLinker.prototype = {
         });
     }
 };
-    
+
 if (url[3] === 'computer-programming' || url[3] === 'hour-of-code') {
     var programId = url[5].substring(0, (url[5].includes('?') ? url[5].indexOf('?') : 16));
     getJSON(programUrl + programId, function(data) {
@@ -279,8 +279,8 @@ function getProfileData() {
     }
     tableBody.innerHTML += '<tr><td class="user-statistics-label">Account created</td><td>' + (userInfo.dateJoined ? newDate(dateJoined)  : "Unknown") + '</td></tr>';
     tableBody.innerHTML += '<tr><td class="user-statistics-label">Programs</td><td>' + numPrograms + '</td></tr>';
-    tableBody.innerHTML += '<tr><td class="user-statistics-label">Votes recieved</td><td>' + numVotes + '</td></tr>';
-    tableBody.innerHTML += '<tr><td class="user-statistics-label">Spinoffs recieved</td><td>' + numSpinoffs + '</td></tr>';
+    tableBody.innerHTML += '<tr><td class="user-statistics-label">Votes received</td><td>' + numVotes + '</td></tr>';
+    tableBody.innerHTML += '<tr><td class="user-statistics-label">Spinoffs received</td><td>' + numSpinoffs + '</td></tr>';
     tableBody.innerHTML += '<tr><td class="user-statistics-label">Average votes received</td><td>' + ((Math.round((numVotes/numPrograms) * 100) / 100) || 0) + '</td></tr>';
     tableBody.innerHTML += '<tr><td class="user-statistics-label">Average spinoffs received</td><td>' + ((Math.round((numSpinoffs/numPrograms) * 100) / 100) || 0)  + '</td></tr>';
     tableBody.innerHTML += '<tr><td class="user-statistics-label">User kaid</td><td>' + kaid + '</td></tr>';
@@ -524,7 +524,7 @@ function addCommentEditLink(element) {
 
     element.className += " " + extensionCommentEditClassName;
 }
-    
+
 /*** When your own comments are displayed, add an edit option to them. ***/
 function addCommentEditUI() {
     if (!isLoggedIn) { return; }
@@ -818,17 +818,17 @@ function addThumbnail(){
     input.style = "border-radius: 3px; border: 1px solid #ccc; padding: 8px; margin: 0 auto; display: block; width: 200px;"
     input.placeholder = "URL"
     modal.insertBefore(input, modal.childNodes[4]);
-    
+
     var title = document.createElement("div");
     title.style = "margin-bottom: 4px"
     title.className = "kui-labeledfield__title";
     title.innerHTML = "Program Thumbnail";
     modal.insertBefore(title, input);
-    
+
     var warning = document.createElement("p");
     warning.textContent = "Make sure your image is not too large, and served from an https site."
     modal.insertBefore(warning, modal.childNodes[6]);
-    
+
     var submitButton = document.getElementsByClassName("base_1h2bej0-o_O-notDisabled_ro0g1e-o_O-base_6ln5u2-o_O-notTransparent_xz424u-o_O-notDisabled_85jsd4")[0];
     submitButton.addEventListener("click", function() {
         console.log("the button was pressed")
@@ -855,34 +855,53 @@ function addThumbnail(){
 }
 
 
+/*** Adds the ability to delete notifications ***/
+var deleted = [];
 function deleteNotif() {
     var dropdown = document.getElementsByClassName("scrollDropdown_1jabbia")[0];
     if (!dropdown) return;
     var buttons = document.getElementsByClassName("kae-notif-delete");
     var notifList = document.getElementsByClassName("scrollDropdown_1jabbia")[0].childNodes[0].childNodes;
     if (buttons.length >= notifList.length) return;
-    var keyGex = /keys=(\w+)/;
+
     for (var i = 0; i < notifList.length; i++) {
-        if (notifList[i].childNodes[0].childNodes.length < 2 && notifList[i].className !== "empty_1vm0jfu-o_O-loadingMore_opjgof") {
-            var deleteButton = document.createElement("span"); // button
-            deleteButton.className = "kae-notif-delete";
-            deleteButton.innerHTML = "x"
-            deleteButton.addEventListener("click", function(){
-                var locations = this.parentNode.childNodes[0].href;
-                var notifKey = keyGex.exec(locations)[1];
-                console.log("Notif key is: " + notifKey);
+        console.log(notifList[i]);
+        var notifElm = notifList[i].childNodes[0];
+        if(notifList[i].className.length > 0) continue;
+        var notifURL = notifElm.childnodes[0].href.match(/[?&]keys(=([^&#]*)|&|#|$)/)[2];
+        if(deleted.indexOf(notifURL) > -1){
+            notifElm.parentNode.removeChild(notifElm);
+        }
+        if(notifElm.childNodes.length >= 2) continue;
+        var linkElm = notifElm.childNodes[0];
+        if(linkElm.className === "loadingSpinner_18tyv6y") continue;
+
+        var deleteButton = document.createElement("span");
+        deleteButton.className = "kae-notif-delete";
+        deleteButton.style = "display: block; margin: 0; padding-left: 5px; padding-top: 5px;"
+        deleteButton.innerHTML = `
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21.9 21.9" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 21.9 21.9" width="10" height="10">
+                  <path d="M14.1,11.3c-0.2-0.2-0.2-0.5,0-0.7l7.5-7.5c0.2-0.2,0.3-0.5,0.3-0.7s-0.1-0.5-0.3-0.7l-1.4-1.4C20,0.1,19.7,0,19.5,0  c-0.3,0-0.5,0.1-0.7,0.3l-7.5,7.5c-0.2,0.2-0.5,0.2-0.7,0L3.1,0.3C2.9,0.1,2.6,0,2.4,0S1.9,0.1,1.7,0.3L0.3,1.7C0.1,1.9,0,2.2,0,2.4  s0.1,0.5,0.3,0.7l7.5,7.5c0.2,0.2,0.2,0.5,0,0.7l-7.5,7.5C0.1,19,0,19.3,0,19.5s0.1,0.5,0.3,0.7l1.4,1.4c0.2,0.2,0.5,0.3,0.7,0.3  s0.5-0.1,0.7-0.3l7.5-7.5c0.2-0.2,0.5-0.2,0.7,0l7.5,7.5c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3l1.4-1.4c0.2-0.2,0.3-0.5,0.3-0.7  s-0.1-0.5-0.3-0.7L14.1,11.3z"/>
+                </svg>
+        `
+        deleteButton.addEventListener("click", function(){
+            var href = this.parentNode.childNodes[1].href;
+            var notifKey = href.match(/[?&]keys(=([^&#]*)|&|#|$)/)[2].split(",");
+            deleted.push(notifKey.join(","));
+            for(var i = 0; i < notifKey.length; i++){
                 var req = new XMLHttpRequest();
-                req.open("DELETE", "/api/internal/user/notifications/" + notifKey);
+                req.open("DELETE", "/api/internal/user/notifications/" + notifKey[i]);
                 req.setRequestHeader("x-ka-fkey", getSession());
                 req.addEventListener("load", function() {
-                    console.log("Notif deleted")
+                    console.log("Request returned " + req.status);
                 });
                 req.send();
-            });
-            notifList[i].childNodes[0].appendChild(deleteButton);
-        }
+            }
+            this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);
+            console.log("Notif key is: " + notifKey);
+        });
+        notifElm.insertBefore(deleteButton, linkElm);
     }
-    clearInterval(deleteNotifs);
 }
 
 if (window.location.host === 'www.khanacademy.org') {
