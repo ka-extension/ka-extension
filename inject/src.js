@@ -592,7 +592,7 @@ function evalFeatures() {
 
     });
     document.getElementsByClassName("edit-content-form__formatting-tips")[0].parentNode.insertBefore(replyButton, document.getElementsByClassName("edit-content-form__formatting-tips")[0]);
-    document.getElementById('kae-auto-reply').parentNode.insertBefore(document.createElement('br'),document.getElementsByClassName('edit-content-form__formatting-tips')[0]);
+    document.getElementById("kae-auto-reply").parentNode.insertBefore(document.createElement("br"),document.getElementsByClassName("edit-content-form__formatting-tips")[0]);
 
     clearInterval(addEvalFeatures);
 }
@@ -602,189 +602,147 @@ function reportButton() {
     if(!programData.scratchpad) return;
     var userKaid = KAdefine.require("./javascript/shared-package/ka.js").getKaid();
     if (programData.scratchpad.kaid !== userKaid && !KA._userProfileData.isModerator) {
-        var buttons = document.getElementsByClassName('discussion-meta-controls')[0];
+        var buttons = document.getElementsByClassName("discussion-meta-controls")[0];
         if (!buttons) { return; }
 
-        var reportButton = document.createElement('a');
+        // The report button
+        let reportButton = document.createElement("a");
         reportButton.id = "kae-report-button";
         reportButton.href = "javascript:void(0)";
         reportButton.role = "button";
         reportButton.innerHTML = "<span>Report</span>";
         buttons.appendChild(reportButton);
 
-        var backdrop = document.createElement('div');
+        
+        // The popup modal
+        let backdrop = document.createElement("div");
         backdrop.id = "kae-backdrop";
         document.body.appendChild(backdrop);
 
-        var reportPopup = document.createElement('div');
+        let reportPopup = document.createElement("div");
         reportPopup.id = "kae-report-popup";
-        reportPopup.href = "javascript: void 0"
-        reportPopup.innerHTML = `
-            <a id='kae-exit-button' aria-label="Close">
-              <svg role="img" aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 10 10">
-                <path fill="currentColor" d="
-                M6.26353762,4.99851587 L9.73097464,1.53107884 C10.0836373,1.17841618
-                10.0842213,0.612127047 9.73530496,0.263210718 C9.38395604,-0.0881381913
-                8.81874474,-0.0837668714 8.46743686,0.267541014 L4.99999981,3.73497806
-                L1.5325628,0.267541051 C1.1812549,-0.0837668481 0.616043606,
-                -0.0881381955 0.264694717,0.263210694 C-0.0842215912,0.612127004
-                -0.0836375768,1.17841613 0.269025093,1.5310788 L3.73646206,4.9985158
-                L0.269025109,8.46595276 C-0.083637537,8.81861541 -0.0842215923,
-                9.38490462 0.264694642,9.73382106 C0.616043456,10.0851701 1.18125469,
-                10.0807988 1.53256259,9.72949093 L4.99999988,6.26205363 L8.46743739,
-                9.72949117 C8.8187453,10.0807991 9.38395655,10.0851704 9.73530537,
-                9.73382138 C10.0842216,9.38490498 10.0836375,8.81861579 9.73097488,
-                8.46595313 L6.26353762,4.99851587 Z">
-                </path>
-              </svg>
-            </a>
-            <div id="kae-report-wrap">
-              <h2 id="kae-report-h2">Report for Guardian attention</h2>
-            </div>
-            <p>Instead of flagging, reporting will get official notice faster.</p>
-            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
-            <!-- The form -->
-            <form id="kae-reason" target="hidden_iframe" class="pure-form pure-form-stacked" action="https://script.google.com/macros/s/AKfycbzaurJVFjX18YbjlEy82OkvM98zbGO7AQriB8NtMW5fai3gFVCZ/exec"> <!-- ? action here-->
-                <input id="honeypot" type="text" name="honeypot" style="display:none"/>
-                <fieldset style="display: none">
-                    <label>KAID</label>
-                    <textarea id="kae-reporting-kaid" name="User">https://www.khanacademy.org/profile/${userKaid}</textarea>
-                </fieldset>
-                <fieldset style="display: none">
-                    <label>Program</label>
-                    <textarea id="kae-reporting-program" name="Program">${programData.scratchpad.url}</textarea>
-                </fieldset>
-                <fieldset class="pure-group">
-                    <label>How does this violate our guidelines?</label>
-                    <textarea id="kae-report-reason" name="Reason" maxlength="500" autocomplete="off"></textarea>
-                </fieldset>
-                <button id="kae-submit-button" type="submit" disabled>
-                    <div>Submit Report</div>
-                </button>
-            </form>
-            <div id="kae-thank-you">
-              <h4>Thanks for reporting, a Guardian will review this program.</h4>
-            </div>
-        `;
+        reportPopup.href = "javascript: void 0";
+        
+        let exitButton = document.createElement("a");
+        exitButton.href = "javascript: void 0;"
+        exitButton.id = "kae-exit-button";
+        exitButton.setAttribute("aria-label", "Close");
+        
+        let svgNamespace = "http://www.w3.org/2000/svg";
+        
+        let exitSVG = document.createElementNS(svgNamespace, "svg");
+        exitSVG.setAttribute("width", "14");
+        exitSVG.setAttribute("height", "14");
+        exitSVG.setAttribute("height", "14");
+        exitSVG.setAttribute("role", "img");
+        exitSVG.setAttribute("aria-hidden", "true");
+        exitSVG.setAttribute("focusable", "false");
+        exitSVG.setAttribute("viewBox", "0 0 10 10");
+        
+        let exitPath = document.createElementNS(svgNamespace, "path");
+        exitPath.setAttribute("fill", "#000000");
+        exitPath.setAttribute("d", "M6.26353762,4.99851587 L9.73097464,1.53107884 C10.0836373,1.17841618 10.0842213,0.612127047 9.73530496,0.263210718 C9.38395604,-0.0881381913 8.81874474,-0.0837668714 8.46743686,0.267541014 L4.99999981,3.73497806 L1.5325628,0.267541051 C1.1812549,-0.0837668481 0.616043606, -0.0881381955 0.264694717,0.263210694 C-0.0842215912,0.612127004 -0.0836375768,1.17841613 0.269025093,1.5310788 L3.73646206,4.9985158 L0.269025109,8.46595276 C-0.083637537,8.81861541 -0.0842215923, 9.38490462 0.264694642,9.73382106 C0.616043456,10.0851701 1.18125469, 10.0807988 1.53256259,9.72949093 L4.99999988,6.26205363 L8.46743739, 9.72949117 C8.8187453,10.0807991 9.38395655,10.0851704 9.73530537, 9.73382138 C10.0842216,9.38490498 10.0836375,8.81861579 9.73097488, 8.46595313 L6.26353762,4.99851587 Z");
+        
+        exitSVG.appendChild(exitPath);
+        exitButton.appendChild(exitSVG);
+        
+        let kaeReportWrap = document.createElement("div");
+        kaeReportWrap.id = "kae-report-wrap";
+        
+        let kaeReportHeader = document.createElement("h2");
+        kaeReportHeader.textContent = "Report for Guardian attention";
+        kaeReportHeader.id = "kae-report-h2";
+        
+        kaeReportWrap.appendChild(kaeReportHeader);
+        
+        let noticeParagraph = document.createElement("p");
+        noticeParagraph.textContent = "Instead of flagging, reporting will get official notice faster.";
+        
+        let submitForm = document.createElement("form");
+        submitForm.id = "kae-reason";
+        submitForm.className = "pure-form pure-form-stacked";
+        
+        let resultMessage = document.createElement("div")
+        resultMessage.id = "kae-thank-you";
+         
+        let formReasonFs = document.createElement("fieldset");
+        formReasonFs.className = "pure-group";
+        formReasonFs.setAttribute("required", true);
+        
+        let reasonLabel = document.createElement("label");
+        reasonLabel.textContent = "How does this violate our guidelines?";
+        
+        let reasonTextarea = document.createElement("textarea");
+        reasonTextarea.id = "kae-report-reason";
+        reasonTextarea.setAttribute("maxlength", 500);
+        reasonTextarea.setAttribute("name", "Reason");
+        reasonTextarea.setAttribute("autocomplete", "off");
+        
+        formReasonFs.appendChild(reasonLabel);
+        formReasonFs.appendChild(reasonTextarea);
+        
+        let submitButton = document.createElement("button");
+        submitButton.id = "kae-submit-button";
+        submitButton.disabled = true;
+        submitButton.setAttribute("type", "submit");
+        submitButton.innerHTML = "<div>Submit Report</div>";
+        
+        submitForm.appendChild(formReasonFs);
+        submitForm.appendChild(submitButton);
+        
+        let unsuccessfulNotice = document.createElement("p");
+        unsuccessfulNotice.style.color = "#ff5555";
+        
+        reportPopup.appendChild(exitButton);
+        reportPopup.appendChild(kaeReportWrap);
+        reportPopup.appendChild(noticeParagraph);
+        reportPopup.appendChild(submitForm);
+        reportPopup.appendChild(resultMessage);
+        reportPopup.appendChild(unsuccessfulNotice);
+        
         document.body.appendChild(reportPopup);
-
-        var popup = document.getElementById('kae-report-popup');
-        var report = document.getElementById('kae-report-button');
-        var exit = document.getElementById('kae-exit-button');
-        var submitEl = document.getElementById('kae-submit-button');
-
-        report.addEventListener('click', function() {
-            popup.style.display = 'block';
-            backdrop.style.display = 'block';
+        
+        exitButton.addEventListener("click", function() {
+            backdrop.style.display = reportPopup.style.display = "none";
         });
-        exit.addEventListener('click', function() {
-            popup.style.display = 'none';
-            backdrop.style.display = 'none';
+        
+        reportButton.addEventListener("click", function() {
+            reportPopup.style.display = "block";
+            backdrop.style.display = "block";
         });
-        var checkSubmitInterval = setInterval(function() {
-            var words = document.getElementById('kae-report-reason').value.split(' ').length;
-            if (words > 5 && words < 150) {
-                submitEl.style.backgroundColor = "rgb(113, 179, 7)";
-                submitEl.style.cursor = "pointer";
-                submitEl.disabled = false;
-            } else {
-                submitEl.style.backgroundColor = "rgb(186, 190, 194)";
-                submitEl.style.cursor = "default";
-                submitEl.disabled = true;
-            }
-        }, 250);
-
-        function validateHuman(honeypot) {
-            if (honeypot) {
-                console.log("Robot Detected!");
-                return true;
-            } else {
-                console.log("Welcome Human!");
-            }
-        }
-
-        // Get all data in form and return object
-        function getFormData() {
-            console.log('getFormData() fired');
-            var form = document.getElementById("kae-reason");
-            var elements = form.elements;
-            var fields = Object.keys(elements).map(function(k) {
-                if (elements[k].name !== undefined) {
-                    return elements[k].name;
-                } else if (elements[k].length > 0) {
-                    return elements[k].item(0).name;
-                }
-            }).filter(function(item, pos, self) {
-                return self.indexOf(item) == pos && item;
-            });
-            var data = {};
-            fields.forEach(function(k){
-                data[k] = elements[k].value;
-                var str = "";
-                if (elements[k].length) {
-                    for (var i = 0; i < elements[k].length; i++) {
-                        if (elements[k].item(i).checked) {
-                            str = str + elements[k].item(i).value + ", ";
-                            data[k] = str.slice(0, -2);
-                        }
-                    }
-                }
-            });
-
-            data.formDataNameOrder = JSON.stringify(fields);
-            data.formGoogleSheetName = form.dataset.sheet || "Reports"; // default sheet name
-            data.formGoogleSendEmail = form.dataset.email || ""; // no email by default
-
-            console.log(data);
-            return data;
-        }
-
-        function handleFormSubmit(event) {
-            // Stop checking the text length.
-            clearInterval(checkSubmitInterval);
-            // data is returned from function.
-            var data = getFormData();
-            // This should check if user is bot or human.
-            if (validateHuman(data.honeypot)) {
-                return false;
-            }
-            // XML request.
-            var url = event.target.action;
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', url, true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onreadystatechange = function() {
-                if (xhr.status == 200) {
-
-                    // This isn't working right
-
-                    console.log(xhr.status, xhr.statusText);
-                    console.log(xhr.responseText);
+        
+        submitButton.disabled = true;
+        reasonTextarea.addEventListener("input", function() {
+            let wordCount = reasonTextarea.value.split(' ').length,
+                b = wordCount > 2 && wordCount < 150;
+            submitButton.style.backgroundColor = b ? "rgb(113, 179, 7)" : "rgb(186, 190, 194)";
+            submitButton.style.cursor = b ? "pointer" : "default";
+            submitButton.disabled = !b;
+        });
+        
+        submitForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            unsuccessfulNotice.style.color = "#000000";
+            unsuccessfulNotice.textContent = "Loading...";
+            submitButton.style.backgroundColor = "rgb(186, 190, 194)";
+            submitButton.style.cursor = "default";
+            submitButton.disabled = reasonTextarea.disabled = true;
+            reportProgram(userKaid, programData.scratchpad.id, reasonTextarea.value, function(response) {
+                unsuccessfulNotice.style.color = "#ff5555";
+                reasonTextarea.disabled = false;
+                if(response && response.success) {
+                    let thankyou = document.getElementById("kae-thank-you");
+                    thankyou.textContent = response.message;
+                    unsuccessfulNotice.textContent = "";
                     document.getElementById("kae-reason").style.display = "none";
-                    document.getElementById("kae-thank-you").style.display = "block";
-                    return;
+                    thankyou.style.display = "block";
+                } else {
+                    submitButton.style.backgroundColor = "rgb(113, 179, 7)";
+                    submitButton.disabled = reasonTextarea.disabled = false;
+                    unsuccessfulNotice.textContent = response ? response.message : "Error.  Please try again";
                 }
-            };
-            // url encode form data for sending as post data
-            var encoded = Object.keys(data).map(function(k) {
-                return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]);
-            }).join('&');
-            xhr.send(encoded);
-            event.preventDefault();
-        }
-
-        function loaded() {
-            console.log('Report form submission handler loaded successfully');
-            var kaeSubmitButton = document.getElementById('kae-submit-button');
-
-            kaeSubmitButton.addEventListener("click", function(event) {
-                handleFormSubmit(event);
-                submitEl.style.backgroundColor = "rgb(186, 190, 194)";
-                submitEl.style.cursor = "default";
-                submitEl.disabled = true;
-            }, false);
-        };
-        document.addEventListener('DOMContentLoaded', loaded, false);
+            });
+        });
 
     }
     clearInterval(addReportButton);
@@ -846,8 +804,8 @@ function addThumbnail(){
             setTimeout(function() {
                 var req = new XMLHttpRequest();
                 req.open("PUT", "https://www.khanacademy.org/api/internal/scratchpads/" + programData.scratchpad.globalId.substring(1,17));
-                req.setRequestHeader('x-ka-fkey', getSession());
-                req.setRequestHeader('content-type', "application/json");
+                req.setRequestHeader("X-KA-FKey", getSession());
+                req.setRequestHeader("Content-type", "application/json");
                 req.send(JSON.stringify(tempData));
             }, 1000);
         });

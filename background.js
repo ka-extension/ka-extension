@@ -35,7 +35,7 @@ setInterval(function() {
         req.open("GET", "https://www.khanacademy.org/api/internal/user/profile?kaid=" + kaid, !0);
         req.setRequestHeader("X-KA-FKey", fkey);
         req.addEventListener("load", function() {
-            if(req.readyState === req.DONE) {
+            if(req.readyState === req.DONE && req.response) {
                 var notifs = req.response.countBrandNewNotifications;
                 chrome.browserAction.setBadgeText({
                   "text": notifs > 0 ? notifs.toString() : ""
@@ -61,7 +61,6 @@ function reportProgram(kaid, programId, reason, port) {
         x.setRequestHeader("X-KA-IntKaid", internalKaid.value);
         x.addEventListener("readystatechange", function() {
             if(x.readyState === XMLHttpRequest.DONE) {
-                console.log(x);
                 port.postMessage(x.response);
             }
         });
