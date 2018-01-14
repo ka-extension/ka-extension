@@ -864,15 +864,15 @@ function deleteNotif() {
     if (buttons.length >= notifList.length) return;
 
     for (var i = 0; i < notifList.length; i++) {
-        console.log(notifList[i]);
-        var notifElm = notifList[i].childNodes[0];
         if(notifList[i].className.length > 0) continue;
-        var notifURL = notifElm.childnodes[0].href.match(/[?&]keys(=([^&#]*)|&|#|$)/)[2];
-        if(deleted.indexOf(notifURL) > -1){
+        var notifElm = notifList[i].childNodes[0];
+        if(notifElm === undefined || notifElm.childNodes.length >= 2) continue;
+        var notifURL = notifElm.childNodes[0].href;
+        if(deleted.indexOf(notifURL.match(/[?&]keys(=([^&#]*)|&|#|$)/)[2]) > -1){
             notifElm.parentNode.removeChild(notifElm);
             continue;
         }
-        if(notifElm.childNodes.length >= 2) continue;
+
         var linkElm = notifElm.childNodes[0];
         if(linkElm.className === "loadingSpinner_18tyv6y") continue;
 
