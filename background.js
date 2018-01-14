@@ -27,7 +27,7 @@ chrome.runtime.onConnectExternal.addListener(function(port) {
 
 setInterval(function() {
     if(fkey.length <= 0 || kaid.length <= 0) { return; }
-    chrome.cookies.get({ "url": "https://www.khanacademy.org/", "name": "KAID" }, function(data) {
+    chrome.cookies.get({ url: "https://www.khanacademy.org/", name: "KAID" }, function(data) {
         if(data && data.name && data.value) { document.cookie = data.name + "=" + data.value; } 
         document.cookie = "fkey=" + fkey;
         var req = new XMLHttpRequest();
@@ -38,7 +38,7 @@ setInterval(function() {
             if(req.readyState === req.DONE && req.response) {
                 var notifs = req.response.countBrandNewNotifications;
                 chrome.browserAction.setBadgeText({
-                  "text": notifs > 0 ? notifs.toString() : ""
+                  text: notifs > 0 ? notifs.toString() : ""
                 });
             }
         });
@@ -48,7 +48,7 @@ setInterval(function() {
 
 function reportProgram(kaid, programId, reason, port) {
     chrome.cookies.getAll({
-        "url": "https://www.khanacademy.org/"
+        url: "https://www.khanacademy.org/"
     }, function(data) {
         let internalKaid = data.find(function(e) { return e.name == "KAID"; }),
             fkey = data.find(function(e) { return e.name == "fkey"; });
@@ -65,9 +65,9 @@ function reportProgram(kaid, programId, reason, port) {
             }
         });
         x.send(JSON.stringify({
-            "kaid": kaid,
-            "id": programId,
-            "reason": reason
+            kaid: kaid,
+            id: programId,
+            reason: reason
         }));
     });
 }
