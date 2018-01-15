@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "The Khan Academy Extension",
     "short_name": "The KA Extension",
-    "version": "2.3.0",
+    "version": "3.0.0",
     "description": "A Chrome Extension for Khan Academy",
     "browser_action": {
         "name": "Khan Academy Extension",
