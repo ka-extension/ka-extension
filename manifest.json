@@ -24,7 +24,6 @@
         "activeTab",
         "storage",
         "cookies",
-        "https://reportqueue.herokuapp.com/",
         "*://*.khanacademy.org/*"
     ],
     "web_accessible_resources": [
