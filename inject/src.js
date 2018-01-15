@@ -33,7 +33,7 @@ var userPrograms = {};
 const kaid = KAdefine.require("./javascript/shared-package/ka.js").getKaid(),
     isLoggedIn = KAdefine.require("./javascript/shared-package/ka.js").isLoggedIn();
 
-const chromeid = "gpobmaacoakebjfacgabhanmlbalgafk" /* "mkgmjebgaipjiijmagihicffklbnnljf" */;
+const chromeid = "gniggljddhajnfbkjndcgnomkddfcial";
 
 var commentLinkGenerator = null;
 
