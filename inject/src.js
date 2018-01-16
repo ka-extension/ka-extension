@@ -33,7 +33,7 @@ var userPrograms = {};
 const kaid = KAdefine.require("./javascript/shared-package/ka.js").getKaid(),
     isLoggedIn = KAdefine.require("./javascript/shared-package/ka.js").isLoggedIn();
 
-const chromeid = "gpobmaacoakebjfacgabhanmlbalgafk" /* "mkgmjebgaipjiijmagihicffklbnnljf" */;
+const chromeid = "gniggljddhajnfbkjndcgnomkddfcial";
 
 var commentLinkGenerator = null;
 
@@ -539,7 +539,7 @@ function locationElm() {
     document.getElementById("bio-picker").style.setProperty("resize", "none");
     document.getElementById("bio-picker").style.setProperty("height", "90px");
     var locDisp = userInfo.userLocation.displayText;
-    locationDiv.innerHTML = "<input id=\"kae-location-textarea\" type=\"text\" value=\"'"+ locDisp + "\">"
+    locationDiv.innerHTML = "<input id=\"kae-location-textarea\" type=\"text\" value=\""+ locDisp + "\">"
 
     var saveBtn = document.getElementsByClassName("kui-button")[2];
     saveBtn.addEventListener("click", function() {
@@ -558,7 +558,7 @@ function locationElm() {
             req.setRequestHeader("X-KA-FKey", getSession());
             req.setRequestHeader("Content-type", "application/json");
             req.addEventListener("load", function() {
-                location.reload();
+                console.log("Location changed")
             });
             req.send(JSON.stringify(tempData));
         }, 1000);
@@ -602,7 +602,7 @@ function reportButton() {
         reportButton.innerHTML = "<span>Report</span>";
         buttons.appendChild(reportButton);
 
-        
+
         // The popup modal
         let backdrop = document.createElement("div");
         backdrop.id = "kae-backdrop";
@@ -611,14 +611,14 @@ function reportButton() {
         let reportPopup = document.createElement("div");
         reportPopup.id = "kae-report-popup";
         reportPopup.href = "javascript: void 0";
-        
+
         let exitButton = document.createElement("a");
         exitButton.href = "javascript: void 0;"
         exitButton.id = "kae-exit-button";
         exitButton.setAttribute("aria-label", "Close");
-        
+
         let svgNamespace = "http://www.w3.org/2000/svg";
-        
+
         let exitSVG = document.createElementNS(svgNamespace, "svg");
         exitSVG.setAttribute("width", "14");
         exitSVG.setAttribute("height", "14");
@@ -627,79 +627,79 @@ function reportButton() {
         exitSVG.setAttribute("aria-hidden", "true");
         exitSVG.setAttribute("focusable", "false");
         exitSVG.setAttribute("viewBox", "0 0 10 10");
-        
+
         let exitPath = document.createElementNS(svgNamespace, "path");
         exitPath.setAttribute("fill", "#000000");
         exitPath.setAttribute("d", "M6.26353762,4.99851587 L9.73097464,1.53107884 C10.0836373,1.17841618 10.0842213,0.612127047 9.73530496,0.263210718 C9.38395604,-0.0881381913 8.81874474,-0.0837668714 8.46743686,0.267541014 L4.99999981,3.73497806 L1.5325628,0.267541051 C1.1812549,-0.0837668481 0.616043606, -0.0881381955 0.264694717,0.263210694 C-0.0842215912,0.612127004 -0.0836375768,1.17841613 0.269025093,1.5310788 L3.73646206,4.9985158 L0.269025109,8.46595276 C-0.083637537,8.81861541 -0.0842215923, 9.38490462 0.264694642,9.73382106 C0.616043456,10.0851701 1.18125469, 10.0807988 1.53256259,9.72949093 L4.99999988,6.26205363 L8.46743739, 9.72949117 C8.8187453,10.0807991 9.38395655,10.0851704 9.73530537, 9.73382138 C10.0842216,9.38490498 10.0836375,8.81861579 9.73097488, 8.46595313 L6.26353762,4.99851587 Z");
-        
+
         exitSVG.appendChild(exitPath);
         exitButton.appendChild(exitSVG);
-        
+
         let kaeReportWrap = document.createElement("div");
         kaeReportWrap.id = "kae-report-wrap";
-        
+
         let kaeReportHeader = document.createElement("h2");
         kaeReportHeader.textContent = "Report for Guardian attention";
         kaeReportHeader.id = "kae-report-h2";
-        
+
         kaeReportWrap.appendChild(kaeReportHeader);
-        
+
         let noticeParagraph = document.createElement("p");
         noticeParagraph.textContent = "Instead of flagging, reporting will get official notice faster.";
-        
+
         let submitForm = document.createElement("form");
         submitForm.id = "kae-reason";
         submitForm.className = "pure-form pure-form-stacked";
-        
+
         let resultMessage = document.createElement("div")
         resultMessage.id = "kae-thank-you";
-         
+
         let formReasonFs = document.createElement("fieldset");
         formReasonFs.className = "pure-group";
         formReasonFs.setAttribute("required", true);
-        
+
         let reasonLabel = document.createElement("label");
         reasonLabel.textContent = "How does this violate our guidelines?";
-        
+
         let reasonTextarea = document.createElement("textarea");
         reasonTextarea.id = "kae-report-reason";
         reasonTextarea.setAttribute("maxlength", 500);
         reasonTextarea.setAttribute("name", "Reason");
         reasonTextarea.setAttribute("autocomplete", "off");
-        
+
         formReasonFs.appendChild(reasonLabel);
         formReasonFs.appendChild(reasonTextarea);
-        
+
         let submitButton = document.createElement("button");
         submitButton.id = "kae-submit-button";
         submitButton.disabled = true;
         submitButton.setAttribute("type", "submit");
         submitButton.innerHTML = "<div>Submit Report</div>";
-        
+
         submitForm.appendChild(formReasonFs);
         submitForm.appendChild(submitButton);
-        
+
         let unsuccessfulNotice = document.createElement("p");
         unsuccessfulNotice.style.color = "#ff5555";
-        
+
         reportPopup.appendChild(exitButton);
         reportPopup.appendChild(kaeReportWrap);
         reportPopup.appendChild(noticeParagraph);
         reportPopup.appendChild(submitForm);
         reportPopup.appendChild(resultMessage);
         reportPopup.appendChild(unsuccessfulNotice);
-        
+
         document.body.appendChild(reportPopup);
-        
+
         exitButton.addEventListener("click", function() {
             backdrop.style.display = reportPopup.style.display = "none";
         });
-        
+
         reportButton.addEventListener("click", function() {
             reportPopup.style.display = "block";
             backdrop.style.display = "block";
         });
-        
+
         submitButton.disabled = true;
         reasonTextarea.addEventListener("input", function() {
             let wordCount = reasonTextarea.value.split(" ").length,
@@ -708,7 +708,7 @@ function reportButton() {
             submitButton.style.cursor = b ? "pointer" : "default";
             submitButton.disabled = !b;
         });
-        
+
         submitForm.addEventListener("submit", function(e) {
             e.preventDefault();
             unsuccessfulNotice.style.color = "#000000";
