@@ -832,8 +832,17 @@ function deleteNotif() {
     }
 }
 
+function duplicateBadges(){
+    var usedBadges = document.getElementsByClassName("used");
+    if(usedBadges.length < 1) return;
+    for(var i = 0; i < usedBadges.length; i++){
+        usedBadges[i].classList.remove("used")
+    }
+}
+
 if (window.location.host === "www.khanacademy.org") {
     var locElm = setInterval(locationElm, 250);
+    var addDuplicateBadges = setInterval(duplicateBadges, 100);
     var notifications = setInterval(updateNotifs, 50);
     var addEditUIInterval = setInterval(addCommentEditUI, 250);
     var addStopNotifOverflow = setInterval(stopNotifOverflow, 250);
