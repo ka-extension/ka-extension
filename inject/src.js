@@ -383,24 +383,6 @@ function KAMarkdowntoHTML(markdown) {
         .replace(/\n/ig, function() { return "<br>"; })
 }
 
-function HTMLtoKAMarkdown(html) {
-    return html
-        .replace(/<pre>\s*<code>([.\s\S]*?)<\/code>\s*<\/pre>/ig, function(match, one) { return "```\n" + one + "\n```"; })
-        .replace(/<code>(.*?)<\/code>/ig, function(match, one) { return "`" + one + "`"; })
-        .replace(/<b>(.*?)<\/b>/ig, function(match, one) { return "*" + one + "*"; })
-        .replace(/<em>(.*?)<\/em>/ig, function(match, one) { return "_" + one + "_"; })
-        .replace(/<a.*?>(.*?)<\/a>/ig, function(match, one) { return one; })
-        .replace(/<br(?:\s*\/\s*)?>/ig, function() { return "\n"; })
-}
-function KAMarkdowntoHTML(markdown) {
-    return markdown
-        .replace(/\`\`\`\s*([.\s\S]*?)\s*\`\`\`/ig, function(match, one) { return "<pre><code>" + one + "</code></pre>"; })
-        .replace(/\`(.+?)\`/ig, function(match, one) { return "<code>" + one + "</code>"; })
-        .replace(/\*(.+?)\*/ig, function(match, one) { return "<b>" + one + "</b>"; })
-        .replace(/_(.+?)_/ig, function(match, one) { return "<em>" + one + "</em>"; })
-        .replace(/\n/ig, function() { return "<br>"; })
-}
-
 /** Add user interface for editing comments **/
 /**
     A special thank you goes out to @MatthiasSaihttam for the comment editing functionality.
