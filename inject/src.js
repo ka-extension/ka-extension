@@ -383,24 +383,6 @@ function KAMarkdowntoHTML(markdown) {
         .replace(/\n/ig, function() { return "<br>"; })
 }
 
-function HTMLtoKAMarkdown(html) {
-    return html
-        .replace(/<pre>\s*<code>([.\s\S]*?)<\/code>\s*<\/pre>/ig, function(match, one) { return "```\n" + one + "\n```"; })
-        .replace(/<code>(.*?)<\/code>/ig, function(match, one) { return "`" + one + "`"; })
-        .replace(/<b>(.*?)<\/b>/ig, function(match, one) { return "*" + one + "*"; })
-        .replace(/<em>(.*?)<\/em>/ig, function(match, one) { return "_" + one + "_"; })
-        .replace(/<a.*?>(.*?)<\/a>/ig, function(match, one) { return one; })
-        .replace(/<br(?:\s*\/\s*)?>/ig, function() { return "\n"; })
-}
-function KAMarkdowntoHTML(markdown) {
-    return markdown
-        .replace(/\`\`\`\s*([.\s\S]*?)\s*\`\`\`/ig, function(match, one) { return "<pre><code>" + one + "</code></pre>"; })
-        .replace(/\`(.+?)\`/ig, function(match, one) { return "<code>" + one + "</code>"; })
-        .replace(/\*(.+?)\*/ig, function(match, one) { return "<b>" + one + "</b>"; })
-        .replace(/_(.+?)_/ig, function(match, one) { return "<em>" + one + "</em>"; })
-        .replace(/\n/ig, function() { return "<br>"; })
-}
-
 /** Add user interface for editing comments **/
 /**
     A special thank you goes out to @MatthiasSaihttam for the comment editing functionality.
@@ -861,8 +843,17 @@ function deleteNotif() {
     }
 }
 
+function duplicateBadges(){
+    var usedBadges = document.getElementsByClassName("used");
+    if(usedBadges.length < 1) return;
+    for(var i = 0; i < usedBadges.length; i++){
+        usedBadges[i].classList.remove("used")
+    }
+}
+
 if (window.location.host === "www.khanacademy.org") {
     var locElm = setInterval(locationElm, 250);
+    var addDuplicateBadges = setInterval(duplicateBadges, 100);
     var notifications = setInterval(updateNotifs, 50);
     var addEditUIInterval = setInterval(addCommentEditUI, 250);
     var addStopNotifOverflow = setInterval(stopNotifOverflow, 250);
