@@ -112,3 +112,12 @@
     padding-left: 5px; 
     padding-top: 5px;
 }
+
+.kae-notif-delete svg {
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.kae-notif-delete svg:hover {
+    background: #dddddd;
+}
