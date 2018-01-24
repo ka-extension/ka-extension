@@ -798,7 +798,7 @@ function deleteNotif() {
         var notifElm = notifList[i].childNodes[0];
         if(notifElm === undefined || notifElm.childNodes.length >= 2) continue;
         var notifURL = notifElm.childNodes[0].href;
-        if(notifURL === undefined) return;
+        if(notifURL === undefined) continue;
         if(deleted.indexOf(notifURL.match(/[?&]keys(=([^&#]*)|&|#|$)/)[2]) > -1){
             notifElm.parentNode.removeChild(notifElm);
             continue;
