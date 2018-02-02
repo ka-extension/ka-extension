@@ -11,10 +11,16 @@
     font-size: 15px !important;
     font-weight: 400 !important;
     padding: 8px 8px !important;
-    margin: 0px 3px !important;
-    text-align:center !important;
+    margin: 0px 3px 0px 0px !important;
+    text-align: center !important;
     cursor: pointer;
 }
+
+/* The new program button */
+.link_1uvuyao-o_O-computing_77ub1h {
+    margin: 0px 0px 0px 3px !important;
+}
+
 /* Reporting popup after clicking button. */
 #kae-report-popup {
     background-color: #FFFFFF !important;
