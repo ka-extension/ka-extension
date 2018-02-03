@@ -18,6 +18,38 @@ var aceThemes = {
     }
 };
 
+/** Promise-based element location utils **/
+function querySelectorAllPromise(elementString, interval = 250, maxTrials = 0) {
+	return new Promise((resolve, reject) => {
+	    let i = 0;
+	    (function find() {
+		    var elements = document.querySelectorAll(elementString);
+		    if(maxTrials > 0 && i > maxTrials) { reject(new Error(`Could not find ${elementString}`)); }
+		    else if(elements.length == 0) { setTimeout(find, interval); }
+		    else { resolve(elements); }
+		    i++;
+	    })();
+	});
+}
+
+function querySelectorPromise(elementString, interval = 250, maxTrials = 0) {
+	return new Promise((resolve, reject) => {
+		querySelectorAllPromise(elementString, interval, maxTrials)
+			.then(e => resolve(e[0]))
+			.catch(reject);
+	});
+}
+
+function objectNotEmptyTimer(obj, interval = 100) {
+    return new Promise((resolve, reject) => {
+        (function check() {
+            if(typeof obj != "object") { reject(new TypeError(`${obj} is not an object`)); }
+            else if(Object.keys(obj).length == 0) { setTimeout(check, interval); }
+            else { resolve(obj); }
+        })();
+    });
+}
+
 /* Ace Monokai theme.  Taken from https://github.com/ajaxorg/ace/blob/master/lib/ace/theme/monokai.css */
 aceThemes.addTheme("monokai", ".ace-monokai .ace_gutter {background: #2F3129;color: #8F908A}.ace-monokai .ace_print-margin {width: 1px;background: #555651}.ace-monokai {background-color: #272822;color: #F8F8F2}.ace-monokai .ace_cursor {color: #F8F8F0}.ace-monokai .ace_marker-layer .ace_selection {background: #49483E}.ace-monokai.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px #272822;}.ace-monokai .ace_marker-layer .ace_step {background: rgb(102, 82, 0)}.ace-monokai .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid #49483E}.ace-monokai .ace_marker-layer .ace_active-line {background: #202020}.ace-monokai .ace_gutter-active-line {background-color: #272727}.ace-monokai .ace_marker-layer .ace_selected-word {border: 1px solid #49483E}.ace-monokai .ace_invisible {color: #52524d}.ace-monokai .ace_entity.ace_name.ace_tag,.ace-monokai .ace_keyword,.ace-monokai .ace_meta.ace_tag,.ace-monokai .ace_storage {color: #F92672}.ace-monokai .ace_punctuation,.ace-monokai .ace_punctuation.ace_tag {color: #fff}.ace-monokai .ace_constant.ace_character,.ace-monokai .ace_constant.ace_language,.ace-monokai .ace_constant.ace_numeric,.ace-monokai .ace_constant.ace_other {color: #AE81FF}.ace-monokai .ace_invalid {color: #F8F8F0;background-color: #F92672}.ace-monokai .ace_invalid.ace_deprecated {color: #F8F8F0;background-color: #AE81FF}.ace-monokai .ace_support.ace_constant,.ace-monokai .ace_support.ace_function {color: #66D9EF}.ace-monokai .ace_fold {background-color: #A6E22E;border-color: #F8F8F2}.ace-monokai .ace_storage.ace_type,.ace-monokai .ace_support.ace_class,.ace-monokai .ace_support.ace_type {font-style: italic;color: #66D9EF}.ace-monokai .ace_entity.ace_name.ace_function,.ace-monokai .ace_entity.ace_other,.ace-monokai .ace_entity.ace_other.ace_attribute-name,.ace-monokai .ace_variable {color: #A6E22E}.ace-monokai .ace_variable.ace_parameter {font-style: italic;color: #FD971F}.ace-monokai .ace_string {color: #E6DB74}.ace-monokai .ace_comment {color: #75715E}.ace-monokai .ace_indent-guide {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWPQ0FD0ZXBzd/wPAAjVAoxeSgNeAAAAAElFTkSuQmCC) right repeat-y}");
 
@@ -120,26 +152,26 @@ if (url[3] === "computer-programming" || url[3] === "hour-of-code") {
     var programId = url[5].substring(0, (url[5].includes("?") ? url[5].indexOf("?") : 16));
     getJSON(programUrl + programId, function(data) {
         console.log(data);
-        programData = data;
+        Object.assign(programData, data);
     });
 }
 
 if (url[3] === "profile" && !url[5] || url.length < 5) {
     var username = url[4] || KA._userProfileData.username;
-    var uparam = "?" + (username.substr(0, 5) == "kaid_" ? "kaid" : "username") + "=" + username;
-    getJSON(userProgramsApi + uparam + "&projection={%22scratchpads%22:[{%22sumVotesIncremented%22:1,%22spinoffCount%22:1}]}&limit=1500", function(data) {
+    var uparam = `?${(username.substr(0, 5) == "kaid_" ? "kaid" : "username")}=${username}`;
+    getJSON(`${userProgramsApi}${uparam}&projection={%22scratchpads%22:[{%22sumVotesIncremented%22:1,%22spinoffCount%22:1}]}&limit=1500`, (data) => {
         console.log(data);
-        userPrograms = data;
+        Object.assign(userPrograms, data);
     });
-    getJSON(userApi + uparam, function(data) {
+    getJSON(userApi + uparam, (data) => {
         console.log(data);
-        userInfo = data;
+        Object.assign(userInfo, data);
     });
 }
 
 function newDate(date) {
     var d = new Date(date);
-    return (("0"+(d.getMonth()+1)).slice(-2) + "/" + ("0" + d.getDate()).slice(-2) + "/" + d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2));
+    return `${("0" + (d.getMonth() + 1)).slice(-2)}/${("0" + d.getDate()).slice(-2)}/${d.getFullYear()} ${("0" + d.getHours()).slice(-2)}:${("0" + d.getMinutes()).slice(-2)}`;
 }
 
 
@@ -157,18 +189,14 @@ function updateNotifs() {
 }
 
 function stopNotifOverflow(){
-    var notifList = document.getElementsByClassName("scrollDropdown_1jabbia")[0];
-    if(!notifList) return;
-    notifList.style.setProperty("overflow-x", "hidden");
-    clearInterval(addStopNotifOverflow)
+    querySelectorPromise(".scrollDropdown_1jabbia")
+        .then(notifList => notifList.style.setProperty("overflow-x", "hidden")).catch(console.error);
 }
 
 /***  Programs no longer have a max width. ***/
 function widenProgram() {
-    var s = document.getElementsByClassName("wrap_xyqcvi");
-    if(!s[0]) { return; }
-    s[0].style.setProperty("max-width", "none", "important");
-    clearInterval(widenprogram);
+    querySelectorPromise(".wrap_xyqcvi")
+        .then(s => s.style.setProperty("max-width", "none", "important")).catch(console.error);
 }
 
 /*** Add back the community guidelines next to dicussion under programs. ***/
@@ -295,6 +323,35 @@ function getProfileData() {
     tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">User kaid</td><td>" + kaid + "</td></tr>";
     clearInterval(profileData);
 }
+    
+/** Add report user button **/
+function reportUserButton() {
+    if(!isLoggedIn) { return; }
+    let userDataNotEmpty = objectNotEmptyTimer(userInfo);
+    userDataNotEmpty.then(userInfo => {
+        if(userInfo.kaid == kaid) { return; }
+        querySelectorAllPromise(".profile-widget", 100)
+            .then(e => {
+                let discussionWidget = [...e].filter(e => e.querySelector("a.profile-widget-view-all[href$=\"/discussion\"]"))[0];
+                console.log(discussionWidget);
+                if(discussionWidget) {
+                    let button = document.createElement("a");
+                    button.id = "kae-report-button";
+                    button.style.setProperty("margin", "10px 0px 10px 0px", "important");
+                    button.style.setProperty("display", "block", "important");
+                    button.innerHTML = "<span>Report user</span>";
+                    button.href = `${queueRoot}submit?${buildQuery({ 
+                        type: "user", 
+                        id: userInfo.kaid, 
+                        callback: window.location.href 
+                    })}`;
+                    let dWidget = document.getElementById("discussion-widget");
+                    let widget = discussionWidget.getElementsByClassName("profile-widget-contents")[0];
+                    dWidget && dWidget.children[0] ? dWidget.insertBefore(button, dWidget.children[0]) : widget.appendChild(button);   
+                }
+            }).catch(console.error);
+    }).catch(console.error);
+}
 
 /*** Add editor dark theme ***/
 function darkTheme() {
@@ -331,12 +388,9 @@ function darkToggleButton() {
 
 /*** Add links for all comments when viewing user discussion. ***/
 function commentsButtonEventListener() {
-    var button = document.querySelector(".simple-button.discussion-list-more");
-    if(!button) { return; }
-    button.addEventListener("click", function() {
-        if(commentLinkGenerator != null) { commentLinkGenerator.next(); }
-    });
-    clearInterval(addCommentsButtonEventListener);
+    querySelectorPromise(".simple-button.discussion-list-more", 100)
+        .then(button => button.addEventListener("click", () => (commentLinkGenerator != null && commentLinkGenerator.next()) ))
+        .catch(console.error);
 }
 
 /*** Automatically add links to comments when viewing user discussion. ***/
@@ -368,17 +422,17 @@ function HTMLtoKAMarkdown(html) {
     return html
         .replace(/<pre>\s*<code>([.\s\S]*?)<\/code>\s*<\/pre>/ig, function(match, one) { return "```\n" + one + "\n```"; })
         .replace(/<code>(.*?)<\/code>/ig, function(match, one) { return "`" + one + "`"; })
-        .replace(/<b>(.*?)<\/b>/ig, function(match, one) { return "*" + one + "*"; })
-        .replace(/<em>(.*?)<\/em>/ig, function(match, one) { return "_" + one + "_"; })
+        .replace(/<b>(.*?)<\/b>/ig, function(match, one) { return `*${one}*`; })
+        .replace(/<em>(.*?)<\/em>/ig, function(match, one) { return `_${one}_`; })
         .replace(/<a.*?>(.*?)<\/a>/ig, function(match, one) { return one; })
         .replace(/<br(?:\s*\/\s*)?>/ig, function() { return "\n"; })
 }
 function KAMarkdowntoHTML(markdown) {
     return markdown
         .replace(/\`\`\`\s*([.\s\S]*?)\s*\`\`\`/ig, function(match, one) { return "<pre><code>" + one + "</code></pre>"; })
-        .replace(/\`(.+?)\`/ig, function(match, one) { return "<code>" + one + "</code>"; })
-        .replace(/\*(.+?)\*/ig, function(match, one) { return "<b>" + one + "</b>"; })
-        .replace(/_(.+?)_/ig, function(match, one) { return "<em>" + one + "</em>"; })
+        .replace(/\`(.+?)\`/ig, function(match, one) { return `<code>${one}</code>`; })
+        .replace(/\*(.+?)\*/ig, function(match, one) { return `<b>${one}</b>`; })
+        .replace(/_(.+?)_/ig, function(match, one) { return `<em>${one}</em>`; })
         .replace(/\n/ig, function() { return "<br>"; })
 }
 
@@ -569,25 +623,25 @@ function evalFeatures() {
 
 /*** Add a "Report" button under all programs, that sends a report directly to Guardians. ***/
 function reportButton() {
-    if(!programData.scratchpad) return;
-    var userKaid = KAdefine.require("./javascript/shared-package/ka.js").getKaid();
-    if (programData.scratchpad.kaid !== userKaid && !KA._userProfileData.isModerator) {
-        var buttons = document.getElementsByClassName("buttons_vponqv")[0];
-        if (!buttons) { return; }
-
-        // The report button
-        let reportButton = document.createElement("a");
-        reportButton.id = "kae-report-button";
-        reportButton.href = queueRoot + "submit?" + buildQuery({ 
-            type: "program", 
-            id: programData.scratchpad.id, 
-            callback: window.location.href 
-        });
-        reportButton.role = "button";
-        reportButton.innerHTML = "<span>Report</span>";
-        buttons.insertBefore(reportButton, buttons.children[1]);
-    }
-    clearInterval(addReportButton);
+    let userDataNotEmpty = objectNotEmptyTimer(programData);
+    userDataNotEmpty.then(data => {
+        let scratchpad = data.scratchpad;
+        if (scratchpad && scratchpad.kaid !== kaid && (!KA._userProfileData || !KA._userProfileData.isModerator)) {
+            querySelectorPromise(".buttons_vponqv")
+                .then(buttons => {
+                    let reportButton = document.createElement("a");
+                    reportButton.id = "kae-report-button";
+                    reportButton.href = `${queueRoot}submit?${buildQuery({ 
+                        type: "program", 
+                        id: data.scratchpad.id, 
+                        callback: window.location.href 
+                    })}`;
+                    reportButton.role = "button";
+                    reportButton.innerHTML = "<span>Report</span>";
+                    buttons.insertBefore(reportButton, buttons.children[1]);
+                }).catch(console.error);
+        }
+    }).catch(console.error);
 }
 
 /*** Add custom thumbnails to programs, found in program settings. ***/
@@ -595,8 +649,7 @@ function addThumbnail(){
     var sel = document.getElementsByClassName("default_k9i44h");
     var test = document.getElementById("kae-img");
     if(sel.length < 1 || !programData.scratchpad || test) return;
-    //clearInterval(thumbnailInt);
-    console.log("runngin")
+    
     function toDataURL(url, callback) {
         var xhr = new XMLHttpRequest();
         xhr.onload = function() {
@@ -728,8 +781,8 @@ if (window.location.host === "www.khanacademy.org") {
     var addDuplicateBadges = setInterval(duplicateBadges, 100);
     var notifications = setInterval(updateNotifs, 50);
     var addEditUIInterval = setInterval(addCommentEditUI, 250);
-    var addStopNotifOverflow = setInterval(stopNotifOverflow, 250);
     var deleteNotifs = setInterval(deleteNotif, 50);
+    stopNotifOverflow();
     if (url[3] === "computer-programming" || url[3] === "hour-of-code") {
         darkTheme();
         var addDarkToggleButton = setInterval(darkToggleButton, 250);
@@ -737,18 +790,19 @@ if (window.location.host === "www.khanacademy.org") {
         if(url[4] !== "new") {
             var addFlags = setInterval(addFlagsToProgram, 250),
                 getDates = setInterval(showProgramDates, 250),
-                widenprogram = setInterval(widenProgram, 250),
                 addguidelines = setInterval(addGuidelines, 250),
-                addEvalFeatures = setInterval(evalFeatures, 250),
-                addReportButton = setInterval(reportButton, 250);
+                addEvalFeatures = setInterval(evalFeatures, 250);
+            reportButton();
+            widenProgram();
         }
     } else if (url[3] === "profile") {
         var profileData = setInterval(getProfileData, 250);
+        reportUserButton();
         if(url[5] == "discussion" && url[6] == "replies") {
             commentLinkGenerator = new CommentLinker(url[4] /* Username or kaid */);
             commentLinkGenerator.next();
-            var addCommentsButtonEventListener = setInterval(commentsButtonEventListener, 50),
-                addCommentLinks = setInterval(commentLinks, 100);
+            commentsButtonEventListener();
+            var addCommentLinks = setInterval(commentLinks, 100);
         }
     } else if (url[5] === "browse") {
         var programFlags = setInterval(showProgramsFlags, 500);
