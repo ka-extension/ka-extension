@@ -723,6 +723,7 @@ function deleteNotif() {
         if(notifElm === undefined || notifElm.childNodes.length >= 2) continue;
         var notifURL = notifElm.childNodes[0].href;
         if(notifURL === undefined) continue;
+	if (notifURL.indexOf("/notifications") === -1) continue;
         if(deleted.indexOf(notifURL.match(/[?&]keys(=([^&#]*)|&|#|$)/)[2]) > -1){
             notifElm.parentNode.removeChild(notifElm);
             continue;
