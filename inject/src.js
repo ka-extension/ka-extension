@@ -80,7 +80,7 @@ var extensionStoragePrefix = "ka-extension-localstorage-item-";
 var extensionToggleDarkEditorItemKey = extensionStoragePrefix + "toggle-editor-dark-theme";
 
 const queueRoot = "https://reportqueue.herokuapp.com/";
-    
+
 function getSession() {
     return /fkey=(.*?);/ig.exec(document.cookie)[1];
 }
@@ -95,7 +95,7 @@ function getJSON(url, success) {
     });
     t.send();
 }
-    
+
 function buildQuery(params) {
     let ret = "", v = 0;
     for(let i in params)
@@ -323,7 +323,7 @@ function getProfileData() {
     tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">User kaid</td><td>" + kaid + "</td></tr>";
     clearInterval(profileData);
 }
-    
+
 /** Add report user button **/
 function reportUserButton() {
     if(!isLoggedIn) { return; }
@@ -340,14 +340,14 @@ function reportUserButton() {
                     button.style.setProperty("margin", "10px 0px 10px 0px", "important");
                     button.style.setProperty("display", "block", "important");
                     button.innerHTML = "<span>Report user</span>";
-                    button.href = `${queueRoot}submit?${buildQuery({ 
-                        type: "user", 
-                        id: userInfo.kaid, 
-                        callback: window.location.href 
+                    button.href = `${queueRoot}submit?${buildQuery({
+                        type: "user",
+                        id: userInfo.kaid,
+                        callback: window.location.href
                     })}`;
                     let dWidget = document.getElementById("discussion-widget");
                     let widget = discussionWidget.getElementsByClassName("profile-widget-contents")[0];
-                    dWidget && dWidget.children[0] ? dWidget.insertBefore(button, dWidget.children[0]) : widget.appendChild(button);   
+                    dWidget && dWidget.children[0] ? dWidget.insertBefore(button, dWidget.children[0]) : widget.appendChild(button);
                 }
             }).catch(console.error);
     }).catch(console.error);
@@ -631,10 +631,10 @@ function reportButton() {
                 .then(buttons => {
                     let reportButton = document.createElement("a");
                     reportButton.id = "kae-report-button";
-                    reportButton.href = `${queueRoot}submit?${buildQuery({ 
-                        type: "program", 
-                        id: data.scratchpad.id, 
-                        callback: window.location.href 
+                    reportButton.href = `${queueRoot}submit?${buildQuery({
+                        type: "program",
+                        id: data.scratchpad.id,
+                        callback: window.location.href
                     })}`;
                     reportButton.role = "button";
                     reportButton.innerHTML = "<span>Report</span>";
@@ -649,7 +649,7 @@ function addThumbnail(){
     var sel = document.getElementsByClassName("default_k9i44h");
     var test = document.getElementById("kae-img");
     if(sel.length < 1 || !programData.scratchpad || test) return;
-    
+
     function toDataURL(url, callback) {
         var xhr = new XMLHttpRequest();
         xhr.onload = function() {
@@ -777,6 +777,12 @@ function duplicateBadges(){
     }
 }
 
+function centerPoints(){
+    querySelectorPromise(".energy-points-badge").then(pointsBadge => {
+      pointsBadge.style.padding = "3px";
+    });
+}
+
 if (window.location.host === "www.khanacademy.org") {
     var locElm = setInterval(locationElm, 250);
     var addDuplicateBadges = setInterval(duplicateBadges, 100);
@@ -797,6 +803,7 @@ if (window.location.host === "www.khanacademy.org") {
             widenProgram();
         }
     } else if (url[3] === "profile") {
+        centerPoints();
         var profileData = setInterval(getProfileData, 250);
         reportUserButton();
         if(url[5] == "discussion" && url[6] == "replies") {
