@@ -293,7 +293,10 @@ function showProgramDates() {
     var updatedDate = newDate(programData.scratchpad.date);
     var myFlags = programData.scratchpad.flags.length;
 
-    date.nextElementSibling.innerHTML = "<br>Created: " + createdDate + "<br>Last updated: " + updatedDate + (programData.scratchpad.kaid === kaid ? ("<br>Flags: " + myFlags) : "") + (programData.scratchpad.hideFromHotlist ? "<br><span style=\"color:#af2f18\">This program is hidden from the hotlist.</span>" : "<br><span style=\"color:#18af18\">This program is not hidden from the hotlist.</span>");
+    date.nextElementSibling.innerHTML += "<br>Created: " + createdDate + ";"
+    date.nextElementSibling.innerHTML += "<br>Last updated: " + updatedDate;
+    date.nextElementSibling.innerHTML += (programData.scratchpad.kaid === kaid ? ("<br><span title=\"" + programData.scratchpad.flags.join("\n") + "\">Flags: " + myFlags) + "</span>" : "")
+    date.nextElementSibling.innerHTML += (programData.scratchpad.hideFromHotlist ? "<br><span style=\"color:#af2f18\">This program is hidden from the hotlist.</span>" : "<br><span style=\"color:#18af18\">This program is not hidden from the hotlist.</span>");
     clearInterval(getDates);
 }
 
