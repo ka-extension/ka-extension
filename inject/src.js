@@ -780,7 +780,7 @@ function duplicateBadges(){
 function centerPoints(){
     querySelectorPromise(".energy-points-badge").then(pointsBadge => {
       pointsBadge.style.padding = "3px";
-    });
+    }).catch(console.error);
 }
 
 if (window.location.host === "www.khanacademy.org") {
