@@ -605,23 +605,52 @@ function locationElm() {
 }
 
 /*** WIP? ***/
+
+var comments = {
+    plagiarism: "Your program appears to have some similarities to another, check above for more information on that.",
+    passed: "Your program passed! Great work on this.",
+    needsWork: "Your program has a few errors in it, check above for more information on that."
+};
+
 function evalFeatures() {
-    clearInterval(addEvalFeatures);
-    var container = document.getElementsByClassName("eval-container")[0];
-    if(!container) return;
-    var commentTextarea = document.getElementsByClassName("eval-left")[0].childNodes[5].lastElementChild.lastElementChild.firstElementChild;
-    var replyButton = document.createElement("button");
-    replyButton.innerText = "Auto Reply";
-    replyButton.id = "kae-auto-reply";
-    replyButton.className = "buttonStyle_1quqytj";
-    replyButton.style.cssText = "margin-left: 2px; "
-    replyButton.addEventListener("click", function() {
-
-    });
-    document.getElementsByClassName("edit-content-form__formatting-tips")[0].parentNode.insertBefore(replyButton, document.getElementsByClassName("edit-content-form__formatting-tips")[0]);
-    document.getElementById("kae-auto-reply").parentNode.insertBefore(document.createElement("br"),document.getElementsByClassName("edit-content-form__formatting-tips")[0]);
-
-    clearInterval(addEvalFeatures);
+    let projectInfoNotEmpty = objectNotEmptyTimer(programData);
+    projectInfoNotEmpty.then(projectData => {
+        querySelectorPromise(".eval-left > ul").then(list => {
+            querySelectorPromise('.edit-content-form__left').then(tips => {
+                console.log(tips);
+                tips.parentNode.removeChild(tips);
+            });
+            var textareas = document.getElementsByClassName('eval-text');
+            console.log(textareas);
+            
+            var btn = document.createElement("button");
+            btn.className = "buttonStyle_1quqytj";
+            btn.type = "button";
+            btn.innerText = "Generate Comment";
+            btn.style = "border: 1px solid #ccc !important; margin-left: 1px !important;";
+            btn.addEventListener('click', function(){
+                var objectives = document.getElementsByClassName("eval-peer-rubric-item");
+                if(document.querySelectorAll(".nopass,.pass").length < objectives.length) return;
+                var evalCommentTextarea = textareas[textareas.length - 1];
+                var evalCommentText = "Hey there,\n\n";
+                var addition;
+                var nopass = document.getElementsByClassName("nopass");
+                if(objectives[objectives.length - 1].childNodes[0].className === "nopass"){
+                    addition = comments.plagiarism;    
+                }
+                else if(nopass.length < 1){
+                    addition = comments.passed; 
+                }
+                else{
+                    addition = comments.needsWork;
+                }
+                evalCommentText += addition;
+                evalCommentTextarea.value = evalCommentText;
+            });
+            list.appendChild(btn);
+        }).catch(console.error);
+    }).catch(console.error);
+    
 }
 
 /*** Add a "Report" button under all programs, that sends a report directly to Guardians. ***/
@@ -800,8 +829,8 @@ if (window.location.host === "www.khanacademy.org") {
         if(url[4] !== "new") {
             var addFlags = setInterval(addFlagsToProgram, 250),
                 getDates = setInterval(showProgramDates, 250),
-                addguidelines = setInterval(addGuidelines, 250),
-                addEvalFeatures = setInterval(evalFeatures, 250);
+                addguidelines = setInterval(addGuidelines, 250);
+            evalFeatures();
             reportButton();
             widenProgram();
         }
