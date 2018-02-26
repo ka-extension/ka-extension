@@ -177,15 +177,12 @@ function newDate(date) {
 
 /*** When notifications are more than 9, it will show the real value and not 9+ anymore. ***/
 function updateNotifs() {
-    var greenCircle = document.getElementsByClassName("notificationsBadge_16g2pyz")[0];
-    if(!greenCircle) { return; }
-    if(KA._userProfileData.countBrandNewNotifications === 0){
-      greenCircle.textContent = 1;
-    }
-    else{
-      greenCircle.textContent = KA._userProfileData.countBrandNewNotifications;
-    }
-    clearInterval(notifications);
+    querySelectorPromise(".notificationsBadge_16g2pyz", 50)
+        .then(greenCircle => {
+            greenCircle.textContent = 
+                (KA._userProfileData && KA._userProfileData.countBrandNewNotifications !== 0) ? 
+                KA._userProfileData.countBrandNewNotifications : 1;
+        }).catch(console.error);
 }
 
 function stopNotifOverflow(){
@@ -201,25 +198,26 @@ function widenProgram() {
 
 /*** Add back the community guidelines next to dicussion under programs. ***/
 function addGuidelines() {
-    var v = document.getElementsByClassName("video-discussion")[0],
-        g = document.getElementsByClassName("main-discussion-guidelines discussion-guidelines")[0],
-        f = document.getElementsByClassName("footer_crtwg")[0];
-    if(!v) return;
-    v.style.setProperty("float", "left");
-    v.style.setProperty("margin", "0px");
-    v.style.setProperty("width", "50%", "important");
-    v.style.setProperty("display", "block")
-    f.style.setProperty("max-width", "none", "important");
-    g.style.setProperty("float", "right");
-    g.style.setProperty("width", "25%");
-    g.style.setProperty("display", "block");
-    g.style.setProperty("margin-top", "0px");
-
-    clearInterval(addguidelines);
+    querySelectorPromise(".video-discussion")
+        .then(v => {
+            let g = document.getElementsByClassName("main-discussion-guidelines discussion-guidelines")[0],
+                f = document.getElementsByClassName("footer_crtwg")[0];
+            v.style.setProperty("float", "left");
+            v.style.setProperty("margin", "0px");
+            v.style.setProperty("width", "50%", "important");
+            v.style.setProperty("display", "block")
+            f.style.setProperty("max-width", "none", "important");
+            g.style.setProperty("float", "right");
+            g.style.setProperty("width", "25%");
+            g.style.setProperty("display", "block");
+            g.style.setProperty("margin-top", "0px");
+        }).catch(console.error);
 }
 
 /*** When viewing a program, it shows how many flags the program has. ***/
 function addFlagsToProgram() {
+    
+    
     if(!programData.scratchpad) return;
     var title = document.getElementsByClassName("editTitle_swrcbw");
     var flag = document.getElementsByClassName("discussion-meta-controls");
@@ -623,8 +621,8 @@ function evalFeatures() {
 
 /*** Add a "Report" button under all programs, that sends a report directly to Guardians. ***/
 function reportButton() {
-    let userDataNotEmpty = objectNotEmptyTimer(programData);
-    userDataNotEmpty.then(data => {
+    let programDataNotEmpty = objectNotEmptyTimer(programData);
+    programDataNotEmpty.then(data => {
         let scratchpad = data.scratchpad;
         if (scratchpad && scratchpad.kaid !== kaid && (!KA._userProfileData || !KA._userProfileData.isModerator)) {
             querySelectorPromise(".buttons_vponqv")
@@ -780,10 +778,10 @@ function duplicateBadges(){
 if (window.location.host === "www.khanacademy.org") {
     var locElm = setInterval(locationElm, 250);
     var addDuplicateBadges = setInterval(duplicateBadges, 100);
-    var notifications = setInterval(updateNotifs, 50);
     var addEditUIInterval = setInterval(addCommentEditUI, 250);
     var deleteNotifs = setInterval(deleteNotif, 50);
     stopNotifOverflow();
+    updateNotifs();
     if (url[3] === "computer-programming" || url[3] === "hour-of-code") {
         darkTheme();
         var addDarkToggleButton = setInterval(darkToggleButton, 250);
@@ -791,10 +789,10 @@ if (window.location.host === "www.khanacademy.org") {
         if(url[4] !== "new") {
             var addFlags = setInterval(addFlagsToProgram, 250),
                 getDates = setInterval(showProgramDates, 250),
-                addguidelines = setInterval(addGuidelines, 250),
                 addEvalFeatures = setInterval(evalFeatures, 250);
             reportButton();
             widenProgram();
+            addGuidelines();
         }
     } else if (url[3] === "profile") {
         var profileData = setInterval(getProfileData, 250);

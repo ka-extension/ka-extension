@@ -127,3 +127,8 @@
 .kae-notif-delete svg:hover {
     background: #dddddd;
 }
+
+#widget-projectanswers-list {
+    padding: 0 0 5px 0 !important;
+    display: block !important;
+}
