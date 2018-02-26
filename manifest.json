@@ -4,6 +4,7 @@
     "short_name": "The KA Extension",
     "version": "3.0.0",
     "description": "A Chrome Extension for Khan Academy",
+    "minimum_chrome_version": "33.0.1750",
     "browser_action": {
         "name": "Khan Academy Extension",
         "icons": {
@@ -15,7 +16,7 @@
         "default_popup": "popup/popup.html"
     },
     "content_scripts": [{
-        "js": ["content.js"],
+        "js": ["build/content.js"],
         "matches": ["*://*.khanacademy.org/*"],
         "css": ["general.css"],
         "run_at" : "document_end"
@@ -28,11 +29,11 @@
     ],
     "web_accessible_resources": [
         "tabs",
-        "inject/src.js",
-        "popup/popup.js"
+        "build/src.js",
+        "build/popup.js"
     ],
     "background": {
-      "scripts": ["background.js"]
+      "scripts": ["build/background.js"]
     },
     "externally_connectable": {
       "matches": ["*://*.khanacademy.org/*"]
