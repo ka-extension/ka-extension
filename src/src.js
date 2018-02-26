@@ -826,13 +826,8 @@ if (window.location.host === "www.khanacademy.org") {
         var thumbnailInt = setInterval(addThumbnail, 250);
         if(url[4] !== "new") {
             var addFlags = setInterval(addFlagsToProgram, 250),
-                getDates = setInterval(showProgramDates, 250),
-<<<<<<< HEAD
-                addEvalFeatures = setInterval(evalFeatures, 250);
-=======
-                addguidelines = setInterval(addGuidelines, 250);
+                getDates = setInterval(showProgramDates, 250);
             evalFeatures();
->>>>>>> lukekrikorian/master
             reportButton();
             widenProgram();
             addGuidelines();
