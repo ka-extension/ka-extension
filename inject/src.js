@@ -80,7 +80,7 @@ var extensionStoragePrefix = "ka-extension-localstorage-item-";
 var extensionToggleDarkEditorItemKey = extensionStoragePrefix + "toggle-editor-dark-theme";
 
 const queueRoot = "https://reportqueue.herokuapp.com/";
-    
+
 function getSession() {
     return /fkey=(.*?);/ig.exec(document.cookie)[1];
 }
@@ -95,7 +95,7 @@ function getJSON(url, success) {
     });
     t.send();
 }
-    
+
 function buildQuery(params) {
     let ret = "", v = 0;
     for(let i in params)
@@ -291,7 +291,10 @@ function showProgramDates() {
     var updatedDate = newDate(programData.scratchpad.date);
     var myFlags = programData.scratchpad.flags.length;
 
-    date.nextElementSibling.innerHTML = "<br>Created: " + createdDate + "<br>Last updated: " + updatedDate + (programData.scratchpad.kaid === kaid ? ("<br>Flags: " + myFlags) : "") + (programData.scratchpad.hideFromHotlist ? "<br><span style=\"color:#af2f18\">This program is hidden from the hotlist.</span>" : "<br><span style=\"color:#18af18\">This program is not hidden from the hotlist.</span>");
+    date.nextElementSibling.innerHTML += "<br>Created: " + createdDate + ";"
+    date.nextElementSibling.innerHTML += "<br>Last updated: " + updatedDate;
+    date.nextElementSibling.innerHTML += (programData.scratchpad.kaid === kaid ? ("<br><span title=\"" + programData.scratchpad.flags.join("\n") + "\">Flags: " + myFlags) + "</span>" : "")
+    date.nextElementSibling.innerHTML += (programData.scratchpad.hideFromHotlist ? "<br><span style=\"color:#af2f18\">This program is hidden from the hotlist.</span>" : "<br><span style=\"color:#18af18\">This program is not hidden from the hotlist.</span>");
     clearInterval(getDates);
 }
 
@@ -321,7 +324,7 @@ function getProfileData() {
     tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">User kaid</td><td>" + kaid + "</td></tr>";
     clearInterval(profileData);
 }
-    
+
 /** Add report user button **/
 function reportUserButton() {
     if(!isLoggedIn) { return; }
@@ -338,14 +341,14 @@ function reportUserButton() {
                     button.style.setProperty("margin", "10px 0px 10px 0px", "important");
                     button.style.setProperty("display", "block", "important");
                     button.innerHTML = "<span>Report user</span>";
-                    button.href = `${queueRoot}submit?${buildQuery({ 
-                        type: "user", 
-                        id: userInfo.kaid, 
-                        callback: window.location.href 
+                    button.href = `${queueRoot}submit?${buildQuery({
+                        type: "user",
+                        id: userInfo.kaid,
+                        callback: window.location.href
                     })}`;
                     let dWidget = document.getElementById("discussion-widget");
                     let widget = discussionWidget.getElementsByClassName("profile-widget-contents")[0];
-                    dWidget && dWidget.children[0] ? dWidget.insertBefore(button, dWidget.children[0]) : widget.appendChild(button);   
+                    dWidget && dWidget.children[0] ? dWidget.insertBefore(button, dWidget.children[0]) : widget.appendChild(button);
                 }
             }).catch(console.error);
     }).catch(console.error);
@@ -600,23 +603,52 @@ function locationElm() {
 }
 
 /*** WIP? ***/
+
+var comments = {
+    plagiarism: "Your program appears to have some similarities to another, check above for more information on that.",
+    passed: "Your program passed! Great work on this.",
+    needsWork: "Your program has a few errors in it, check above for more information on that."
+};
+
 function evalFeatures() {
-    clearInterval(addEvalFeatures);
-    var container = document.getElementsByClassName("eval-container")[0];
-    if(!container) return;
-    var commentTextarea = document.getElementsByClassName("eval-left")[0].childNodes[5].lastElementChild.lastElementChild.firstElementChild;
-    var replyButton = document.createElement("button");
-    replyButton.innerText = "Auto Reply";
-    replyButton.id = "kae-auto-reply";
-    replyButton.className = "buttonStyle_1quqytj";
-    replyButton.style.cssText = "margin-left: 2px; "
-    replyButton.addEventListener("click", function() {
-
-    });
-    document.getElementsByClassName("edit-content-form__formatting-tips")[0].parentNode.insertBefore(replyButton, document.getElementsByClassName("edit-content-form__formatting-tips")[0]);
-    document.getElementById("kae-auto-reply").parentNode.insertBefore(document.createElement("br"),document.getElementsByClassName("edit-content-form__formatting-tips")[0]);
-
-    clearInterval(addEvalFeatures);
+    let projectInfoNotEmpty = objectNotEmptyTimer(programData);
+    projectInfoNotEmpty.then(projectData => {
+        querySelectorPromise(".eval-left > ul").then(list => {
+            querySelectorPromise('.edit-content-form__left').then(tips => {
+                console.log(tips);
+                tips.parentNode.removeChild(tips);
+            });
+            var textareas = document.getElementsByClassName('eval-text');
+            console.log(textareas);
+            
+            var btn = document.createElement("button");
+            btn.className = "buttonStyle_1quqytj";
+            btn.type = "button";
+            btn.innerText = "Generate Comment";
+            btn.style = "border: 1px solid #ccc !important; margin-left: 1px !important;";
+            btn.addEventListener('click', function(){
+                var objectives = document.getElementsByClassName("eval-peer-rubric-item");
+                if(document.querySelectorAll(".nopass,.pass").length < objectives.length) return;
+                var evalCommentTextarea = textareas[textareas.length - 1];
+                var evalCommentText = "Hey there,\n\n";
+                var addition;
+                var nopass = document.getElementsByClassName("nopass");
+                if(objectives[objectives.length - 1].childNodes[0].className === "nopass"){
+                    addition = comments.plagiarism;    
+                }
+                else if(nopass.length < 1){
+                    addition = comments.passed; 
+                }
+                else{
+                    addition = comments.needsWork;
+                }
+                evalCommentText += addition;
+                evalCommentTextarea.value = evalCommentText;
+            });
+            list.appendChild(btn);
+        }).catch(console.error);
+    }).catch(console.error);
+    
 }
 
 /*** Add a "Report" button under all programs, that sends a report directly to Guardians. ***/
@@ -629,10 +661,10 @@ function reportButton() {
                 .then(buttons => {
                     let reportButton = document.createElement("a");
                     reportButton.id = "kae-report-button";
-                    reportButton.href = `${queueRoot}submit?${buildQuery({ 
-                        type: "program", 
-                        id: data.scratchpad.id, 
-                        callback: window.location.href 
+                    reportButton.href = `${queueRoot}submit?${buildQuery({
+                        type: "program",
+                        id: data.scratchpad.id,
+                        callback: window.location.href
                     })}`;
                     reportButton.role = "button";
                     reportButton.innerHTML = "<span>Report</span>";
@@ -647,7 +679,7 @@ function addThumbnail(){
     var sel = document.getElementsByClassName("default_k9i44h");
     var test = document.getElementById("kae-img");
     if(sel.length < 1 || !programData.scratchpad || test) return;
-    
+
     function toDataURL(url, callback) {
         var xhr = new XMLHttpRequest();
         xhr.onload = function() {
@@ -775,6 +807,12 @@ function duplicateBadges(){
     }
 }
 
+function centerPoints(){
+    querySelectorPromise(".energy-points-badge").then(pointsBadge => {
+      pointsBadge.style.padding = "3px";
+    }).catch(console.error);
+}
+
 if (window.location.host === "www.khanacademy.org") {
     var locElm = setInterval(locationElm, 250);
     var addDuplicateBadges = setInterval(duplicateBadges, 100);
@@ -789,12 +827,18 @@ if (window.location.host === "www.khanacademy.org") {
         if(url[4] !== "new") {
             var addFlags = setInterval(addFlagsToProgram, 250),
                 getDates = setInterval(showProgramDates, 250),
+<<<<<<< HEAD
                 addEvalFeatures = setInterval(evalFeatures, 250);
+=======
+                addguidelines = setInterval(addGuidelines, 250);
+            evalFeatures();
+>>>>>>> lukekrikorian/master
             reportButton();
             widenProgram();
             addGuidelines();
         }
     } else if (url[3] === "profile") {
+        centerPoints();
         var profileData = setInterval(getProfileData, 250);
         reportUserButton();
         if(url[5] == "discussion" && url[6] == "replies") {
