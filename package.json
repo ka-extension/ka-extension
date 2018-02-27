@@ -4,6 +4,7 @@
 	"version": "3.0.1",
 	"devDependencies": {
 		"gulp": "4.0.0",
+		"gulp-concat": "2.6.1",
 		"babel-core": "^6.26.0",
 		"gulp-babel": "7.0.1",
 		"babel-preset-env": "1.6.1"

@@ -1,0 +1,27 @@
+{
+    "./build/background.js": [
+        "./src/background.js"
+    ],
+    "./build/content.js": [
+        "./src/content.js"
+    ],
+    "./build/popup.js": [
+        "./src/popup.js"
+    ],
+    "./build/src.js": [
+        "./src/main/init.js",
+        "./src/main/promise-util.js",
+        "./src/main/util-funcs.js",
+        "./src/main/comment-linker.js",
+        "./src/main/load-data.js",
+        "./src/main/simple-edits.js",
+        "./src/main/scratchpad.js",
+        "./src/main/comment-links.js",
+        "./src/main/comment-editing.js",
+        "./src/main/eval.js",
+        "./src/main/location.js",
+        "./src/main/notifs.js",
+        "./src/main/profile.js",
+        "./src/main/end.js"
+    ]
+}

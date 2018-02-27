@@ -1,3 +1,5 @@
+"use strict";
+
 var id = chrome.runtime.id;
 var fkey = "",
     kaid = "";
