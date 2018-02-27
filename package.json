@@ -7,9 +7,11 @@
 		"gulp-concat": "2.6.1",
 		"babel-core": "^6.26.0",
 		"gulp-babel": "7.0.1",
+		"gulp-zip": "4.1.0",
 		"babel-preset-env": "1.6.1"
 	},
 	"scripts": {
-		"build": "gulp build"
+		"build": "gulp build",
+		"zip": "gulp zip"
 	}
 }
