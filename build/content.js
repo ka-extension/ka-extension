@@ -1,3 +1,5 @@
+"use strict";
+
 console.log("content.js fired");
 (function (document, tag) {
     var scriptTag = document.createElement(tag),
