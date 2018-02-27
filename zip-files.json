@@ -1,0 +1,12 @@
+[
+    "./**",
+    "!./node_modules/**",
+    "!./package-lock.json",
+    "!./package.json",
+    "!./build.json",
+    "!./zip-files.json",
+    "!./src/**",
+    "!./gulpfile.js",
+    "!./ka-extension.zip",
+    "!./ka-extension/**"
+]

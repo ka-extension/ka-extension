@@ -1,7 +1,10 @@
 const gulp = require("gulp");
 const babel = require("gulp-babel");
+const concat = require("gulp-concat");
+const zip = require("gulp-zip");
+
 const build = require("./build.json");
-const concat = require('gulp-concat');
+const zipFiles = require("./zip-files.json");
 
 const scriptNames = [];
 const destRegex = /^(.*\/)(.*\.js)$/i;
@@ -27,4 +30,10 @@ const destRegex = /^(.*\/)(.*\.js)$/i;
     }
 }
 
+gulp.task("zip-current-build", () => gulp.src(zipFiles)
+          .pipe(zip('ka-extension.zip'))
+          .pipe(gulp.dest('./')));
+
 gulp.task("build", gulp.series(...scriptNames));
+
+gulp.task("zip", gulp.series("build", "zip-current-build"));
