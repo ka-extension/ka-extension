@@ -1,7 +1,7 @@
 {
 	"name": "TheKAExtension",
 	"description": "A chrome extension for Khan Academy",
-	"version": "3.0.1",
+	"version": "3.1.0",
 	"devDependencies": {
 		"gulp": "4.0.0",
 		"gulp-concat": "2.6.1",
