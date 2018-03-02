@@ -1,3 +1,4 @@
+    var computingUrls = ["computer-programming", "hour-of-code", "computer-science", "pixar"];
     if (window.location.host === "www.khanacademy.org") {
         var locElm = setInterval(locationElm, 250);
         var addDuplicateBadges = setInterval(duplicateBadges, 100);
@@ -5,7 +6,7 @@
         var deleteNotifs = setInterval(deleteNotif, 50);
         stopNotifOverflow();
         updateNotifs();
-        if (url[3] === "computer-programming" || url[3] === "hour-of-code") {
+        if (computingUrls.includes(url[3])) {
             darkTheme();
             var addDarkToggleButton = setInterval(darkToggleButton, 250);
             var thumbnailInt = setInterval(addThumbnail, 250);
