@@ -1,4 +1,3 @@
-    var computingUrls = ["computer-programming", "hour-of-code", "computer-science", "pixar"];
     if (window.location.host === "www.khanacademy.org") {
         var locElm = setInterval(locationElm, 250);
         var addDuplicateBadges = setInterval(duplicateBadges, 100);
@@ -17,6 +16,7 @@
                 reportButton();
                 widenProgram();
                 addGuidelines();
+                hideEditor();
             }
         } else if (url[3] === "profile") {
             centerPoints();

@@ -1,5 +1,23 @@
 /*** To avoid messy inline styles, use this file to style stuff. ***/
 
+.kae-hide-400{
+  min-width: 400px !important;
+  width: 400px !important;
+}
+
+.kae-hide-500{
+  min-width: 500px !important;
+  width: 500px !important;
+}
+
+.kae-hide-600{
+  min-width: 600px !important;
+  width: 600px !important;
+}
+
+.kae-hide{
+  display: none !important;
+}
 /* Report button under programs */
 #kae-report-button {
     text-decoration: none !important;
@@ -113,9 +131,9 @@
 /** Notification delete button **/
 .kae-notif-delete {
     cursor: pointer;
-    display: block; 
-    margin: 0; 
-    padding-left: 5px; 
+    display: block;
+    margin: 0;
+    padding-left: 5px;
     padding-top: 5px;
 }
 
