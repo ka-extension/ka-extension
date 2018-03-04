@@ -223,7 +223,7 @@ function hideEditor(){
         button.className = "link_1uvuyao-o_O-computing_1w8n1i8";
         button.style.width = "80px";
         button.style.align = "right";
-        button.innerHTML = "Hide editor";
+        button.innerHTML = "Toggle Editor";
         button.addEventListener("click", () => {
           localStorage.setItem(LSeditorHide, (localStorage.getItem(LSeditorHide) === "false" ? "true" : "false"));
           editorWrap.classList.toggle("kae-hide");
