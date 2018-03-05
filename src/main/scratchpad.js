@@ -221,7 +221,7 @@ function hideEditor(){
         var button = document.createElement("a");
         button.href = "javascript:void(0)";
         button.className = "link_1uvuyao-o_O-computing_1w8n1i8";
-        button.style.width = "80px";
+        button.style.width = "100px";
         button.style.align = "right";
         button.innerHTML = "Toggle Editor";
         button.addEventListener("click", () => {
