@@ -86,7 +86,7 @@ function addCommentEditLink(element) {
         x.setRequestHeader("x-ka-fkey", getSession());
         x.setRequestHeader("Content-type", "application/json");
         x.addEventListener("load", function() {
-            contentDiv.innerHTML = KAMarkdowntoHTML(textarea.value);
+            contentDiv.textContent = KAMarkdowntoHTML(textarea.value);
             textarea.style.display = discussionControl.style.display = "none";
             contentDiv.style.display = discMeta.style.display = "block";
         });
@@ -100,7 +100,7 @@ function addCommentEditLink(element) {
         let parentComment = document.getElementById(kaencrypted);
         let discMeta = parentComment.getElementsByClassName("discussion-meta")[0];
         let contentDiv = parentComment.getElementsByClassName("discussion-content")[0];
-        let content = HTMLtoKAMarkdown(contentDiv.innerHTML).trim();
+        let content = HTMLtoKAMarkdown(contentDiv.textContent).trim();
         let textarea =  parentComment.getElementsByTagName("textarea")[0];
         let discussionControl = parentComment.getElementsByClassName("discussion-controls")[0];
         textarea.value = content;
