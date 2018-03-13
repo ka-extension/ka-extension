@@ -86,7 +86,7 @@ function addCommentEditLink(element) {
         x.setRequestHeader("x-ka-fkey", getSession());
         x.setRequestHeader("Content-type", "application/json");
         x.addEventListener("load", function() {
-            contentDiv.innerHTML = KAMarkdowntoHTML(textarea.value);
+            contentDiv.textContent = KAMarkdowntoHTML(textarea.value);
             textarea.style.display = discussionControl.style.display = "none";
             contentDiv.style.display = discMeta.style.display = "block";
         });
