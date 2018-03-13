@@ -30,7 +30,8 @@
     "web_accessible_resources": [
         "tabs",
         "build/src.js",
-        "build/popup.js"
+        "build/popup.js",
+        "general.css"
     ],
     "background": {
       "scripts": ["build/background.js"]

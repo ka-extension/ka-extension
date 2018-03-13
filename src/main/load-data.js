@@ -1,4 +1,5 @@
-if(url[3] === "computer-programming" || url[3] === "hour-of-code") {
+var computingUrls = ["computer-programming", "hour-of-code", "computer-science", "pixar"];
+if(computingUrls.includes(url[3])) {
     let programId = url[5].substring(0, (url[5].includes("?") ? url[5].indexOf("?") : 16));
     getJSON(programUrl + programId, function(data) {
         console.log(data);

@@ -5,7 +5,7 @@
         var deleteNotifs = setInterval(deleteNotif, 50);
         stopNotifOverflow();
         updateNotifs();
-        if (url[3] === "computer-programming" || url[3] === "hour-of-code") {
+        if (computingUrls.includes(url[3])) {
             darkTheme();
             var addDarkToggleButton = setInterval(darkToggleButton, 250);
             var thumbnailInt = setInterval(addThumbnail, 250);
@@ -16,6 +16,7 @@
                 reportButton();
                 widenProgram();
                 addGuidelines();
+                hideEditor();
             }
         } else if (url[3] === "profile") {
             centerPoints();

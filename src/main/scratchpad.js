@@ -155,7 +155,7 @@ function showProgramDates() {
     var updatedDate = newDate(programData.scratchpad.date);
     var myFlags = programData.scratchpad.flags.length;
 
-    date.nextElementSibling.innerHTML += "<br>Created: " + createdDate + ";"
+    date.nextElementSibling.innerHTML += "<br>Created: " + createdDate;
     date.nextElementSibling.innerHTML += "<br>Last updated: " + updatedDate;
     date.nextElementSibling.innerHTML += (programData.scratchpad.kaid === kaid ? ("<br><span title=\"" + programData.scratchpad.flags.join("\n") + "\">Flags: " + myFlags) + "</span>" : "")
     date.nextElementSibling.innerHTML += (programData.scratchpad.hideFromHotlist ? "<br><span style=\"color:#af2f18\">This program is hidden from the hotlist.</span>" : "<br><span style=\"color:#18af18\">This program is not hidden from the hotlist.</span>");
@@ -197,6 +197,42 @@ function addFlagsToProgram() {
 
         clearInterval(addFlags);
     }
+}
+
+/*** Hides editor **/
+function hideEditor(){
+  let programInfoNotEmpty = objectNotEmptyTimer(programData);
+  programInfoNotEmpty.then(() => {
+    querySelectorPromise(".wrapScratchpad_vw13lu").then((wrap) => {
+        if(programData.scratchpad.userAuthoredContentType === "webpage") return;
+        var LSeditorHide = extensionStoragePrefix + "editor-hide";
+        var LSeditorHideVal = localStorage.getItem(LSeditorHide);
+        var editorWrap = document.querySelector(".scratchpad-editor-wrap");
+        if(localStorage.getItem(LSeditorHide) === null) localStorage.setItem(LSeditorHide, "false");
+        if(LSeditorHideVal === "true"){
+          editorWrap.classList.toggle("kae-hide");
+          wrap.classList.toggle(`kae-hide-${programData.scratchpad.width.toString()}`);
+        }
+
+        var buttonDiv = document.createElement("div");
+        buttonDiv.style.textAlign = "right";
+        buttonDiv.style.float = "right";
+        buttonDiv.style.marginBottom = "5px";
+        var button = document.createElement("a");
+        button.href = "javascript:void(0)";
+        button.className = "link_1uvuyao-o_O-computing_1w8n1i8";
+        button.style.width = "100px";
+        button.style.align = "right";
+        button.innerHTML = "Toggle Editor";
+        button.addEventListener("click", () => {
+          localStorage.setItem(LSeditorHide, (localStorage.getItem(LSeditorHide) === "false" ? "true" : "false"));
+          editorWrap.classList.toggle("kae-hide");
+          wrap.classList.toggle(`kae-hide-${programData.scratchpad.width.toString()}`);
+        });
+        buttonDiv.appendChild(button);
+        wrap.parentNode.insertBefore(buttonDiv, wrap);
+      }).catch(console.error);
+  }).catch(console.error);
 }
 
 /***  Programs no longer have a max width. ***/

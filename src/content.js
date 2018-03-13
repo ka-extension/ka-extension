@@ -5,3 +5,9 @@ console.log("content.js fired");
     scriptTag.src = chrome.extension.getURL("./build/src.js"); // Set the source of the script to your script
     firstScriptTag.parentNode.insertBefore(scriptTag, firstScriptTag); // Append the script to the DOM
 }(document, "script"));
+/* To override KA's !important styles */
+var style = document.createElement('link');
+style.rel = 'stylesheet';
+style.type = 'text/css';
+style.href = chrome.extension.getURL('general.css');
+(document.head || document.documentElement).appendChild(style);
