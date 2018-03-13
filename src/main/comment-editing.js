@@ -100,7 +100,7 @@ function addCommentEditLink(element) {
         let parentComment = document.getElementById(kaencrypted);
         let discMeta = parentComment.getElementsByClassName("discussion-meta")[0];
         let contentDiv = parentComment.getElementsByClassName("discussion-content")[0];
-        let content = HTMLtoKAMarkdown(contentDiv.innerHTML).trim();
+        let content = HTMLtoKAMarkdown(contentDiv.textContent).trim();
         let textarea =  parentComment.getElementsByTagName("textarea")[0];
         let discussionControl = parentComment.getElementsByClassName("discussion-controls")[0];
         textarea.value = content;
