@@ -17,3 +17,4 @@ PRs are welcomed!
 
 #### Thanks
 * [Matthias Saihttam](https://github.com/MatthiasSaihttam)
+* [Scott Schraeder](https://github.com/CosignCosine)
