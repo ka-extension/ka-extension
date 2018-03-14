@@ -28,14 +28,14 @@ class CommentLinker {
                 let comment = data[i];
                 that.topicIds[comment.key] = comment.focus.id;
                 that.topicTypes[comment.key] = comment.focus.kind;
-                that.commentLinks[comment.key] = comment.focusUrl + "?qa_expand_key=" + comment.expandKey;
+                that.commentLinks[comment.key] = `${comment.focusUrl}?qa_expand_key=${comment.expandKey}`;
             }
             getJSON(that.genURL(p, 2), function(data) {
                 for(let i = 0; i < data.length; i++) {
                     let comment = data[i];
                     that.topicIds[comment.key] = comment.focus.id;
                     that.topicTypes[comment.key] = comment.focus.kind;
-                    that.commentLinks[comment.key] = comment.focusUrl + "?qa_expand_key=" + comment.expandKey;
+                    that.commentLinks[comment.key] = `${comment.focusUrl}?qa_expand_key=${comment.expandKey}`;
                 }
                 if(typeof success == "function") { success(that.commentLinks); }
             });
