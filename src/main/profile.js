@@ -12,7 +12,7 @@ function getProfileData() {
     var numPrograms = userPrograms.scratchpads.length;
     for(var i = 0; i < numPrograms; i++) {
         var scratchpad = userPrograms.scratchpads[i];
-        numVotes += scratchpad.sumVotesIncremented;
+        numVotes += scratchpad.sumVotesIncremented - 1;
         numSpinoffs += scratchpad.spinoffCount;
     }
     function addItem(title, value){
