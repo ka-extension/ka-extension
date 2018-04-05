@@ -108,7 +108,7 @@ function addThumbnail(){
             };
             setTimeout(function() {
                 var req = new XMLHttpRequest();
-                req.open("PUT", "/api/internal/scratchpads/" + programData.scratchpad.globalId.substring(1,17));
+                req.open("PUT", "https://www.khanacademy.org/api/internal/scratchpads/" + programData.scratchpad.globalId.substring(1,17));
                 req.setRequestHeader("X-KA-FKey", getSession());
                 req.setRequestHeader("Content-type", "application/json");
                 req.send(JSON.stringify(tempData));
@@ -137,7 +137,7 @@ function showProgramsFlags() {
 
     for (; i < programLinks.length; i++) {
         var id = programLinks[i].href.split("/")[5], counter = 0, ids = [], objs = [], result;
-        getJSON("/api/internal/scratchpads/" + id, function(a, c) {
+        getJSON("https://www.khanacademy.org/api/internal/scratchpads/" + id, function(a, c) {
             handleResponse(a);
             counter++;
         });
