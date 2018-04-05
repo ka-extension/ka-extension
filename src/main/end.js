@@ -1,4 +1,4 @@
-    if (window.location.host === "www.khanacademy.org") {
+        if (window.location.host.includes("khanacademy.org")) {
         var locElm = setInterval(locationElm, 250);
         var addDuplicateBadges = setInterval(duplicateBadges, 100);
         var addEditUIInterval = setInterval(addCommentEditUI, 250);
