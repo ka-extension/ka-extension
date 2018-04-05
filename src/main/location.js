@@ -20,7 +20,7 @@ function locationElm() {
                   }
             };
             var req = new XMLHttpRequest();
-            req.open("POST", "https://www.khanacademy.org/api/internal/user/profile");
+            req.open("POST", endpointURL("/api/internal/user/profile"));
             req.setRequestHeader("X-KA-FKey", getSession());
             req.setRequestHeader("Content-type", "application/json");
             req.addEventListener("load", function() {

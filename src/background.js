@@ -17,17 +17,10 @@ chrome.runtime.onMessageExternal.addListener(function(msg, sender) {
 
 setInterval(function() {
     if(fkey.length <= 0 || kaid.length <= 0) { return; }
-    var req = new XMLHttpRequest();
-    req.responseType = "json";
-    req.open("GET", "https://www.khanacademy.org/api/internal/user/profile?kaid=" + kaid, !0);
-    req.setRequestHeader("X-KA-FKey", fkey);
-    req.addEventListener("load", function() {
-        if(req.readyState === req.DONE && req.response) {
-            var notifs = req.response.countBrandNewNotifications;
-            chrome.browserAction.setBadgeText({
-              text: notifs > 0 ? notifs.toString() : ""
-            });
-        }
+    getJSON("/api/internal/user/profile?kaid=" + kaid, function(data) {
+        var notifs = data.countBrandNewNotifications;
+        chrome.browserAction.setBadgeText({
+            text: notifs > 0 ? notifs.toString() : ""
+        });
     });
-    req.send();
 }, 1000);

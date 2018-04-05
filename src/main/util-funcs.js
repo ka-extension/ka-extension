@@ -1,10 +1,14 @@
+function endpointURL(endpoint) {
+    return window.location.origin + endpoint;
+}
+
 function getSession() {
     return /fkey=(.*?);/ig.exec(document.cookie)[1];
 }
 
-function getJSON(url, success) {
+function getJSON(endpoint, success) {
     var t = new XMLHttpRequest();
-    t.open("GET", url, !0);
+    t.open("GET", endpointURL(endpoint), !0);
     t.responseType = "json";
     t.setRequestHeader("X-KA-FKey", getSession());
     t.addEventListener("load", function() {
