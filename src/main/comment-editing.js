@@ -84,7 +84,7 @@ function addCommentEditLink(element) {
             focusType = commentLinkGenerator ? commentLinkGenerator.getTopicType(kaencrypted) : KAdefine.require("./javascript/discussion-package/discussion.js").data.focusKind;
         x.open("PUT", endpointURL(
 	    `/api/internal/discussions/${focusType}/${focusId}/comments/${kaencrypted}?casing=camel&lang=en&_=${Date.now()}`
-	);
+	));
         x.setRequestHeader("x-ka-fkey", getSession());
         x.setRequestHeader("Content-type", "application/json");
         x.addEventListener("load", function() {
