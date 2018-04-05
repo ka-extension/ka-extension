@@ -18,7 +18,7 @@ class CommentLinker {
         return this.topicTypes[kaencrypted];
     }
     genURL(page, sort) {
-        return `https://www.khanacademy.org/api/internal/user/replies?casing=camel&${((this.uok.substr(0, 5) == "kaid_") ? "kaid" : "username")}=${this.uok}&sort=${sort}&subject=all&limit=${this.limit}&page=${page}&lang=en&_=${Date.now()}`;
+        return `/api/internal/user/replies?casing=camel&${((this.uok.substr(0, 5) == "kaid_") ? "kaid" : "username")}=${this.uok}&sort=${sort}&subject=all&limit=${this.limit}&page=${page}&lang=en&_=${Date.now()}`;
     }
     next(success) {
         var that = this;
