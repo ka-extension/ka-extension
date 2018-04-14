@@ -8,7 +8,7 @@ function getSession() {
 
 function getJSON(endpoint, success) {
     var t = new XMLHttpRequest();
-    t.open("GET", endpointURL(endpoint), !0);
+    t.open("GET", endpoint, !0);
     t.responseType = "json";
     t.setRequestHeader("X-KA-FKey", getSession());
     t.addEventListener("load", function() {

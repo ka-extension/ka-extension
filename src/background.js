@@ -6,6 +6,10 @@ chrome.browserAction.setBadgeBackgroundColor({
     color: [204, 46, 46, 10]
 });
 
+function getSession() {
+    return fkey || "";
+}
+
 chrome.runtime.onMessageExternal.addListener(function(msg, sender) {
     switch(msg.type) {
         case "notif":

@@ -8,7 +8,6 @@
         if (computingUrls.includes(url[3])) {
             darkTheme();
             var addDarkToggleButton = setInterval(darkToggleButton, 250);
-            var thumbnailInt = setInterval(addThumbnail, 250);
             if(url[4] !== "new") {
                 var addFlags = setInterval(addFlagsToProgram, 250),
                     getDates = setInterval(showProgramDates, 250);

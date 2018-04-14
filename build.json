@@ -1,5 +1,6 @@
 {
     "./build/background.js": [
+        "./src/main/util-funcs.js",
         "./src/background.js"
     ],
     "./build/content.js": [
