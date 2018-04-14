@@ -54,69 +54,6 @@ function reportButton() {
     }).catch(console.error);
 }
 
-/*** Add custom thumbnails to programs, found in program settings. ***/
-function addThumbnail(){
-    var sel = document.getElementsByClassName("default_k9i44h");
-    var test = document.getElementById("kae-img");
-    if(sel.length < 1 || !programData.scratchpad || test) return;
-
-    function toDataURL(url, callback) {
-        var xhr = new XMLHttpRequest();
-        xhr.onload = function() {
-              var reader = new FileReader();
-              reader.onloadend = function() {
-                    callback(reader.result);
-              }
-              reader.readAsDataURL(xhr.response);
-        };
-        xhr.open("GET", url);
-        xhr.responseType = "blob";
-        xhr.send();
-    }
-
-    var modal = document.getElementsByClassName("modal_1lylzj-o_O-padded_ke4dn3")[0];
-    var input = document.createElement("input");
-    input.id = "kae-img";
-    input.type = "text";
-    input.style = "border-radius: 3px; border: 1px solid #ccc; padding: 8px; margin: 0 auto; display: block; width: 200px;"
-    input.placeholder = "URL"
-    modal.insertBefore(input, modal.childNodes[4]);
-
-    var title = document.createElement("div");
-    title.style = "margin-bottom: 4px"
-    title.className = "kui-labeledfield__title";
-    title.innerHTML = "Program Thumbnail";
-    modal.insertBefore(title, input);
-
-    var warning = document.createElement("p");
-    warning.textContent = "Make sure your image is not too large, and served from an https site."
-    modal.insertBefore(warning, modal.childNodes[6]);
-
-    var submitButton = document.getElementsByClassName("base_1h2bej0-o_O-notDisabled_ro0g1e-o_O-base_6ln5u2-o_O-notTransparent_xz424u-o_O-notDisabled_85jsd4")[0];
-    submitButton.addEventListener("click", function() {
-        console.log("the button was pressed")
-        var imgUrl = document.getElementById("kae-img").value;
-        if (imgURL.length < 5) return;
-        toDataURL(imgUrl, function(dataUrl) {
-            var tempData = {
-                userKey: KA._userProfileData.userKey,
-                title: programData.scratchpad.title,
-                revision: {
-                    image_url: dataUrl,
-                    code: programData.scratchpad.revision.code
-                }
-            };
-            setTimeout(function() {
-                var req = new XMLHttpRequest();
-                req.open("PUT", "https://www.khanacademy.org/api/internal/scratchpads/" + programData.scratchpad.globalId.substring(1,17));
-                req.setRequestHeader("X-KA-FKey", getSession());
-                req.setRequestHeader("Content-type", "application/json");
-                req.send(JSON.stringify(tempData));
-            }, 1000);
-        });
-    });
-}
-
 /*** When viewing the hotlist or a projects list, flag counts will be added next to spinoffs. ***/
 function showProgramsFlags() {
     var programLinks = document.getElementsByClassName("link_1uvuyao-o_O-noUnderline_4133r1"),
@@ -137,7 +74,7 @@ function showProgramsFlags() {
 
     for (; i < programLinks.length; i++) {
         var id = programLinks[i].href.split("/")[5], counter = 0, ids = [], objs = [], result;
-        getJSON("https://www.khanacademy.org/api/internal/scratchpads/" + id, function(a, c) {
+        getJSON("/api/internal/scratchpads/" + id, function(a, c) {
             handleResponse(a);
             counter++;
         });

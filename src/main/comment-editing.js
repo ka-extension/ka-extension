@@ -45,7 +45,7 @@ function addCommentEditLink(element) {
     cancel.style.color = "#678d00";
     cancel.className = commentCancelEditPrefix + element.id;
     let editBtn = document.createElement("button");
-    editBtn.className = "simple-button primary edit-comment-" + element.id + "-button";
+    editBtn.className = `simple-button primary edit-comment-${element.id}-button`;
     editBtn.style.fontSize = "12px";
     editBtn.setAttribute("type", "button");
     editBtn.textContent = "Edit this comment";
@@ -82,7 +82,9 @@ function addCommentEditLink(element) {
         // Based off of @MatthiasSaihttam's bookmarklet (https://www.khanacademy.org/computer-programming/edit-comments/6039670653)
         let focusId = commentLinkGenerator ? commentLinkGenerator.getTopicId(kaencrypted) : KAdefine.require("./javascript/discussion-package/discussion.js").data.focusId,
             focusType = commentLinkGenerator ? commentLinkGenerator.getTopicType(kaencrypted) : KAdefine.require("./javascript/discussion-package/discussion.js").data.focusKind;
-        x.open("PUT", "https://www.khanacademy.org/api/internal/discussions/" + focusType + "/" + focusId + "/comments/" + kaencrypted + "?casing=camel&lang=en&_=" + Date.now());
+        x.open("PUT", endpointURL(
+	    `/api/internal/discussions/${focusType}/${focusId}/comments/${kaencrypted}?casing=camel&lang=en&_=${Date.now()}`
+	));
         x.setRequestHeader("x-ka-fkey", getSession());
         x.setRequestHeader("Content-type", "application/json");
         x.addEventListener("load", function() {
@@ -90,7 +92,7 @@ function addCommentEditLink(element) {
             textarea.style.display = discussionControl.style.display = "none";
             contentDiv.style.display = discMeta.style.display = "block";
         });
-        x.addEventListener("error", function() { alert("Unable to edit comment.  Please try again."); });
+        x.addEventListener("error", function() { alert("Unable to edit comment. Please try again."); });
         x.send(JSON.stringify({ text: textarea.value }));
     })
 
@@ -123,7 +125,7 @@ function addCommentEditUI() {
     if (!KADiscussionPackage || !KADiscussionPackage.data) { return; }
     if ((!KADiscussionPackage.data.focusId || !KADiscussionPackage.data.focusKind) && !commentLinkGenerator) { return; }
 
-    let uneditedComments = document.querySelectorAll(".reply:not(." + extensionCommentEditClassName + ")");
+    let uneditedComments = document.querySelectorAll(`.reply:not(.${extensionCommentEditClassName})`);
     for (let i = 0; i < uneditedComments.length; i++) {
         addCommentEditLink(uneditedComments[i]);
     }

@@ -24,7 +24,7 @@ function commentLinks() {
             let outerSpan = document.createElement("span");
             outerSpan.appendChild(link);
             metaControls.appendChild(outerSpan);
-            comment.className += " " + extensionCommentClassName;
+            comment.className += ` ${extensionCommentClassName}`;
         }
     }
 }

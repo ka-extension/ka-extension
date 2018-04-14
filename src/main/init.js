@@ -1,7 +1,7 @@
 (function() {
-    const programUrl = "https://www.khanacademy.org/api/internal/show_scratchpad?scratchpad_id=",
-          userApi = "https://www.khanacademy.org/api/internal/user/profile",
-          userProgramsApi = "https://www.khanacademy.org/api/internal/user/scratchpads";
+    const programUrl = "/api/internal/show_scratchpad?scratchpad_id=",
+          userApi = "/api/internal/user/profile",
+          userProgramsApi = "/api/internal/user/scratchpads";
     
     const aceThemes = {
         themes: {},

@@ -18,3 +18,4 @@ PRs are welcomed!
 #### Thanks
 * [Matthias Saihttam](https://github.com/MatthiasSaihttam)
 * [Scott Schraeder](https://github.com/CosignCosine)
+* [Literally Void](https://github.com/LiterallyVoid)

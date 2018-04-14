@@ -12,16 +12,19 @@ function getProfileData() {
     var numPrograms = userPrograms.scratchpads.length;
     for(var i = 0; i < numPrograms; i++) {
         var scratchpad = userPrograms.scratchpads[i];
-        numVotes += scratchpad.sumVotesIncremented;
+        numVotes += scratchpad.sumVotesIncremented - 1;
         numSpinoffs += scratchpad.spinoffCount;
     }
-    tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">Account created</td><td>" + (userInfo.dateJoined ? newDate(dateJoined)  : "Unknown") + "</td></tr>";
-    tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">Programs</td><td>" + numPrograms + "</td></tr>";
-    tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">Votes received</td><td>" + numVotes + "</td></tr>";
-    tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">Spinoffs received</td><td>" + numSpinoffs + "</td></tr>";
-    tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">Average votes received</td><td>" + ((Math.round((numVotes/numPrograms) * 100) / 100) || 0) + "</td></tr>";
-    tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">Average spinoffs received</td><td>" + ((Math.round((numSpinoffs/numPrograms) * 100) / 100) || 0)  + "</td></tr>";
-    tableBody.innerHTML += "<tr><td class=\"user-statistics-label\">User kaid</td><td>" + kaid + "</td></tr>";
+    function addItem(title, value){
+      tableBody.innerHTML += `<tr><td class="user-statistics-label">${title}</td><td>${value}</td></tr>`
+    }
+    addItem("Accont created", (userInfo.dateJoined ? newDate(dateJoined)  : "Unknown"));
+    addItem("Programs", numPrograms);
+    addItem("Votes received", numVotes);
+    addItem("Spinoffs received", numSpinoffs);
+    addItem("Average votes received", ((Math.round((numVotes/numPrograms) * 100) / 100) || 0));
+    addItem("Average spinoffs received", ((Math.round((numSpinoffs/numPrograms) * 100) / 100) || 0));
+    addItem("User kaid", kaid);
     clearInterval(profileData);
 }
 
