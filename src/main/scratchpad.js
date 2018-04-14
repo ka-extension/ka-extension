@@ -74,7 +74,7 @@ function showProgramsFlags() {
 
     for (; i < programLinks.length; i++) {
         var id = programLinks[i].href.split("/")[5], counter = 0, ids = [], objs = [], result;
-        getJSON("https://www.khanacademy.org/api/internal/scratchpads/" + id, function(a, c) {
+        getJSON("/api/internal/scratchpads/" + id, function(a, c) {
             handleResponse(a);
             counter++;
         });
