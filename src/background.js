@@ -17,7 +17,7 @@ chrome.runtime.onMessageExternal.addListener(function(msg, sender) {
 
 setInterval(function() {
     if(fkey.length <= 0 || kaid.length <= 0) { return; }
-    getJSON("/api/internal/user/profile?kaid=" + kaid, function(response) {
+    getJSON("https://www.khanacademy.org/api/internal/user/profile?kaid=" + kaid, function(response) {
         var notifs = response.countBrandNewNotifications;
         chrome.browserAction.setBadgeText({
             text: notifs > 0 ? notifs.toString() : ""
