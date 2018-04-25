@@ -9,8 +9,8 @@
             darkTheme();
             var addDarkToggleButton = setInterval(darkToggleButton, 250);
             if(url[4] !== "new") {
-                var addFlags = setInterval(addFlagsToProgram, 250),
-                    getDates = setInterval(showProgramDates, 250);
+                addFlagsToProgram();
+                var getDates = setInterval(showProgramDates, 250);
                 evalFeatures();
                 reportButton();
                 widenProgram();

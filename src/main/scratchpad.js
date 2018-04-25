@@ -101,39 +101,17 @@ function showProgramDates() {
 
 /*** When viewing a program, it shows how many flags the program has. ***/
 function addFlagsToProgram() {
-    if(!programData.scratchpad) return;
-    var title = document.getElementsByClassName("editTitle_swrcbw");
-    var flag = document.getElementsByClassName("discussion-meta-controls");
-    if (programData.scratchpad.kaid !== kaid && !KA._userProfileData.isModerator) {
+    objectNotEmptyTimer(programData).then(() => {
+      querySelectorPromise(".discussion-meta-controls").then(flag => {
+        if(programData.scratchpad.kaid === kaid || KA._userProfileData.isModerator) return;
         var programFlags = programData.scratchpad.flags;
+        var flagButton = flag.childNodes[2];
+        var reasons = programFlags.length > 0 ? programFlags.reduce((total, current) => total += `${current}\n`) : 'No flags here!';
 
-        if(flag.length < 1 && title.length < 1) { return; }
-
-        try {
-            var flagString = " • " + programData.scratchpad.flags.length;
-            flag[0].childNodes[2].innerHTML += flagString;
-
-            if (flag[0].childNodes[2].className === "link_1uvuyao-o_O-computing_77ub1h-o_O-disabled_2gos5") {
-                flag[0].childNodes[2].className = "link_1uvuyao-o_O-computing_77ub1h";
-            }
-        } catch(flag) {
-            console.log("Flag is not defined.");
-            return;
-        }
-
-        // Hover over flag button to show flag reasons.
-        var flagBtn = document.getElementsByClassName("link_1uvuyao-o_O-computing_77ub1h")[0];
-        var reasons = "";
-        programFlags.forEach(function(element) {
-            reasons += element + "\n";
-        });
-        if (programData.scratchpad.flags.length === 0) {
-            reasons = "No flags here!";
-        }
-        flagBtn.title = reasons;
-
-        clearInterval(addFlags);
-    }
+        flagButton.textContent += ` • ${programFlags.length}`;
+        flagButton.title = reasons;
+      });
+    });
 }
 
 /*** Hides editor **/
