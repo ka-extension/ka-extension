@@ -138,11 +138,10 @@ function addFlagsToProgram() {
 
 /*** Hides editor **/
 function hideEditor(){
-  let programInfoNotEmpty = objectNotEmptyTimer(programData);
-  programInfoNotEmpty.then(() => {
-    querySelectorPromise(".wrapScratchpad_vw13lu").then((wrap) => {
+  objectNotEmptyTimer(programData).then(() => {
+    querySelectorPromise(".wrapScratchpad_1jkna7i").then((wrap) => {
         if(programData.scratchpad.userAuthoredContentType === "webpage") return;
-        var LSeditorHide = extensionStoragePrefix + "editor-hide";
+        var LSeditorHide = `${extensionStoragePrefix}editor-hide`;
         var LSeditorHideVal = localStorage.getItem(LSeditorHide);
         var editorWrap = document.querySelector(".scratchpad-editor-wrap");
         if(localStorage.getItem(LSeditorHide) === null) localStorage.setItem(LSeditorHide, "false");
