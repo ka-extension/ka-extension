@@ -33,6 +33,8 @@ function deleteNotif() {
             notifElm.parentNode.removeChild(notifElm);
             continue;
         }
+	notifElm.style.wordBreak = "break-all";
+
         var linkElm = notifElm.childNodes[0];
         if(linkElm.className === "loadingSpinner_18tyv6y") { continue; }
 
